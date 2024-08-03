@@ -1,9 +1,17 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import { useColorMode } from '@vueuse/core'
+
 import './assets/index.css'
 
 import App from './App.vue'
 import router from './router'
+
+const darkMode = useColorMode({
+
+})
+
+console.log(darkMode.value)
 
 const app = createApp(App)
 
