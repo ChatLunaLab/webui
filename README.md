@@ -4,7 +4,7 @@ ChatLuna WebUI 原型项目。探索 WebUI 的落地应用。
 
 ## 技术栈
 
-vue 3 + vite + typeScript + tailwind css + pinia + VueUse + shadcn-vue
+vue 3 + vite + typescript + tailwind css + pinia + vueuse + shadcn-vue
 
 ## 后端
 
