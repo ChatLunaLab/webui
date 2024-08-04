@@ -1,9 +1,13 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useScreenInfoStore = defineStore('screenInfo', () => {
   const screenWidth = ref(window.innerWidth)
   const screenBreakpoint = ref('')
+
+  const isMobile = computed(() => {
+    return screenBreakpoint.value === 'xs'
+  })
 
   const handleResize = () => {
     screenWidth.value = window.innerWidth
@@ -27,6 +31,7 @@ export const useScreenInfoStore = defineStore('screenInfo', () => {
 
   return {
     screenBreakpoint,
-    screenWidth
+    screenWidth,
+    isMobile
   }
 })
