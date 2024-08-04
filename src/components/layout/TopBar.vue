@@ -9,15 +9,14 @@ import {
   TooltipContent,
   TooltipTrigger
 } from '@/components/ui/tooltip'
-import { cn } from '@/lib/utils'
-import NewChatIcon from '@/components/icons/NewChatIcon.vue';
+import NewChatIcon from '@/components/icons/NewChatIcon.vue'
+import HomeModelSelector from './HomeModelSelector.vue'
 
 const sidebarStore = useSidebarStore()
-
 </script>
 
 <template>
-  <div id="top_bar" class="w-full flex h-14 bg-background">
+  <div id="top_bar" class="w-full flex h-14 items-center bg-background">
     <Tooltip v-if="!sidebarStore.isOpen">
       <TooltipTrigger as-child>
         <Button
@@ -35,17 +34,15 @@ const sidebarStore = useSidebarStore()
 
     <Tooltip v-if="!sidebarStore.isOpen">
       <TooltipTrigger as-child>
-        <Button
-          class='m-2'
-          variant="ghost"
-          size="icon"
-        >
+        <Button class="m-2" variant="ghost" size="icon">
           <NewChatIcon class="size-5" />
           <span class="sr-only">新聊天</span>
         </Button>
       </TooltipTrigger>
       <TooltipContent>新聊天</TooltipContent>
     </Tooltip>
+
+    <HomeModelSelector />
   </div>
   <Separator class="w-full" orientation="horizontal" />
 </template>
