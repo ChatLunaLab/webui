@@ -7,11 +7,7 @@ import './assets/index.css'
 import App from './App.vue'
 import router from './router'
 
-const darkMode = useColorMode({
-
-})
-
-console.log(darkMode.value)
+const darkMode = useColorMode({})
 
 const app = createApp(App)
 

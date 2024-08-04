@@ -9,8 +9,7 @@ import {
   TooltipContent,
   TooltipTrigger
 } from '@/components/ui/tooltip'
-import NewChatIcon from '@/components/icons/NewChatIcon.vue'
-import HomeModelSelector from './HomeModelSelector.vue'
+
 
 const sidebarStore = useSidebarStore()
 </script>
@@ -32,17 +31,7 @@ const sidebarStore = useSidebarStore()
       <TooltipContent>开启边栏</TooltipContent>
     </Tooltip>
 
-    <Tooltip v-if="!sidebarStore.isOpen">
-      <TooltipTrigger as-child>
-        <Button class="m-2" variant="ghost" size="icon">
-          <NewChatIcon class="size-5" />
-          <span class="sr-only">新聊天</span>
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent>新聊天</TooltipContent>
-    </Tooltip>
-
-    <HomeModelSelector />
+    <slot />
   </div>
   <Separator class="w-full" orientation="horizontal" />
 </template>

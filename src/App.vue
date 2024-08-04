@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import SideBar from '@/components/layout/SideBar.vue'
 import TopBar from '@/components/layout/TopBar.vue'
 import { TooltipProvider } from '@/components/ui/tooltip'
+import { RouterView } from 'vue-router';
 
 </script>
 
@@ -12,14 +13,8 @@ import { TooltipProvider } from '@/components/ui/tooltip'
     <SideBar >
       <Button>Hello</Button>
     </SideBar>
-    <!-- body -->
-    <div class = "flex-auto">
 
-      <TopBar>
-
-      </TopBar>
-
-    </div>
+    <RouterView />
   </div>
   </TooltipProvider>
 </template>
