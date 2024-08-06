@@ -31,9 +31,19 @@ const props = defineProps<Props>()
     :class="cn('w-full flex h-14 items-center bg-background', props.class)"
   >
     <div class="flex items-center overflow-hidden">
-      <TopBarIcon :click = "sidebarStore.toggle" v-if="!sidebarStore.isOpen || screenInfoStore.isMobile" tooltipText = "展开边栏">
-        <MobileSidebarIcon v-if="screenInfoStore.isMobile" class="size-5" />
-        <DesktopSidebarIcon v-if="!screenInfoStore.isMobile" class="size-5" />
+      <TopBarIcon
+        :click="sidebarStore.toggle"
+        v-if="!sidebarStore.isOpen || screenInfoStore.isMobile"
+        tooltipText="展开边栏"
+      >
+        <MobileSidebarIcon
+          v-if="screenInfoStore.isMobile"
+          class="size-5 opacity-60"
+        />
+        <DesktopSidebarIcon
+          v-if="!screenInfoStore.isMobile"
+          class="size-5 opacity-60"
+        />
       </TopBarIcon>
       <slot name="navigation" />
     </div>

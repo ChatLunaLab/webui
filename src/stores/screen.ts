@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { computed, onUnmounted, ref } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useScreenInfoStore = defineStore('screenInfo', () => {
@@ -28,6 +28,11 @@ export const useScreenInfoStore = defineStore('screenInfo', () => {
   }
 
   window.addEventListener('resize', handleResize)
+
+  
+  onUnmounted(() => {
+    window.removeEventListener('resize', handleResize)
+  })
 
   return {
     screenBreakpoint,

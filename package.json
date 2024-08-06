@@ -14,11 +14,11 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@radix-icons/vue": "^1.0.0",
     "@vueuse/core": "^10.11.0",
     "autoprefixer": "^10.4.19",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "lucide-vue-next": "^0.424.0",
     "pinia": "^2.1.7",
     "radix-vue": "^1.9.2",
     "tailwind-merge": "^2.4.0",

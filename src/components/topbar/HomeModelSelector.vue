@@ -8,7 +8,7 @@ import {
   CommandItem,
   CommandList
 } from '@/components/ui/command'
-import { Check, ChevronsUpDown } from 'lucide-vue-next'
+import { CheckIcon, ChevronDownIcon } from '@radix-icons/vue'
 import {
   Popover,
   PopoverContent,
@@ -17,7 +17,6 @@ import {
 
 import { cn } from '@/lib/utils'
 import { ref } from 'vue'
-import ScrollArea from '../ui/scroll-area/ScrollArea.vue'
 
 const models = [
   {
@@ -101,7 +100,7 @@ const currentModel = ref('gpt-3.5-turbo')
             ? models.find((model) => model.id === currentModel)?.id
             : '选择一个模型...'
         }}
-        <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        <ChevronDownIcon class="ml-2 h-4 w-4 shrink-0 opacity-50" />
       </Button>
     </PopoverTrigger>
     <PopoverContent align="start" class="w-[200px] sm:w-[400px] p-1">
@@ -125,7 +124,7 @@ const currentModel = ref('gpt-3.5-turbo')
             >
               <p class="text-sm">{{ model.id }}</p>
 
-              <Check
+              <CheckIcon
                 :class="
                   cn(
                     'h-4 w-4',

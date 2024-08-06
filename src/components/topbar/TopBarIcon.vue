@@ -24,11 +24,10 @@ const props = withDefaults(defineProps<Props>(), {
   tooltipText: 'tooltip',
   click: () => {}
 })
-
 </script>
 
 <template>
-  <Tooltip>
+  <Tooltip v-if="!screenInfoStore.isMobile">
     <TooltipTrigger as-child>
       <Button @click="props.click" class="m-2" variant="ghost" size="icon">
         <slot />
@@ -37,4 +36,8 @@ const props = withDefaults(defineProps<Props>(), {
     </TooltipTrigger>
     <TooltipContent>{{ props.tooltipText }}</TooltipContent>
   </Tooltip>
+  <Button v-else @click="props.click" class="m-2" variant="ghost" size="icon">
+    <slot />
+    <span class="sr-only">{{ props.tooltipText }}</span>
+  </Button>
 </template>

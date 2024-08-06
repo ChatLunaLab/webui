@@ -7,10 +7,10 @@ import {
   TooltipContent,
   TooltipTrigger
 } from '@/components/ui/tooltip'
-import HomeModelSelector from '@/components/layout/HomeModelSelector.vue'
-import TopBar from '@/components/layout/TopBar.vue'
+import HomeModelSelector from '@/components/topbar/HomeModelSelector.vue'
+import TopBar from '@/components/topbar/TopBar.vue'
 import { useScreenInfoStore } from '@/stores/screen'
-import TopBarIcon from '@/components/layout/TopBarIcon.vue'
+import TopBarIcon from '@/components/topbar/TopBarIcon.vue'
 
 const sidebarStore = useSidebarStore()
 const screenInfoStore = useScreenInfoStore()
@@ -21,7 +21,7 @@ const screenInfoStore = useScreenInfoStore()
   <div class="flex-auto h-full w-full">
     <TopBar class="justify-between">
       <template v-slot:navigation v-if="!screenInfoStore.isMobile">
-        <TopBarIcon v-if="!sidebarStore.isOpen " tooltipText="新聊天">
+        <TopBarIcon v-if="!sidebarStore.isOpen" tooltipText="新聊天">
           <NewChatIcon class="size-5" />
         </TopBarIcon>
         <HomeModelSelector key="model" />
@@ -30,8 +30,8 @@ const screenInfoStore = useScreenInfoStore()
       <HomeModelSelector key="model" v-if="screenInfoStore.isMobile" />
 
       <TopBarIcon v-if="screenInfoStore.isMobile" tooltipText="新聊天">
-          <NewChatIcon class="size-5" />
-        </TopBarIcon>
+        <NewChatIcon class="size-5" />
+      </TopBarIcon>
     </TopBar>
   </div>
 </template>

@@ -4,11 +4,10 @@ import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import DesktopSidebarIcon from '@/components/icons/DesktopSidebarIcon.vue'
 import { Sheet, SheetContent } from '@/components/ui/sheet'
-import NewChatIcon from '@/components/icons/NewChatIcon.vue'
 import { useSidebarStore } from '@/stores/ui'
 import { useScreenInfoStore } from '@/stores/screen'
 import MobileSidebarIcon from '@/components/icons/MobileSidebarIcon.vue'
-import TopBarIcon from './TopBarIcon.vue'
+import TopBarIcon from '../topbar/TopBarIcon.vue'
 import { watch } from 'vue'
 
 const sidebarStore = useSidebarStore()
@@ -39,12 +38,14 @@ watch(
     <aside class="bg-background flex flex-col h-full w-full">
       <div class="w-full flex justify-between h-14 bg-background items-center">
         <TopBarIcon tooltipText="关闭边栏" :click="sidebarStore.toggle">
-          <MobileSidebarIcon v-if="screenInfoStore.isMobile" class="size-5" />
-          <DesktopSidebarIcon v-if="!screenInfoStore.isMobile" class="size-5" />
-        </TopBarIcon>
-
-        <TopBarIcon tooltipText="新聊天">
-          <NewChatIcon class="size-5" />
+          <MobileSidebarIcon
+            v-if="screenInfoStore.isMobile"
+            class="size-5 opacity-60"
+          />
+          <DesktopSidebarIcon
+            v-if="!screenInfoStore.isMobile"
+            class="size-5 opacity-60"
+          />
         </TopBarIcon>
       </div>
 
@@ -61,15 +62,14 @@ watch(
           class="w-full flex justify-between h-14 bg-background items-center"
         >
           <TopBarIcon tooltipText="关闭边栏" :click="sidebarStore.toggle">
-            <MobileSidebarIcon v-if="screenInfoStore.isMobile" class="size-5" />
+            <MobileSidebarIcon
+              v-if="screenInfoStore.isMobile"
+              class="size-5 opacity-60"
+            />
             <DesktopSidebarIcon
               v-if="!screenInfoStore.isMobile"
-              class="size-5"
+              class="size-5 opacity-60"
             />
-          </TopBarIcon>
-
-          <TopBarIcon tooltipText="新聊天">
-            <NewChatIcon class="size-5" />
           </TopBarIcon>
         </div>
 
