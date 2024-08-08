@@ -22,7 +22,7 @@ const screenInfoStore = useScreenInfoStore()
     <TopBar class="justify-between">
       <template v-slot:navigation v-if="!screenInfoStore.isMobile">
         <TopBarIcon v-if="!sidebarStore.isOpen" tooltipText="新聊天">
-          <NewChatIcon class="size-5" />
+          <NewChatIcon class="size-5 opacity-60" />
         </TopBarIcon>
         <HomeModelSelector key="model" />
       </template>
@@ -30,7 +30,7 @@ const screenInfoStore = useScreenInfoStore()
       <HomeModelSelector key="model" v-if="screenInfoStore.isMobile" />
 
       <TopBarIcon v-if="screenInfoStore.isMobile" tooltipText="新聊天">
-        <NewChatIcon class="size-5" />
+        <NewChatIcon class="size-5 opacity-60" />
       </TopBarIcon>
     </TopBar>
   </div>

@@ -14,29 +14,26 @@ import {
 import { ref, watch } from 'vue'
 import { useScreenInfoStore } from '@/stores/screen'
 import HomePresetDropMenu from './HomePresetDropMenu.vue'
-import Button from '../ui/button/Button.vue'
 import { DotsVerticalIcon } from '@radix-icons/vue'
-import { mergeConfig } from 'vitest/config'
+import Button from '../ui/button/Button.vue'
 
 interface SideBarIconItemProps {
   href?: string
   label: string
   variant: 'ghost' | 'secondary'
-  showDots?: boolean
 }
 
 const open = ref(false)
 const screenInfoStore = useScreenInfoStore()
 
 const props = withDefaults(defineProps<SideBarIconItemProps>(), {
-  href: '#',
-  showDots: true
+  href: '#'
 })
 
 const selected = ref(props.variant == 'secondary')
 
 watch(open, (value) => {
-  selected.value = value
+  selected.value = props.variant == 'secondary'
 })
 </script>
 
@@ -51,29 +48,42 @@ watch(open, (value) => {
           variant: selected || open ? 'secondary' : 'ghost',
           size: 'lg'
         }),
-        'm-0 gap-4 px-2 my-0 justify-normal items-center h-9 group'
+        'm-0 px-2 my-0 justify-normal items-center h-9 group relative w-full'
       )
     "
   >
-    <slot />
-
-    <div class="grow overflow-hidden text-ellipsis whitespace-nowrap text-sm">
+    <div
+      class="grow overflow-hidden whitespace-nowrap text-sm relative ml-[2px] mr-5"
+    >
       {{ label }}
+      <div
+        :class="
+          cn(
+            'absolute bg-gradient-to-r from-0% from-transparent to-background h-[25px] w-8 bottom-0 right-0',
+            selected && 'from-10% w-10 to-secondary/80',
+            open && 'from-20% w-10 to-secondary'
+          )
+        "
+      />
     </div>
 
     <div
       :class="
         cn(
           selected || open ? 'visible' : 'invisible',
-          'group-hover:visible flex'
+          'group-hover:visible flex absolute bottom-0 right-0 items-center'
         )
       "
     >
-      <DropdownMenu v-if="showDots" v-model:open="open">
+      <DropdownMenu v-model:open="open">
         <DropdownMenuTrigger>
           <Tooltip v-if="!screenInfoStore.isMobile">
             <TooltipTrigger as-child>
-              <Button class="items-center" variant="ghost" size="icon">
+              <Button
+                class="items-center"
+                :variant="open ? 'secondary' : 'ghost'"
+                size="icon"
+              >
                 <DotsVerticalIcon class="size-4 opacity-50" />
               </Button>
             </TooltipTrigger>
@@ -81,7 +91,13 @@ watch(open, (value) => {
               <p>选项</p>
             </TooltipContent>
           </Tooltip>
-          <Button v-else class="items-center" variant="ghost" size="icon">
+
+          <Button
+            v-else
+            class="items-center"
+            :variant="open ? 'secondary' : 'ghost'"
+            size="icon"
+          >
             <DotsVerticalIcon class="size-4 opacity-50" />
           </Button>
         </DropdownMenuTrigger>

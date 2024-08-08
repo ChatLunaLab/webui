@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { HomeIcon, DotsVerticalIcon, TokensIcon } from '@radix-icons/vue'
-import SideBarItem from '../sidebar/SideBarItem.vue'
+import SideBarItem from '../sidebar/SideBarTextItem.vue'
 import HomePresetDropMenu from '../sidebar/HomePresetDropMenu.vue'
-import SideBarItemIcon from '../sidebar/SideBarItemIcon.vue'
+import SideBarTextItem from '../sidebar/SideBarTextItem.vue'
 import SideBarAgentItem from '../sidebar/SideBarIconItem.vue'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { ref } from 'vue'
@@ -17,11 +17,11 @@ const chatData = [
     conversations: [
       {
         id: '1',
-        title: '为 TypeScript 提供类型支持'
+        title: '为 TypeScript 提供类型支持1234fsdalhjk;5'
       },
       {
         id: '2',
-        title: '这是一个测试'
+        title: '这是一个测试sdfnmkasmfndskmfjnhaklfjsndlkfhjsdlkjf'
       },
       {
         id: '3',
@@ -109,61 +109,44 @@ const chatData = [
 </script>
 
 <template>
-  <ScrollArea class = "h-full w-[260px]">
-    <div class="p-2 w-full">
-      <!-- header -->
-      <div class = 'flex flex-col w-full'>
-        <SideBarAgentItem
-          v-for="label in agentData"
-          href="#"
-          :key="label"
-          :label="label"
-          variant="ghost"
-        >
-          <HomeIcon class="flex-shrink-0 size-5 opacity-50" />
-        </SideBarAgentItem>
+  <div class="flex flex-col p-2 w-full overflow-x-hidden overflow-y-auto">
+    <!-- header -->
+    <div class="flex flex-col w-full">
+      <SideBarAgentItem
+        v-for="label in agentData"
+        href="#"
+        :key="label"
+        :label="label"
+        variant="ghost"
+      >
+        <HomeIcon class="size-5 opacity-50 flex-shrink-0" />
+      </SideBarAgentItem>
 
-        <SideBarAgentItem label="工作台" variant="ghost">
-          <TokensIcon class="size-5 opacity-50" />
-        </SideBarAgentItem>
-      </div>
+      <SideBarAgentItem :showDots="false" label="工作台" variant="ghost">
+        <TokensIcon class="size-5 opacity-50 flex-shrink-0" />
+      </SideBarAgentItem>
+    </div>
 
-      <!-- chat contents -->
-      <div class="space-y-3 w-fit">
-        <div v-for="data in chatData" :key="data.name" class="mt-4 first:mt-6">
-          <p class="text-xs text-muted-foreground ml-4 mb-4">
-            {{ data.name }}
-          </p>
+    <!-- chat contents -->
+    <div class="space-y-3 w-full">
+      <div v-for="data in chatData" :key="data.name" class="mt-4 first:mt-6">
+        <p class="text-xs text-muted-foreground ml-2 mb-4">
+          {{ data.name }}
+        </p>
 
-          <ol>
-            <li
-              v-for="conversation in data.conversations"
-              :key="conversation.id"
-            >
-              <SideBarItem
-                :label="conversation.title"
-                :variant="
-                  conversation.id === currentConversationId
-                    ? 'secondary'
-                    : 'ghost'
-                "
-              >
-                <template v-slot:right>
-                  <SideBarItemIcon label="选项">
-                    <Button variant="ghost" size="icon">
-                      <DotsVerticalIcon class="size-4 opacity-50" />
-                    </Button>
-
-                    <template v-slot:menu>
-                      <HomePresetDropMenu />
-                    </template>
-                  </SideBarItemIcon>
-                </template>
-              </SideBarItem>
-            </li>
-          </ol>
-        </div>
+        <ol>
+          <li v-for="conversation in data.conversations" :key="conversation.id">
+            <SideBarTextItem
+              :label="conversation.title"
+              :variant="
+                conversation.id === currentConversationId
+                  ? 'secondary'
+                  : 'ghost'
+              "
+            ></SideBarTextItem>
+          </li>
+        </ol>
       </div>
     </div>
-  </ScrollArea>
+  </div>
 </template>

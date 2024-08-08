@@ -1,4 +1,4 @@
-import { Config } from 'tailwindcss'
+import plugin, { Config } from 'tailwindcss'
 import animate from 'tailwindcss-animate'
 
 export default {
@@ -89,5 +89,7 @@ export default {
       }
     }
   },
-  plugins: [animate]
+  plugins: [
+    animate
+  ]
 } satisfies Config

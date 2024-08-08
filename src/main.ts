@@ -9,6 +9,9 @@ import router from './router'
 
 const darkMode = useColorMode({})
 
+// add color-scheme to html tag
+document.documentElement.style.setProperty('color-scheme', darkMode.state.value)
+
 const app = createApp(App)
 
 app.use(createPinia())
