@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { HomeIcon, DotsVerticalIcon, TokensIcon } from '@radix-icons/vue'
-import SideBarItem from '../sidebar/SideBarTextItem.vue'
-import HomePresetDropMenu from '../sidebar/HomePresetDropMenu.vue'
+import { HomeIcon, TokensIcon } from '@radix-icons/vue'
 import SideBarTextItem from '../sidebar/SideBarTextItem.vue'
 import SideBarAgentItem from '../sidebar/SideBarIconItem.vue'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { ref } from 'vue'
-import Button from '../ui/button/Button.vue'
+import SideBarUserCard from '../sidebar/SideBarUserCard.vue'
 
 const agentData = ['默认', '猫娘', '角色 tag 生成 角色 tag 生成 角色 tag 生成']
 
@@ -149,4 +146,8 @@ const chatData = [
       </div>
     </div>
   </div>
+  <SideBarUserCard
+    name="dingyi"
+    avatar="https://q.qlogo.cn/headimg_dl?dst_uin=2187778735&spec=640&img_type=jpg"
+  />
 </template>
