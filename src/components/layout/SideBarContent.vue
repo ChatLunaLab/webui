@@ -3,6 +3,7 @@ import { HomeIcon, DotsVerticalIcon, TokensIcon } from '@radix-icons/vue'
 import SideBarItem from '../sidebar/SideBarItem.vue'
 import HomePresetDropMenu from '../sidebar/HomePresetDropMenu.vue'
 import SideBarItemIcon from '../sidebar/SideBarItemIcon.vue'
+import SideBarAgentItem from '../sidebar/SideBarIconItem.vue'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { ref } from 'vue'
 import Button from '../ui/button/Button.vue'
@@ -16,7 +17,7 @@ const chatData = [
     conversations: [
       {
         id: '1',
-        title: '为 TypeScript 提供类型支持1234fsdalhjk;5'
+        title: '为 TypeScript 提供类型支持'
       },
       {
         id: '2',
@@ -33,7 +34,7 @@ const chatData = [
     conversations: [
       {
         id: '7',
-        title: '为 TypeScript 提供类型支持12455'
+        title: '为 TypeScript 提供类型支持'
       },
       {
         id: '8',
@@ -50,7 +51,7 @@ const chatData = [
     conversations: [
       {
         id: '10',
-        title: '为 TypeScript 提供类型支持111'
+        title: '为 TypeScript 提供类型支持'
       },
       {
         id: '11',
@@ -93,6 +94,14 @@ const chatData = [
       {
         id: '18',
         title: '这不是测试'
+      },
+      {
+        id: '19',
+        title: '这是一个测试'
+      },
+      {
+        id: '20',
+        title: '这不是测试'
       }
     ]
   }
@@ -100,34 +109,23 @@ const chatData = [
 </script>
 
 <template>
-  <ScrollArea>
-    <div class="flex flex-col">
+  <ScrollArea class = "h-full w-[260px]">
+    <div class="p-2 w-full">
       <!-- header -->
-      <div class="space-y-1 flex-col flex">
-        <SideBarItem
+      <div class = 'flex flex-col w-full'>
+        <SideBarAgentItem
           v-for="label in agentData"
           href="#"
           :key="label"
           :label="label"
           variant="ghost"
         >
-          <HomeIcon class="size-5 opacity-50 mr-2" />
-          <template v-slot:right>
-            <SideBarItemIcon label="选项">
-              <Button class="items-center" variant="ghost" size="icon">
-                <DotsVerticalIcon class="size-4 opacity-50" />
-              </Button>
+          <HomeIcon class="flex-shrink-0 size-5 opacity-50" />
+        </SideBarAgentItem>
 
-              <template v-slot:menu>
-                <HomePresetDropMenu />
-              </template>
-            </SideBarItemIcon>
-          </template>
-        </SideBarItem>
-
-        <SideBarItem label="工作台" variant="ghost">
-          <TokensIcon class="size-5 opacity-50 mr-2" />
-        </SideBarItem>
+        <SideBarAgentItem label="工作台" variant="ghost">
+          <TokensIcon class="size-5 opacity-50" />
+        </SideBarAgentItem>
       </div>
 
       <!-- chat contents -->

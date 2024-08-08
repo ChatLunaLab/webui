@@ -55,7 +55,11 @@ watch(
     <Separator class="h-full" orientation="vertical"></Separator>
   </div>
 
-  <Sheet v-model:open="sidebarStore.isOpen" v-if="screenInfoStore.isMobile">
+  <Sheet
+    aria-describedby="undefined"
+    v-model:open="sidebarStore.isOpen"
+    v-if="screenInfoStore.isMobile"
+  >
     <SheetContent class="p-0 w-[260px]" :showClose="false" side="left">
       <aside class="bg-background flex flex-col h-full w-full">
         <div
