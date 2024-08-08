@@ -35,6 +35,7 @@ const props = defineProps<Props>()
         :click="sidebarStore.toggle"
         v-if="!sidebarStore.isOpen || screenInfoStore.isMobile"
         tooltipText="展开边栏"
+        :tooltip="false"
       >
         <MobileSidebarIcon
           v-if="screenInfoStore.isMobile"

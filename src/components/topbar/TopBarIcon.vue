@@ -18,16 +18,18 @@ const screenInfoStore = useScreenInfoStore()
 interface Props {
   tooltipText?: string
   click?: () => void
+  tooltip?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   tooltipText: 'tooltip',
-  click: () => {}
+  click: () => {},
+  tooltip: true,
 })
 </script>
 
 <template>
-  <Tooltip v-if="!screenInfoStore.isMobile">
+  <Tooltip v-if="tooltip">
     <TooltipTrigger as-child>
       <Button @click="props.click" class="m-2" variant="ghost" size="icon">
         <slot />

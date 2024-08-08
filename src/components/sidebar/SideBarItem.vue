@@ -9,31 +9,41 @@ export interface SideBarItemProps {
   variant: 'ghost' | 'secondary'
 }
 
-withDefaults(defineProps<SideBarItemProps>(), {
+const props = withDefaults(defineProps<SideBarItemProps>(), {
   href: '#'
 })
 
-const hover = ref(false)
+const variantMutable = ref<'ghost' | 'secondary'>(props.variant)
 </script>
 
 <template>
   <a
     :href="href"
-    @mouseover="hover = true"
-    @mouseleave="hover = false"
+    @mouseover="variantMutable = 'secondary'"
+    @mouseleave="variantMutable = 'ghost'"
     :class="
       cn(
-        buttonVariants({ variant, size: 'lg' }),
-        variant === 'ghost' &&
+        buttonVariants({ variant: variantMutable, size: 'lg' }),
+        variantMutable === 'ghost' &&
           'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
-        'justify-start mx-2 px-2.5',
-        $attrs.class ?? ''
+        'flex-nowrap gap-2 ml-3 p-2 justify-start w-full h-9 max-w-[240px] group mr-10'
       )
     "
   >
     <slot />
-    <span class="mx-1 overflow-hidden">{{ label }}</span>
-    <div v-if="hover || variant == 'secondary'" class="ml-auto">
+
+    <div class="grow overflow-hidden font-normal whitespace-nowrap">
+      {{ label }}
+    </div>
+
+    <div
+      :class="
+        cn(
+          variantMutable == 'secondary' ? 'visible' : 'invisible',
+          'group-hover:visible'
+        )
+      "
+    >
       <slot name="right" />
     </div>
   </a>
