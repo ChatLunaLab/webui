@@ -26,9 +26,10 @@ const props = defineProps<Props>()
 </script>
 
 <template>
+  <div class = 'sticky w-full top-0'>
   <div
     id="top_bar"
-    :class="cn('w-full flex h-14 items-center bg-background', props.class)"
+    :class="cn('w-full flex h-14 items-center bg-background ', props.class)"
   >
     <div class="flex items-center overflow-hidden">
       <TopBarIcon
@@ -52,4 +53,5 @@ const props = defineProps<Props>()
     <slot />
   </div>
   <Separator class="w-full" orientation="horizontal" />
+  </div>
 </template>
