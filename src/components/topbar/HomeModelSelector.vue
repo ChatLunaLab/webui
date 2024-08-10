@@ -93,7 +93,7 @@ const currentModel = ref('gpt-3.5-turbo')
         variant="ghost"
         role="combobox"
         :aria-expanded="open"
-        :class="cn('m-3 p-3 ease-out duration-300 transition-all ')"
+        :class="cn('my-3 p-3 ease-out duration-300 transition-all ')"
       >
         {{
           currentModel

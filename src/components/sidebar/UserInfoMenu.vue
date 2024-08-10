@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { computed, inject, watch } from 'vue'
 import type { Ref } from 'vue'
-import { GearIcon } from '@radix-icons/vue'
+import { GearIcon,ExitIcon } from '@radix-icons/vue'
 </script>
 
 <template>
@@ -29,7 +29,7 @@ import { GearIcon } from '@radix-icons/vue'
   </DropdownMenuItem>
   <DropdownMenuSeparator />
   <DropdownMenuItem class="h-9">
-    <TrashIcon class="size-4 mr-2 stroke-red-500" />
-    <span class="text-red-500">退出登录</span>
+    <ExitIcon class="size-4 mr-2 text-red-500 " />
+    <span class="text-red-500">注销</span>
   </DropdownMenuItem>
 </template>

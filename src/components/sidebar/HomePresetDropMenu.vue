@@ -24,7 +24,7 @@ import { Pencil2Icon, Share2Icon, TrashIcon } from '@radix-icons/vue'
     分享
   </DropdownMenuItem>
   <DropdownMenuItem>
-    <TrashIcon class="size-4 mr-2 stroke-red-500" />
+    <TrashIcon class="size-4 mr-2 text-red-500" />
     <span class="text-red-500">删除</span>
   </DropdownMenuItem>
 </template>
