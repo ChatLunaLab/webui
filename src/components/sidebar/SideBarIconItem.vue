@@ -33,22 +33,20 @@ const props = withDefaults(defineProps<SideBarIconItemProps>(), {
   showDots: true
 })
 
-const selected = ref(props.variant == 'secondary')
+const hovered = ref(props.variant === 'secondary')
+const selected = props.variant === 'secondary'
 
-watch(open, (value) => {
-  selected.value = value
-})
 </script>
 
 <template>
   <a
     :href="href"
-    @mouseover="selected = true"
-    @mouseleave="selected = false"
+    @mouseover="hovered = true"
+    @mouseleave="hovered = false"
     :class="
       cn(
         buttonVariants({
-          variant: selected || open ? 'secondary' : 'ghost',
+          variant: selected || hovered || open ? 'secondary' : 'ghost',
           size: 'lg'
         }),
         'm-0 gap-4 px-2 my-0 justify-normal items-center h-9 group'
@@ -64,7 +62,7 @@ watch(open, (value) => {
     <div
       :class="
         cn(
-          selected || open ? 'visible' : 'invisible',
+          selected || hovered || open ? 'visible' : 'invisible',
           'group-hover:visible flex'
         )
       "

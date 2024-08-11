@@ -30,22 +30,20 @@ const props = withDefaults(defineProps<SideBarIconItemProps>(), {
   href: '#'
 })
 
-const selected = ref(props.variant == 'secondary')
+const hovered = ref(props.variant === 'secondary')
+const selected = props.variant === 'secondary'
 
-watch(open, (value) => {
-  selected.value = props.variant == 'secondary'
-})
 </script>
 
 <template>
   <a
     :href="href"
-    @mouseover="selected = true"
-    @mouseleave="selected = false"
+    @mouseover="hovered = true"
+    @mouseleave="hovered = false"
     :class="
       cn(
         buttonVariants({
-          variant: selected || open ? 'secondary' : 'ghost',
+          variant: selected || hovered || open ? 'secondary' : 'ghost',
           size: 'lg'
         }),
         'm-0 px-2 my-0 justify-normal items-center h-9 group relative w-full'
@@ -60,7 +58,7 @@ watch(open, (value) => {
         :class="
           cn(
             'absolute bg-gradient-to-r from-0% from-transparent to-background h-[25px] w-8 bottom-0 right-0',
-            selected && 'from-10% w-10 to-secondary/80',
+            (hovered || selected) && 'from-10% w-10 to-secondary/80',
             open && 'from-20% w-10 to-secondary'
           )
         "
@@ -70,7 +68,7 @@ watch(open, (value) => {
     <div
       :class="
         cn(
-          selected || open ? 'visible' : 'invisible',
+          selected || hovered || open ? 'visible' : 'invisible',
           'group-hover:visible flex absolute bottom-0 right-0 items-center'
         )
       "
