@@ -14,12 +14,12 @@ const sidebarStore = useSidebarStore()
 
 const screenInfoStore = useScreenInfoStore()
 
-const text = 'chatluna'.repeat(5000)
+const text = 'chatluna\n'.repeat(5000)
 </script>
 
 <template>
-  <div id="chat-root" class="flex flex-1 grow w-full flex-col h-full">
-    <div id="chat-content" class="h-full">
+  <div id="chat-root" class="flex grow w-full flex-col overflow-y-auto overflow-x-hidden">
+    <div id="chat-content">
       <p>{{ text }}</p>
     </div>
   </div>

@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import UserInfoMenu from '@/components/sidebar/UserInfoMenu.vue'
 import ChatRootLayout from '@/components/chat/ChatLayout.vue'
+import ChatMessageBar from '@/components/chat/ChatMessageBar.vue'
 
 const sidebarStore = useSidebarStore()
 const screenInfoStore = useScreenInfoStore()
@@ -26,7 +27,7 @@ const screenInfoStore = useScreenInfoStore()
 <template>
   <!-- body -->
   <div class="flex-1 h-full w-full">
-    <div class="h-full overflow-y-auto overflow-x-hidden">
+    <div class="flex flex-col  h-[100vh] w-full">
       <TopBar class="justify-between px-2 sm:px-6">
         <template v-slot:navigation v-if="!screenInfoStore.isMobile">
           <TopBarIcon v-if="!sidebarStore.isOpen" tooltipText="新聊天">
@@ -55,6 +56,9 @@ const screenInfoStore = useScreenInfoStore()
       </TopBar>
 
       <ChatRootLayout />
+
+      <ChatMessageBar />
     </div>
+
   </div>
 </template>

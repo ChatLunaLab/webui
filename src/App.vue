@@ -9,7 +9,7 @@ import SideBarContent from '@/components/layout/SideBarContent.vue';
 <template>
   <TooltipProvider>
     <div
-      class="relative h-screen w-screen flex flex-1 flex-row bg-background dark:bg-background"
+      class="relative h-screen w-screen flex flex-row bg-background dark:bg-background"
       id="home"
     >
       <SideBar>
