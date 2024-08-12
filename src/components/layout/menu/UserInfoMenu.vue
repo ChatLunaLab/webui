@@ -1,14 +1,8 @@
 <script setup lang="ts">
 import {
-  DropdownMenu,
-  DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-import { computed, inject, watch } from 'vue'
-import type { Ref } from 'vue'
+  DropdownMenuSeparator} from '@/components/ui/dropdown-menu'
 import { GearIcon,ExitIcon } from '@radix-icons/vue'
 </script>
 

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { HomeIcon, TokensIcon } from '@radix-icons/vue'
-import SideBarTextItem from '../sidebar/SideBarTextItem.vue'
-import SideBarAgentItem from '../sidebar/SideBarIconItem.vue'
+import SideBarTextItem from './SideBarTextItem.vue'
+import SideBarAgentItem from './SideBarIconItem.vue'
 import { ref } from 'vue'
-import SideBarUserCard from '../sidebar/SideBarUserCard.vue'
+import SideBarUserCard from './SideBarUserCard.vue'
 
 const agentData = ['默认', '猫娘', '角色 tag 生成 角色 tag 生成 角色 tag 生成']
 

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { buttonVariants } from '../ui/button'
 import { cn } from '@/lib/utils'
 import {
   Card,
@@ -15,7 +14,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { ref } from 'vue'
-import UserInfoMenu from './UserInfoMenu.vue'
+import UserInfoMenu from '../menu/UserInfoMenu.vue'
 
 interface SideBarUserCardProps {
   class?: string

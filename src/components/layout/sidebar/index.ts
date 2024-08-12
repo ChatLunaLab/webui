@@ -1,0 +1,5 @@
+export { default as SideBar } from './SideBar.vue'
+export { default as SideBarContent } from './SideBarContent.vue'
+export { default as SideBarIconItem } from './SideBarIconItem.vue'
+export { default as SideBarTextItem } from './SideBarTextItem.vue'
+export { default as SideBarUserCard } from './SideBarUserCard.vue'

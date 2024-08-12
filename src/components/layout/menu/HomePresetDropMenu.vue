@@ -1,17 +1,7 @@
 <script setup lang="ts">
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-import { computed, inject, watch } from 'vue'
-import type { Ref } from 'vue'
+  DropdownMenuItem} from '@/components/ui/dropdown-menu'
 import { Pencil2Icon, Share2Icon, TrashIcon } from '@radix-icons/vue'
-
-
 </script>
 
 <template>

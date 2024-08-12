@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { buttonVariants } from '../ui/button'
 import { cn } from '@/lib/utils'
 import {
   Tooltip,
@@ -13,9 +12,9 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { ref, watch } from 'vue'
 import { useScreenInfoStore } from '@/stores/screen'
-import HomePresetDropMenu from './HomePresetDropMenu.vue'
+import HomePresetDropMenu from '../menu/HomePresetDropMenu.vue'
 import { DotsVerticalIcon } from '@radix-icons/vue'
-import Button from '../ui/button/Button.vue'
+import { Button, buttonVariants } from '@/components/ui/button'
 
 interface SideBarIconItemProps {
   href?: string
@@ -32,7 +31,6 @@ const props = withDefaults(defineProps<SideBarIconItemProps>(), {
 
 const hovered = ref(props.variant === 'secondary')
 const selected = props.variant === 'secondary'
-
 </script>
 
 <template>

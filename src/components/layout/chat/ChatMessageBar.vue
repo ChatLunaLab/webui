@@ -1,14 +1,8 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-import { Separator } from '@/components/ui/separator'
-import { cn } from '@/lib/utils'
-import DesktopSidebarIcon from '@/components/icons/DesktopSidebarIcon.vue'
-import { Sheet, SheetContent } from '@/components/ui/sheet'
 import { useSidebarStore } from '@/stores/ui'
 import { useScreenInfoStore } from '@/stores/screen'
-import MobileSidebarIcon from '@/components/icons/MobileSidebarIcon.vue'
-import TopBarIcon from '../topbar/TopBarIcon.vue'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import { PlusIcon, ArrowUpIcon } from '@radix-icons/vue'
 
@@ -47,7 +41,7 @@ onMounted(() => {
             </Button>
             <textarea
               ref="chatInput"
-              class="w-full focus:ring-0 focus-visible:ring-0 max-h-[200px] border-none outline-none bg-inherit resize-none min-h-[30px]"
+              class="w-full focus:ring-0 focus-visible:ring-0 max-h-[200px] border-none outline-none placeholder:text-muted-foreground bg-inherit resize-none min-h-[30px]"
               rows="1"
               placeholder="发送一条消息......"
             />
@@ -61,7 +55,7 @@ onMounted(() => {
             </Button>
           </div>
         </div>
-        <p class="my-1.5 text-xs text-gray-400 text-center line-clamp-1">
+        <p class="my-1.5 text-xs text-muted-foreground text-center line-clamp-1">
           LLM 可能会生成错误和有害的信息，请核查重要信息
         </p>
       </div>

@@ -7,7 +7,7 @@ import { Sheet, SheetContent } from '@/components/ui/sheet'
 import { useSidebarStore } from '@/stores/ui'
 import { useScreenInfoStore } from '@/stores/screen'
 import MobileSidebarIcon from '@/components/icons/MobileSidebarIcon.vue'
-import TopBarIcon from '../topbar/TopBarIcon.vue'
+import TopBarIcon from '@/components/layout/topbar/TopBarIcon.vue'
 import { watch } from 'vue'
 
 const sidebarStore = useSidebarStore()
