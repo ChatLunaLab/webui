@@ -21,7 +21,7 @@ const screenInfoStore = useScreenInfoStore()
   <!-- body -->
   <div class="flex-1 h-full w-full">
     <div class="flex flex-col h-[100vh] w-full">
-      <TopBar class="justify-between px-2 sm:px-6">
+      <TopBar class="justify-between ">
         <template v-slot:navigation v-if="!screenInfoStore.isMobile">
           <TopBarIcon v-if="!sidebarStore.isOpen" tooltipText="新聊天">
             <NewChatIcon class="size-5 opacity-60" />
@@ -39,7 +39,7 @@ const screenInfoStore = useScreenInfoStore()
           <DropdownMenuTrigger>
             <img
               src="https://q.qlogo.cn/headimg_dl?dst_uin=2187778735&spec=640&img_type=jpg"
-              class="w-6 h-6 rounded-full hover:cursor-pointer hover:opacity-60"
+              class="mr-6 w-6 h-6 rounded-full hover:cursor-pointer hover:opacity-60"
             />
           </DropdownMenuTrigger>
           <DropdownMenuContent class="w-[160px]">

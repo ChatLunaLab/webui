@@ -11,10 +11,11 @@ const sidebarStore = useSidebarStore()
 const screenInfoStore = useScreenInfoStore()
 
 const agentInfo: AgentInfo = {
-  name: '默认',
+ /*  name: '默认',
   description: '与任意模型对话',
+  author: 'chatluna 官方', */
   avatar: 'https://avatars.githubusercontent.com/u/139454032?s=200&v=4',
-  author: 'chatluna 官方',
+
   examples: [
     {
       title: '用我喜欢的体裁编写一个故事',

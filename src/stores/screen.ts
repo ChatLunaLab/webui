@@ -6,7 +6,7 @@ export const useScreenInfoStore = defineStore('screenInfo', () => {
   const screenBreakpoint = ref('')
 
   const isMobile = computed(() => {
-    return screenBreakpoint.value === 'xs'
+    return screenWidth.value <= 768
   })
 
   const handleResize = () => {
@@ -29,7 +29,7 @@ export const useScreenInfoStore = defineStore('screenInfo', () => {
 
   window.addEventListener('resize', handleResize)
 
-  
+
   onUnmounted(() => {
     window.removeEventListener('resize', handleResize)
   })

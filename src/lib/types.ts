@@ -1,8 +1,8 @@
 export interface AgentInfo {
-  name: string
-  description: string
+  name?: string
+  description?: string
   avatar: string
-  author: string
+  author?: string
   examples: {
     title: string
     prompt: string
