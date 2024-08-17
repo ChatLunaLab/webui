@@ -9,15 +9,19 @@ import { useScreenInfoStore } from '@/stores/screen'
 import MobileSidebarIcon from '@/components/icons/MobileSidebarIcon.vue'
 import TopBarIcon from '@/components/layout/topbar/TopBarIcon.vue'
 import { watch } from 'vue'
+import { storeToRefs } from 'pinia'
 
 const sidebarStore = useSidebarStore()
 
 const screenInfoStore = useScreenInfoStore()
 
+const { isMobile } = storeToRefs(screenInfoStore)
+const { isOpen, delayStatus } = storeToRefs(sidebarStore)
+
 watch(
-  () => screenInfoStore.isMobile,
+  () => isMobile,
   (isMobile) => {
-    sidebarStore.isOpen = !isMobile
+    isOpen.value = !isMobile
   }
 )
 </script>
@@ -25,13 +29,13 @@ watch(
 <template>
   <div
     id="sidebar_container"
-    v-if="!screenInfoStore.isMobile"
+    v-if="!isMobile"
     :class="
       cn(
         'h-full flex flex-shrink-0',
         'relative ease-out duration-300 transition-all overflow-hidden',
-        sidebarStore.isOpen === true ? 'w-[260px] visible' : 'w-[0px]',
-        !sidebarStore.delayStatus && !sidebarStore.isOpen ? 'hidden' : 'visible'
+        isOpen === true ? 'w-[260px] visible' : 'w-[0px]',
+        !delayStatus && !isOpen ? 'hidden' : 'visible'
       )
     "
   >
@@ -39,11 +43,11 @@ watch(
       <div class="w-full flex justify-between h-14 bg-background items-center">
         <TopBarIcon tooltipText="关闭边栏" :click="sidebarStore.toggle">
           <MobileSidebarIcon
-            v-if="screenInfoStore.isMobile"
+            v-if="isMobile"
             class="size-5 opacity-60"
           />
           <DesktopSidebarIcon
-            v-if="!screenInfoStore.isMobile"
+            v-if="!isMobile"
             class="size-5 opacity-60"
           />
         </TopBarIcon>
@@ -57,8 +61,8 @@ watch(
 
   <Sheet
     aria-describedby="undefined"
-    v-model:open="sidebarStore.isOpen"
-    v-if="screenInfoStore.isMobile"
+    v-model:open="isOpen"
+    v-if="isMobile"
   >
     <SheetContent class="p-0 w-[260px]" :showClose="false" side="left">
       <aside class="bg-background flex flex-col h-full w-full">
@@ -67,11 +71,11 @@ watch(
         >
           <TopBarIcon tooltipText="关闭边栏" :click="sidebarStore.toggle">
             <MobileSidebarIcon
-              v-if="screenInfoStore.isMobile"
+              v-if="isMobile"
               class="size-5 opacity-60"
             />
             <DesktopSidebarIcon
-              v-if="!screenInfoStore.isMobile"
+              v-if="!isMobile"
               class="size-5 opacity-60"
             />
           </TopBarIcon>

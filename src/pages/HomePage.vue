@@ -12,9 +12,15 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { UserInfoMenu } from '@/components/layout/menu'
 import { ChatRootLayout, ChatMessageBar } from '@/components/layout/chat'
+import { storeToRefs } from 'pinia'
 
 const sidebarStore = useSidebarStore()
+
 const screenInfoStore = useScreenInfoStore()
+
+const { isMobile } = storeToRefs(screenInfoStore)
+const { isOpen } = storeToRefs(sidebarStore)
+
 </script>
 
 <template>
@@ -22,20 +28,20 @@ const screenInfoStore = useScreenInfoStore()
   <div class="flex-1 h-full w-full">
     <div class="flex flex-col h-[100vh] w-full">
       <TopBar class="justify-between ">
-        <template v-slot:navigation v-if="!screenInfoStore.isMobile">
-          <TopBarIcon v-if="!sidebarStore.isOpen" tooltipText="新聊天">
+        <template v-slot:navigation v-if="!isMobile">
+          <TopBarIcon v-if="!isOpen" tooltipText="新聊天">
             <NewChatIcon class="size-5 opacity-60" />
           </TopBarIcon>
           <HomeModelSelector key="model" />
         </template>
 
-        <HomeModelSelector key="model" v-if="screenInfoStore.isMobile" />
+        <HomeModelSelector key="model" v-if="isMobile" />
 
-        <TopBarIcon v-if="screenInfoStore.isMobile" tooltipText="新聊天">
+        <TopBarIcon v-if="isMobile" tooltipText="新聊天">
           <NewChatIcon class="size-5 opacity-60" />
         </TopBarIcon>
 
-        <DropdownMenu v-if="!screenInfoStore.isMobile">
+        <DropdownMenu v-if="!isMobile">
           <DropdownMenuTrigger>
             <img
               src="https://q.qlogo.cn/headimg_dl?dst_uin=2187778735&spec=640&img_type=jpg"

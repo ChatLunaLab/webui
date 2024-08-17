@@ -14,9 +14,15 @@ import { useScreenInfoStore } from '@/stores/screen'
 import type { HTMLAttributes } from 'vue'
 import { cn } from '@/lib/utils'
 import TopBarIcon from './TopBarIcon.vue'
+import { storeToRefs } from 'pinia'
 
 const sidebarStore = useSidebarStore()
+
 const screenInfoStore = useScreenInfoStore()
+
+const { isMobile } = storeToRefs(screenInfoStore)
+const { isOpen } = storeToRefs(sidebarStore)
+
 
 interface Props {
   class?: HTMLAttributes['class']
@@ -34,16 +40,16 @@ const props = defineProps<Props>()
     <div class="flex items-center overflow-hidden">
       <TopBarIcon
         :click="sidebarStore.toggle"
-        v-if="!sidebarStore.isOpen || screenInfoStore.isMobile"
+        v-if="!isOpen || isMobile"
         tooltipText="展开边栏"
         :tooltip="false"
       >
         <MobileSidebarIcon
-          v-if="screenInfoStore.isMobile"
+          v-if="isMobile"
           class="size-5 opacity-60"
         />
         <DesktopSidebarIcon
-          v-if="!screenInfoStore.isMobile"
+          v-if="!isMobile"
           class="size-5 opacity-60"
         />
       </TopBarIcon>

@@ -16,3 +16,7 @@ export interface ChatLunaMessage {
   id: string
   createdAt: Date
 }
+
+export interface Preference {
+  baseURL?: string
+}
