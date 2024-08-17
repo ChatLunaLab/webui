@@ -5,13 +5,14 @@ import { useScreenInfoStore } from '@/stores/screen'
 import { ref } from 'vue'
 import EmptyChatLayout from './EmptyChatLayout.vue'
 import type { AgentInfo } from '@/lib/types'
+import ChatLayout from './ChatLayout.vue'
 
 const sidebarStore = useSidebarStore()
 
 const screenInfoStore = useScreenInfoStore()
 
 const agentInfo: AgentInfo = {
- /*  name: '默认',
+  /*  name: '默认',
   description: '与任意模型对话',
   author: 'chatluna 官方', */
   avatar: 'https://avatars.githubusercontent.com/u/139454032?s=200&v=4',
@@ -39,7 +40,7 @@ const agentInfo: AgentInfo = {
   ]
 }
 
-const conversationId = ref<string | null>(null)
+const conversationId = ref<string | null>("")
 </script>
 
 <template>
@@ -49,6 +50,7 @@ const conversationId = ref<string | null>(null)
   >
     <div id="chat-content" class="w-full h-full flex flex-col items-center">
       <EmptyChatLayout v-if="conversationId == null" :agentInfo="agentInfo" />
+      <ChatLayout v-if="conversationId != null" :conversationId="conversationId" :agentInfo="agentInfo" />
     </div>
   </div>
 </template>

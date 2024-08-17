@@ -55,9 +55,9 @@ onMounted(() => {
             </Button>
           </div>
         </div>
-        <p class="my-1.5 text-xs text-muted-foreground text-center line-clamp-1">
+        <span class="select-none my-1.5 text-xs text-muted-foreground text-center line-clamp-1">
           LLM 可能会生成错误和有害的信息，请核查重要信息
-        </p>
+        </span>
       </div>
     </div>
   </div>
