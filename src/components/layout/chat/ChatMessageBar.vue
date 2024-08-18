@@ -5,10 +5,9 @@ import { useScreenInfoStore } from '@/stores/screen'
 import { onMounted, ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import { PlusIcon, ArrowUpIcon } from '@radix-icons/vue'
+import { useChatContent } from '@/stores/chat'
 
-const sidebarStore = useSidebarStore()
-
-const screenInfoStore = useScreenInfoStore()
+const { chat } = useChatContent()
 
 const chatInput = ref<HTMLTextAreaElement | null>(null)
 
@@ -23,6 +22,24 @@ onMounted(() => {
     disabled.value = this.value.length === 0
   })
 })
+
+const sendMessage = () => {
+  const text = chatInput.value?.value
+  if (text == null || text?.length === 0) {
+    return
+  }
+
+  chat({
+    role: 'user',
+    content: text,
+    createdAt: new Date(),
+    id: '0'
+  })
+
+  chatInput.value!.value = ''
+
+}
+
 </script>
 
 <template>
@@ -49,13 +66,16 @@ onMounted(() => {
               class="rounded-full shrink-0"
               size="icon"
               variant="ghost"
+              :onClick="sendMessage"
               :disabled="disabled"
             >
               <ArrowUpIcon class="size-5" />
             </Button>
           </div>
         </div>
-        <span class="select-none my-1.5 text-xs text-muted-foreground text-center line-clamp-1">
+        <span
+          class="select-none my-1.5 text-xs text-muted-foreground text-center line-clamp-1"
+        >
           LLM 可能会生成错误和有害的信息，请核查重要信息
         </span>
       </div>

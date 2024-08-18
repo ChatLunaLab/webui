@@ -6,10 +6,10 @@ import { ref } from 'vue'
 import EmptyChatLayout from './EmptyChatLayout.vue'
 import type { AgentInfo } from '@/lib/types'
 import ChatLayout from './ChatLayout.vue'
+import { useChatListStore } from '../../../stores/chat'
+import { storeToRefs } from 'pinia'
 
-const sidebarStore = useSidebarStore()
-
-const screenInfoStore = useScreenInfoStore()
+const chatListStore = storeToRefs(useChatListStore())
 
 const agentInfo: AgentInfo = {
   /*  name: '默认',
@@ -40,7 +40,12 @@ const agentInfo: AgentInfo = {
   ]
 }
 
-const conversationId = ref<string | null>("")
+const conversationId = ref<string | null>('123')
+
+setTimeout(() => {
+  chatListStore.conversationId.value = conversationId.value
+},10)
+
 </script>
 
 <template>
@@ -50,7 +55,11 @@ const conversationId = ref<string | null>("")
   >
     <div id="chat-content" class="w-full h-full flex flex-col items-center">
       <EmptyChatLayout v-if="conversationId == null" :agentInfo="agentInfo" />
-      <ChatLayout v-if="conversationId != null" :conversationId="conversationId" :agentInfo="agentInfo" />
+      <ChatLayout
+        v-if="conversationId != null"
+        :conversationId="conversationId"
+        :agentInfo="agentInfo"
+      />
     </div>
   </div>
 </template>

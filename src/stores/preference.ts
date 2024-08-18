@@ -2,22 +2,21 @@ import { reactive, ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { Preference } from '@/lib/types'
 
-export const usePreference = defineStore(
+export const usePreferenceStore = defineStore(
   'preference',
   () => {
-    const value = reactive<Preference>({})
+    const preference = reactive<Preference>({})
 
     const set = (preference: Preference) => {
-      Object.assign(value, preference)
+      Object.assign(preference, preference)
     }
 
     return {
-      value,
+      preference,
       set
     }
   },
   {
-    persist: true,
-    
+    persist: true
   }
 )

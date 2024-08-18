@@ -1,12 +1,33 @@
 <script setup lang="ts">
 import type { AgentInfo, ChatLunaMessage } from '@/lib/types'
-import { computed } from 'vue'
+import { computed, effect, ref, toRef, watch } from 'vue'
 import { cn } from '@/lib/utils'
+import { useChatContent } from '@/stores/chat'
+import { storeToRefs } from 'pinia'
 
 const props = defineProps<{
   message: ChatLunaMessage
   avatar?: string
 }>()
+
+const { chatContent } = storeToRefs(useChatContent())
+
+const contentRef = toRef(chatContent.value, 'content')
+const isStreaming = computed(() => {
+  return (
+    chatContent.value.id === props.message.id && chatContent.value.streaming
+  )
+})
+
+const messageContent = ref(props.message.content)
+
+watch(contentRef, (newValue) => {
+  console.log('newValue', newValue)
+  if (!isStreaming.value) {
+    return
+  }
+  messageContent.value = newValue
+})
 </script>
 
 <template>
@@ -33,7 +54,7 @@ const props = defineProps<{
         "
       >
         <div>
-          {{ props.message.content }}
+          {{ messageContent }}
         </div>
       </div>
     </div>

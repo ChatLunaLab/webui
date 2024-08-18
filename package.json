@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "cross-env VITE_NODE_ENV=development vite --mode development",
+    "dev:prod": "cross-env VITE_NODE_ENV=production vite  --mode production",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "test:unit": "vitest",
@@ -15,11 +16,13 @@
   },
   "dependencies": {
     "@radix-icons/vue": "^1.0.0",
+    "@server-sent-stream/web": "^1.0.3",
     "@vueuse/core": "^10.11.0",
     "autoprefixer": "^10.4.19",
     "axios": "^1.7.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "cross-env": "^7.0.3",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "radix-vue": "^1.9.2",
