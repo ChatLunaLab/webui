@@ -13,7 +13,6 @@ const marked = new Marked(
         <div class="relative  py-3">
           <div class="header flex justify-between items-center px-2 py-1 bg-gray-300 dark:bg-gray-900 rounded-t-xl overflow-hidden">
             <code class="language-label text-xs ">${language}</code>
-            <!-- 复制按钮 -->
             <button data-clipboard-text="${escape(code)}"  class="copy-btn text-xs mr-2">Copy</button>
           </div>
           <div>

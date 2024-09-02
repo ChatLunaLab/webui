@@ -22,7 +22,8 @@ const isStreaming = computed(() => {
 })
 
 const messageContent = ref(props.message.content)
-const scrollFunction = inject<PromisifyFn<() => void>>('scrollFunction')
+const scrollFunction =
+  inject<PromisifyFn<() => void>>('scrollFunction')
 
 watch(contentRef, (newValue) => {
   if (!isStreaming.value) {

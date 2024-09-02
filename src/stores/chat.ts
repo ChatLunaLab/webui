@@ -63,7 +63,6 @@ export const useChatListStore = defineStore('chatList', () => {
   return {
     putMessage,
     getChatList,
-
     currentChatList,
     conversationId,
     setMessage
