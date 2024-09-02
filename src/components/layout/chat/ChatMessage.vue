@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { AgentInfo, ChatLunaMessage } from '@/lib/types'
-import { computed, effect, ref, toRef, watch } from 'vue'
+import { computed, effect, inject, provide, ref, toRef, watch } from 'vue'
 import { cn } from '@/lib/utils'
 import { useChatContent } from '@/stores/chat'
 import { storeToRefs } from 'pinia'
+import type { PromisifyFn } from '@vueuse/core'
 
 const props = defineProps<{
   message: ChatLunaMessage
@@ -20,13 +21,14 @@ const isStreaming = computed(() => {
 })
 
 const messageContent = ref(props.message.content)
+const scrollFunction = inject<PromisifyFn<() => void>>('scrollFunction')
 
 watch(contentRef, (newValue) => {
-  console.log('newValue', newValue)
   if (!isStreaming.value) {
     return
   }
   messageContent.value = newValue
+  scrollFunction?.()
 })
 </script>
 
@@ -46,14 +48,14 @@ watch(contentRef, (newValue) => {
       <div
         :class="
           cn(
-            ' px-6 pb-3 pt-1 text-sm md:text-base max-w-xs',
+            ' px-6 pb-3 pt-1 text-sm md:text-base max-w-xs ',
             message.role === 'user' &&
-              'lg:max-w-[34rem] md:max-w-[24rem] bg-accent/80 rounded-[1.7rem] pt-3',
+              'lg:max-w-[34rem] md:max-w-[24rem] bg-accent/80 rounded-[1.5rem] pt-3',
             message.role === 'assistant' && 'grow max-w-full'
           )
         "
       >
-        <div>
+        <div class = 'transition-all duration-150 ease-in-out'>
           {{ messageContent }}
         </div>
       </div>

@@ -5,7 +5,7 @@ export class TypeWriter {
   private _isRunning = false
 
   constructor(
-    private _speed: number = 40,
+    private _speed: number = 20,
     private _maxLength = 200
   ) {}
 

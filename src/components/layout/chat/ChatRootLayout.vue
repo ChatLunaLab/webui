@@ -2,12 +2,13 @@
 <script setup lang="ts">
 import { useSidebarStore } from '@/stores/ui'
 import { useScreenInfoStore } from '@/stores/screen'
-import { ref } from 'vue'
+import { provide, ref } from 'vue'
 import EmptyChatLayout from './EmptyChatLayout.vue'
 import type { AgentInfo } from '@/lib/types'
 import ChatLayout from './ChatLayout.vue'
 import { useChatListStore } from '../../../stores/chat'
 import { storeToRefs } from 'pinia'
+import { useDebounceFn } from '@vueuse/core'
 
 const chatListStore = storeToRefs(useChatListStore())
 
@@ -42,16 +43,30 @@ const agentInfo: AgentInfo = {
 
 const conversationId = ref<string | null>('123')
 
+const list = ref<Element | null>(null)
+
 setTimeout(() => {
   chatListStore.conversationId.value = conversationId.value
-},10)
+}, 10)
 
+const scrollFunction = useDebounceFn(
+  () => {
+    list.value?.scrollTo({ behavior: 'smooth', top: list.value.scrollHeight })
+  },
+  30,
+  {
+    maxWait: 70
+  }
+)
+
+provide('scrollFunction', scrollFunction)
 </script>
 
 <template>
   <div
     id="chat-root"
     class="grow h-full w-full overflow-y-auto overflow-x-hidden"
+    ref="list"
   >
     <div id="chat-content" class="w-full h-full flex flex-col items-center">
       <EmptyChatLayout v-if="conversationId == null" :agentInfo="agentInfo" />

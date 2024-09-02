@@ -60,14 +60,10 @@ export const useChatListStore = defineStore('chatList', () => {
     }
   }
 
-  effect(() => {
-    console.log(currentChatList.value)
-    console.log(globalChatListMap)
-  })
-
   return {
     putMessage,
     getChatList,
+
     currentChatList,
     conversationId,
     setMessage
@@ -163,7 +159,6 @@ export const useChatContent = defineStore('chatContent', () => {
     chatContent.streaming = true
 
     typeWriter.start((text) => {
-      console.log(text)
       if (text === '[DONE]') {
         chatContent.streaming = false
         setMessage(nextMessageId, {

@@ -23,8 +23,6 @@ export async function* streamChat(
 ): AsyncGenerator<string> {
   // TODO: use the default axios client
 
-  console.log(import.meta.env)
-
   const response = await service.post(
     `chat/completions`,
     {
