@@ -1,9 +1,11 @@
-import { createApp } from 'vue'
+import { createApp, watch } from 'vue'
 import { createPinia } from 'pinia'
 import { useColorMode } from '@vueuse/core'
+import hljs from 'highlight.js'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import './assets/index.css'
+import './assets/hijs.css'
 
 import App from './App.vue'
 import router from './router'
@@ -22,3 +24,11 @@ app.use(pinia)
 app.use(router)
 
 app.mount('#app')
+
+// watch dark mode
+
+watch(darkMode.state, (newValue) => {
+  hljs.configure({
+    classPrefix: newValue === 'dark' ? 'dark hljs-' : 'hljs-'
+  })
+}, { immediate: true })

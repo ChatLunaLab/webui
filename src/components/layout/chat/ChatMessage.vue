@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils'
 import { useChatContent } from '@/stores/chat'
 import { storeToRefs } from 'pinia'
 import type { PromisifyFn } from '@vueuse/core'
+import { Markdown } from '@/components/layout/markdown'
 
 const props = defineProps<{
   message: ChatLunaMessage
@@ -55,9 +56,10 @@ watch(contentRef, (newValue) => {
           )
         "
       >
-        <div class = 'transition-all duration-150 ease-in-out'>
-          {{ messageContent }}
-        </div>
+        <Markdown
+          :source="messageContent"
+          class="transition-all duration-150 ease-in-out"
+        ></Markdown>
       </div>
     </div>
   </div>
