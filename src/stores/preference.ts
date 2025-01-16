@@ -5,7 +5,9 @@ import type { Preference } from '@/lib/types'
 export const usePreferenceStore = defineStore(
   'preference',
   () => {
-    const preference = reactive<Preference>({})
+    const preference = reactive<Preference>({
+      baseURL: "http://127.0.0.1:6140"
+    })
 
     const set = (preference: Preference) => {
       Object.assign(preference, preference)
@@ -17,6 +19,6 @@ export const usePreferenceStore = defineStore(
     }
   },
   {
-    persist: true
+    persist: true,
   }
 )

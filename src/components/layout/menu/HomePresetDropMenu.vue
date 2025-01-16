@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {
-  DropdownMenuItem} from '@/components/ui/dropdown-menu'
+  DropdownMenuItem
+} from '@/components/ui/dropdown-menu'
 import { Pencil2Icon, Share2Icon, TrashIcon } from '@radix-icons/vue'
 </script>
 

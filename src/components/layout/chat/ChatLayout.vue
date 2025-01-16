@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { AgentInfo, ChatLunaMessage } from '@/lib/types'
+import type { AssistantInfo, ChatLunaMessage } from '@/lib/types'
 import { computed, effect, inject, provide, ref, watch, watchEffect } from 'vue'
 import ChatMessage from './ChatMessage.vue'
 import { useChatListStore } from '@/stores/chat'
@@ -7,7 +7,7 @@ import { useDebounceFn, type PromisifyFn } from '@vueuse/core'
 
 const props = defineProps<{
   conversationId: string
-  agentInfo: AgentInfo
+  agentInfo: AssistantInfo
 }>()
 
 const chatListStore = useChatListStore()

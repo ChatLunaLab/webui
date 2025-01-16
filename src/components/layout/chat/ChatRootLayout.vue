@@ -4,7 +4,7 @@ import { useSidebarStore } from '@/stores/ui'
 import { useScreenInfoStore } from '@/stores/screen'
 import { provide, ref } from 'vue'
 import EmptyChatLayout from './EmptyChatLayout.vue'
-import type { AgentInfo } from '@/lib/types'
+import type { AssistantInfo } from '@/lib/types'
 import ChatLayout from './ChatLayout.vue'
 import { useChatContent, useChatListStore } from '../../../stores/chat'
 import { storeToRefs } from 'pinia'
@@ -13,7 +13,7 @@ import { onMounted, onUnmounted } from 'vue'
 
 const { chatContent } = storeToRefs(useChatContent())
 const chatListStore = storeToRefs(useChatListStore())
-const agentInfo: AgentInfo = {
+const agentInfo: AssistantInfo = {
   /*  name: '默认',
   description: '与任意模型对话',
   author: 'chatluna 官方', */

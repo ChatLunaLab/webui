@@ -1,9 +1,9 @@
-export interface AgentInfo {
+export interface AssistantInfo {
   name?: string
   description?: string
   avatar: string
   author?: string
-  examples: {
+  examples?: {
     title: string
     prompt: string
   }[]
@@ -19,4 +19,15 @@ export interface ChatLunaMessage {
 
 export interface Preference {
   baseURL?: string
+}
+
+export interface ChatLunaConversation {
+  id: string
+  latestMessageId?: string
+  updatedTime: string
+  additional_kwargs?: Record<string, any>
+  assistantId: number
+  model?: string
+  createdTime: string
+  title?: string
 }

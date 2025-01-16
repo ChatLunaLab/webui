@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { AgentInfo, ChatLunaMessage } from '@/lib/types'
+import type { AssistantInfo, ChatLunaMessage } from '@/lib/types'
 import { computed, effect, inject, provide, ref, toRef, watch } from 'vue'
 import { cn } from '@/lib/utils'
 import { useChatContent } from '@/stores/chat'
@@ -22,8 +22,7 @@ const isStreaming = computed(() => {
 })
 
 const messageContent = ref(props.message.content)
-const scrollFunction =
-  inject<PromisifyFn<() => void>>('scrollFunction')
+const scrollFunction = inject<PromisifyFn<() => void>>('scrollFunction')
 
 watch(contentRef, (newValue) => {
   if (!isStreaming.value) {
