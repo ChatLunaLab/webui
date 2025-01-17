@@ -27,8 +27,12 @@ app.mount('#app')
 
 // watch dark mode
 
-watch(darkMode.state, (newValue) => {
-  hljs.configure({
-    classPrefix: newValue === 'dark' ? 'dark hljs-' : 'hljs-'
-  })
-}, { immediate: true })
+watch(
+  darkMode.state,
+  (newValue) => {
+    hljs.configure({
+      classPrefix: newValue === 'dark' ? 'dark hljs-' : 'hljs-'
+    })
+  },
+  { immediate: true }
+)

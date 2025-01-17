@@ -21,6 +21,20 @@ export interface Preference {
   baseURL?: string
 }
 
+export interface LoginInfo {
+  accessToken: string
+  refreshToken: string
+}
+
+export interface SignInInfo {
+  email: string
+  password: string
+}
+
+export interface SignUpInfo extends SignInInfo {
+  username: string
+}
+
 export interface ChatLunaConversation {
   id: string
   latestMessageId?: string

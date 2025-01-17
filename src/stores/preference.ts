@@ -1,16 +1,16 @@
 import { reactive, ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { Preference } from '@/lib/types'
+import type { LoginInfo, Preference } from '@/lib/types'
 
 export const usePreferenceStore = defineStore(
   'preference',
   () => {
-    const preference = reactive<Preference>({
-      baseURL: "http://127.0.0.1:6140"
+    let preference = reactive<Preference>({
+      baseURL: 'http://127.0.0.1:6140/chatluna'
     })
 
-    const set = (preference: Preference) => {
-      Object.assign(preference, preference)
+    const set = (newPreference: Preference) => {
+      preference = Object.assign(preference, newPreference)
     }
 
     return {
@@ -19,6 +19,26 @@ export const usePreferenceStore = defineStore(
     }
   },
   {
-    persist: true,
+    persist: true
+  }
+)
+
+export const useLoginData = defineStore(
+  'loginData',
+  () => {
+    let loginData = ref<LoginInfo>({
+      accessToken: '',
+      refreshToken: ''
+    })
+    const set = (newData: LoginInfo) => {
+     loginData.value = newData
+    }
+    return {
+      loginData,
+      set
+    }
+  },
+  {
+    persist: true
   }
 )

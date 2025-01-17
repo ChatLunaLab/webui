@@ -20,22 +20,28 @@ provide('status', status)
         src="https://avatars.githubusercontent.com/u/139454032?s=200&v=4"
       />
     </div>
-    <div class="lg:p-8 flex-none">
-      <div
-        class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]"
+    <div class="lg:p-8 ">
+      <Transition
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+
+
+        enter-active-class="transition-opacity duration-200 ease-out"
+
       >
-        <Transition
-          enter-active-class="duration-300 ease-out"
-          enter-from-class="transform opacity-0"
-          enter-to-class="opacity-100"
-          leave-active-class="duration-200 ease-in"
-          leave-from-class="opacity-100"
-          leave-to-class="transform opacity-0"
+        <div
+          class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]"
+          v-if="status === 'signup'"
         >
-          <SignupForm v-if="status === 'signup'" />
-          <SignInForm v-else />
-        </Transition>
-      </div>
+          <SignupForm />
+        </div>
+        <div
+          class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]"
+          v-else
+        >
+          <SignInForm />
+        </div>
+      </Transition>
     </div>
 
     <div

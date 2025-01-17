@@ -3,6 +3,7 @@ import { SideBar, SideBarContent } from '@/components/layout/sidebar'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { RouterView } from 'vue-router'
 import { useRouter } from 'vue-router'
+import Toaster from '@/components/ui/toast/Toaster.vue'
 
 const router = useRouter()
 
@@ -30,4 +31,6 @@ const currentRoute = router.currentRoute
       <RouterView />
     </div>
   </TooltipProvider>
+
+  <Toaster />
 </template>

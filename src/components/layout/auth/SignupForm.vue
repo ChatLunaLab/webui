@@ -6,17 +6,41 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Separator } from '@/components/ui/separator'
+import LucideSpinner from '@/components/icons/LucideSpinner.vue'
+import { signup } from '@/apis/auth'
+import { useRouter } from 'vue-router'
+import { useToast } from '@/components/ui/toast/use-toast'
+
+const { toast } = useToast()
 
 const status = inject<Ref<string>>('status')
-
+const router = useRouter()
 const isLoading = ref(false)
+
 async function onSubmit(event: Event) {
   event.preventDefault()
   isLoading.value = true
 
-  setTimeout(() => {
+  const form = new FormData(event.target as HTMLFormElement)
+
+  try {
+    await signup({
+      email: form.get('email') as string,
+      password: form.get('password') as string,
+      username: form.get('name') as string,
+    })
+
+    router.push('/home')
+
+  } catch (error: any) {
+    toast({
+      title: '注册时出现错误！',
+      description: error?.response?.data?.message ?? error.message,
+      variant: 'destructive'
+    })
+  } finally {
     isLoading.value = false
-  }, 3000)
+  }
 }
 </script>
 
@@ -29,12 +53,13 @@ async function onSubmit(event: Event) {
       <div class="grid gap-3">
         <div class="grid gap-1">
           <Label class="sr-only" for="name">昵称</Label>
-          <Input id="name" placeholder="昵称" :disabled="isLoading" />
+          <Input id="name" name="name" placeholder="昵称" :disabled="isLoading" />
         </div>
         <div class="grid gap-1">
           <Label class="sr-only" for="email">电子邮件</Label>
           <Input
             id="email"
+            name="email"
             placeholder="邮件地址"
             type="email"
             auto-capitalize="none"
@@ -48,6 +73,7 @@ async function onSubmit(event: Event) {
           <Input
             id="password"
             placeholder="密码"
+            name="password"
             auto-complete="password"
             type="password"
             :disabled="isLoading"
