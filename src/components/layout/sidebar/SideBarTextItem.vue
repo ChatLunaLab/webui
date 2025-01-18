@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { computed, ref, watch } from 'vue'
 import { useScreenInfoStore } from '@/stores/screen'
-import HomePresetDropMenu from '../menu/HomePresetDropMenu.vue'
+import SideBarConversationMenu from '../menu/SideBarConversationMenu.vue'
 import { DotsVerticalIcon } from '@radix-icons/vue'
 import { Button, buttonVariants } from '@/components/ui/button'
 
@@ -20,6 +20,7 @@ interface SideBarIconItemProps {
   href?: string
   label: string
   variant: 'ghost' | 'secondary'
+  conversationId?: string
 }
 
 const open = ref(false)
@@ -31,10 +32,8 @@ const props = withDefaults(defineProps<SideBarIconItemProps>(), {
 
 const emit = defineEmits(['click'])
 
-
 const hovered = ref(props.variant === 'secondary')
 const selected = computed(() => props.variant === 'secondary')
-
 </script>
 
 <template>
@@ -103,7 +102,7 @@ const selected = computed(() => props.variant === 'secondary')
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <HomePresetDropMenu />
+          <SideBarConversationMenu :conversationId="conversationId ?? ''" />
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

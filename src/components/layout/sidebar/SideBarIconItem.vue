@@ -12,10 +12,11 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { ref, watch } from 'vue'
 import { useScreenInfoStore } from '@/stores/screen'
-import HomePresetDropMenu from '../menu/HomePresetDropMenu.vue'
+import HomePresetDropMenu from '../menu/SideBarConversationMenu.vue'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { DotsVerticalIcon } from '@radix-icons/vue'
 import { mergeConfig } from 'vitest/config'
+import SideBarConversationMenu from '../menu/SideBarConversationMenu.vue'
 
 interface SideBarIconItemProps {
   href?: string
@@ -82,7 +83,7 @@ const selected = props.variant === 'secondary'
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <HomePresetDropMenu />
+          
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

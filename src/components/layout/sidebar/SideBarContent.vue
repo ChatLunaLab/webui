@@ -107,7 +107,8 @@ function sideBarItemClick(id: string) {
                   ? 'secondary'
                   : 'ghost'
               "
-            ></SideBarTextItem>
+              :conversationId="conversation.id"
+            />
           </li>
         </ol>
       </div>

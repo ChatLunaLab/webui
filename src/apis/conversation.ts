@@ -14,6 +14,11 @@ export async function getConversationList(): Promise<ChatLunaConversation[]> {
 
 export async function getConversationInfo(id: string): Promise<ChatLunaConversation> {
   const service = apiServer()
-  const response = await service.get(`/v1/conversation/${id}`)
+  const response = await service.get(`/v1/conversation/info/${id}`)
   return response.data.data as ChatLunaConversation
+}
+
+export async function deleteConversation(id: string) {
+  const service = apiServer()
+   await service.delete(`/v1/conversation/delete/${id}`)
 }
