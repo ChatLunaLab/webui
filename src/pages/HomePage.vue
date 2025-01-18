@@ -13,6 +13,7 @@ import {
 import { UserInfoMenu } from '@/components/layout/menu'
 import { ChatRootLayout, ChatMessageBar } from '@/components/layout/chat'
 import { storeToRefs } from 'pinia'
+import AvatarIcon from '@/components/layout/avatar/AvatarIcon.vue'
 
 const sidebarStore = useSidebarStore()
 
@@ -43,10 +44,7 @@ const { isOpen } = storeToRefs(sidebarStore)
 
         <DropdownMenu v-if="!isMobile">
           <DropdownMenuTrigger>
-            <img
-              src="https://q.qlogo.cn/headimg_dl?dst_uin=2187778735&spec=640&img_type=jpg"
-              class="mr-6 w-6 h-6 rounded-full hover:cursor-pointer hover:opacity-60"
-            />
+            <AvatarIcon class="mr-4" />
           </DropdownMenuTrigger>
           <DropdownMenuContent class="w-[160px]">
             <UserInfoMenu />

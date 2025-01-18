@@ -1,6 +1,8 @@
 import { reactive, ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { LoginInfo, Preference } from '@/lib/types'
+import { computedAsync } from '@vueuse/core'
+import { getUserInfo } from '@/apis/auth'
 
 export const usePreferenceStore = defineStore(
   'preference',
@@ -43,3 +45,38 @@ export const useLoginData = defineStore(
     persist: true
   }
 )
+
+export const useUserInfo = defineStore('userInfo', () => {
+  let currentUserInfo = ref<{
+    username: string
+    email: string
+    avatar: string
+  }>({
+    username: '',
+    email: '',
+    avatar: ''
+  })
+
+  const userInfo = computedAsync(
+    async () => {
+      if (currentUserInfo.value.username.length > 0) {
+        return currentUserInfo.value
+      }
+
+      const data = await getUserInfo()
+      currentUserInfo.value = data
+      return currentUserInfo.value
+    },
+    null,
+    {
+      onError: (e) => {
+        console.log(e)
+      },
+      lazy: true
+    }
+  )
+
+  return {
+    userInfo
+  }
+})

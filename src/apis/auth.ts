@@ -28,6 +28,17 @@ export async function signin(info: SignInInfo) {
   updateLoginInfo(response.data.data)
 }
 
+export async function getUserInfo() {
+  const server = apiServer()
+  const response = await server.get('/v1/user/info')
+  return response.data.data as {
+    username: string
+    email: string
+    avatar: string
+    role: string
+  }
+}
+
 function updateLoginInfo(data: { accessToken: string; refreshToken: string }) {
   const { set } = useLoginData()
   set({

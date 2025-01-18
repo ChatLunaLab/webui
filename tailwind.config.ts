@@ -85,11 +85,11 @@ export default {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'collapsible-down': 'collapsible-down 0.2s ease-in-out',
-        'collapsible-up': 'collapsible-up 0.2s ease-in-out'
+        'collapsible-up': 'collapsible-up 0.2s ease-in-out',
+
+        'text-fade': 'textFade 0.8s ease-out forwards'
       }
     }
   },
-  plugins: [
-    animate
-  ]
+  plugins: [animate]
 } satisfies Config

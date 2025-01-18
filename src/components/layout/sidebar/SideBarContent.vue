@@ -146,8 +146,5 @@ const chatData = [
       </div>
     </div>
   </div>
-  <SideBarUserCard
-    name="dingyi"
-    avatar="https://q.qlogo.cn/headimg_dl?dst_uin=2187778735&spec=640&img_type=jpg"
-  />
+  <SideBarUserCard />
 </template>

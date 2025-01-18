@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AssistantInfo, ChatLunaMessage } from '@/lib/types'
-import { computed, effect, inject, provide, ref, toRef, watch } from 'vue'
+import { computed, effect, inject, provide, ref, toRef, watch, nextTick } from 'vue'
 import { cn } from '@/lib/utils'
 import { useChatContent } from '@/stores/chat'
 import { storeToRefs } from 'pinia'
@@ -24,12 +24,30 @@ const isStreaming = computed(() => {
 const messageContent = ref(props.message.content)
 const scrollFunction = inject<PromisifyFn<() => void>>('scrollFunction')
 
+const markdownContainer = ref<HTMLElement | null>(null)
+
 watch(contentRef, (newValue) => {
   if (!isStreaming.value) {
     return
   }
   messageContent.value = newValue
   scrollFunction?.()
+})
+
+watch(messageContent, () => {
+  nextTick(() => {
+    if (!markdownContainer.value) return
+
+    const elements = markdownContainer.value.children
+    Array.from(elements).forEach(el => {
+      if (!el.classList.contains('message-animate')) {
+        el.classList.add('message-animate', 'opacity-0')
+        setTimeout(() => {
+          el.classList.remove('message-animate', 'opacity-0')
+        }, 500)
+      }
+    })
+  })
 })
 </script>
 
@@ -57,6 +75,7 @@ watch(contentRef, (newValue) => {
         "
       >
         <Markdown
+          ref="markdownContainer"
           :source="messageContent"
           class="transition-all duration-150 ease-in-out"
         ></Markdown>
@@ -64,3 +83,45 @@ watch(contentRef, (newValue) => {
     </div>
   </div>
 </template>
+
+<style scoped>
+:deep(.message-animate) {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    hsl(var(--accent)) 50%,
+    transparent
+  );
+  background-size: 100% 200%;
+  background-position: top;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: messageIn 0.5s ease-out forwards, revealGradient 0.5s ease-out forwards;
+}
+
+@keyframes messageIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes revealGradient {
+  0% {
+    background-position: top;
+    -webkit-mask-position: 0 -100%;
+    mask-position: 0 -100%;
+  }
+  100% {
+    background-position: bottom;
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+}
+</style>

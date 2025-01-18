@@ -15,16 +15,12 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { ref } from 'vue'
 import UserInfoMenu from '../menu/UserInfoMenu.vue'
+import { storeToRefs } from 'pinia'
+import { useUserInfo } from '@/stores'
+import AvatarIcon from '../avatar/AvatarIcon.vue'
 
-interface SideBarUserCardProps {
-  class?: string
-  name: string
-  avatar: string
-}
-
+const { userInfo } = storeToRefs(useUserInfo())
 const open = ref(false)
-
-defineProps<SideBarUserCardProps>()
 </script>
 
 <template>
@@ -41,8 +37,8 @@ defineProps<SideBarUserCardProps>()
         <CardContent
           class="p-0 m-[6px] mx-[14px] h-full w-full flex gap-4 items-center"
         >
-          <img :src="avatar" class="w-7 h-7 rounded-full" />
-          <p class="leading-none font-medium text-sm">{{ name }}</p>
+          <AvatarIcon class="w-7 h-7 rounded-full" />
+          <p class="leading-none font-medium text-sm">{{ userInfo?.username }}</p>
         </CardContent>
       </Card>
     </DropdownMenuTrigger>

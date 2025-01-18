@@ -1,6 +1,7 @@
 import { useLoginData, usePreferenceStore } from '@/stores'
 
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 const useAxios = () => {
   const { preference } = usePreferenceStore()
@@ -40,13 +41,17 @@ export const apiServer = () => {
       return response
     },
     (error) => {
-      if (error.response?.code === 401) {
+      if (error.status === 401) {
         if (refreshTokenPromise) {
           return refreshTokenPromise.then(() => {
             return instance(error.config)
           })
         }
-        refreshTokenPromise = refreshToken()
+        refreshTokenPromise = refreshToken().catch(() => {
+          const router = useRouter()
+          refreshTokenPromise = null
+          router.replace('/auth')
+        })
         return refreshTokenPromise.then(() => {
           return instance(error.config)
         })
@@ -64,7 +69,7 @@ async function refreshToken() {
   return await instance
     .get('/v1/refresh-token', {
       headers: {
-        refresh_token: useLoginData().loginData.refreshToken
+        ['x-refresh-token']: useLoginData().loginData.refreshToken
       }
     })
     .then((res) => {
