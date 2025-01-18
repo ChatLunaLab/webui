@@ -5,8 +5,20 @@ import { apiServer } from './base'
 export async function getMessageList(
   conversationId: string
 ): Promise<ChatLunaMessage[]> {
-  // TODO: get message list
-  return []
+  const service = apiServer()
+
+  const response = await service.get(`v1/chat/${conversationId}/messages`)
+
+  const roleTable = {
+    ai: 'assistant',
+    human: 'user'
+  } as const
+  return (response.data.data as ChatLunaMessage[]).map((message) => {
+    return {
+      ...message,
+      role: roleTable[message.role as keyof typeof roleTable] ?? message.role
+    }
+  })
 }
 
 export async function* streamChat(

@@ -39,7 +39,6 @@ watch(contentRef, (newValue) => {
   if (!isStreaming.value) {
     return
   }
-  console.log('newValue', newValue, isStreaming)
   messageContent.value = newValue
   scrollFunction?.()
 })

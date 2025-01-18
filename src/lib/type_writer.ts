@@ -13,7 +13,7 @@ export class TypeWriter {
     if (this._queue.length >= this._maxLength) {
       // wait for the queue to be empty
       while (this._queue.length < this._maxLength) {
-        await new Promise((resolve) => setTimeout(resolve, 100))
+        await new Promise((resolve) => setTimeout(resolve, 10))
       }
     }
 
@@ -24,8 +24,7 @@ export class TypeWriter {
     this._isRunning = true
     while (this._isRunning || this._queue.length > 0) {
       if (this._queue.length === 0) {
-        console.log(this._isRunning, this._queue.length)
-        await new Promise((resolve) => setTimeout(resolve, 100))
+        await new Promise((resolve) => setTimeout(resolve, 10))
         continue
       }
       const text = this._queue.shift()!
