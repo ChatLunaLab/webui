@@ -10,7 +10,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useScreenInfoStore } from '@/stores/screen'
 import HomePresetDropMenu from '../menu/HomePresetDropMenu.vue'
 import { DotsVerticalIcon } from '@radix-icons/vue'
@@ -29,8 +29,12 @@ const props = withDefaults(defineProps<SideBarIconItemProps>(), {
   href: '#'
 })
 
+const emit = defineEmits(['click'])
+
+
 const hovered = ref(props.variant === 'secondary')
-const selected = props.variant === 'secondary'
+const selected = computed(() => props.variant === 'secondary')
+
 </script>
 
 <template>
@@ -38,6 +42,7 @@ const selected = props.variant === 'secondary'
     :href="href"
     @mouseover="hovered = true"
     @mouseleave="hovered = false"
+    @click="emit('click')"
     :class="
       cn(
         buttonVariants({

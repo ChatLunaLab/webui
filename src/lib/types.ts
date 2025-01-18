@@ -19,6 +19,7 @@ export interface ChatLunaMessage {
 
 export interface Preference {
   baseURL?: string
+  conversationId?: string
 }
 
 export interface LoginInfo {

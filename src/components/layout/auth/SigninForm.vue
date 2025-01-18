@@ -104,6 +104,7 @@ const onSubmit = handleSubmit(async (values) => {
         class="grid gap-1"
         :validate-on-blur="!isFieldDirty"
         v-slot="{ componentField }"
+        autocomplete="current-password"
         name="password"
       >
         <FormItem>

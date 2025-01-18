@@ -1,6 +1,15 @@
 <script setup lang="ts">
 import type { AssistantInfo, ChatLunaMessage } from '@/lib/types'
-import { computed, effect, inject, provide, ref, toRef, watch, nextTick } from 'vue'
+import {
+  computed,
+  effect,
+  inject,
+  provide,
+  ref,
+  toRef,
+  watch,
+  nextTick
+} from 'vue'
 import { cn } from '@/lib/utils'
 import { useChatContent } from '@/stores/chat'
 import { storeToRefs } from 'pinia'
@@ -30,24 +39,9 @@ watch(contentRef, (newValue) => {
   if (!isStreaming.value) {
     return
   }
+  console.log('newValue', newValue, isStreaming)
   messageContent.value = newValue
   scrollFunction?.()
-})
-
-watch(messageContent, () => {
-  nextTick(() => {
-    if (!markdownContainer.value) return
-
-    const elements = markdownContainer.value.children
-    Array.from(elements).forEach(el => {
-      if (!el.classList.contains('message-animate')) {
-        el.classList.add('message-animate', 'opacity-0')
-        setTimeout(() => {
-          el.classList.remove('message-animate', 'opacity-0')
-        }, 500)
-      }
-    })
-  })
 })
 </script>
 
@@ -94,11 +88,17 @@ watch(messageContent, () => {
   );
   background-size: 100% 200%;
   background-position: top;
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  animation: messageIn 0.5s ease-out forwards, revealGradient 0.5s ease-out forwards;
+  animation:
+    messageIn 0.5s ease-out forwards,
+    revealGradient 0.5s ease-out forwards;
 }
 
 @keyframes messageIn {

@@ -4,7 +4,10 @@ export class TypeWriter {
 
   private _isRunning = false
 
-  constructor(private _maxLength = 200) {}
+  constructor(
+    private _speed: number = 20,
+    private _maxLength = 200
+  ) {}
 
   async write(text: string) {
     if (this._queue.length >= this._maxLength) {
@@ -21,20 +24,20 @@ export class TypeWriter {
     this._isRunning = true
     while (this._isRunning || this._queue.length > 0) {
       if (this._queue.length === 0) {
-        await new Promise((resolve) => setTimeout(resolve, 10))
+        console.log(this._isRunning, this._queue.length)
+        await new Promise((resolve) => setTimeout(resolve, 100))
         continue
       }
       const text = this._queue.shift()!
-      let buffer = ''
-      for (const char of text) {
-        buffer += char
-        if (char === '\n') {
-          callback(buffer)
-          buffer = ''
-        }
+      // Convert the string into an array of valid Unicode scalar values
+
+      // Process each character
+      for (let i = 0; i < text.length; i++) {
+        callback(text[i])
+        await new Promise((resolve) => setTimeout(resolve, this._speed))
       }
-      callback(buffer)
     }
+
     callback('[DONE]')
     this._queue.length = 0
   }

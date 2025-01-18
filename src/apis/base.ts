@@ -18,7 +18,6 @@ let instance: ReturnType<typeof useAxios>
 let refreshTokenPromise: Promise<any> | null = null
 
 export const apiServer = () => {
-  const loginInfo = useLoginData()
 
   if (instance != null) {
     return instance
@@ -27,6 +26,8 @@ export const apiServer = () => {
   instance = useAxios()
 
   instance.interceptors.request.use((config) => {
+    const loginInfo = useLoginData()
+
     const accessToken = loginInfo.loginData.accessToken
 
     if (!accessToken || accessToken.length < 1) {

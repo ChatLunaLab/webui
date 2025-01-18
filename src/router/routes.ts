@@ -17,5 +17,10 @@ export const routes: RouteRecordRaw[] = [
     path: '/auth',
     name: 'auth',
     component: () => import('../pages/AuthPage.vue')
+  },
+  {
+    path: '/chat/:id',
+    name: 'chat',
+    component: () => import('../pages/HomePage.vue')
   }
 ]

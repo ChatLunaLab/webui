@@ -10,6 +10,7 @@ import { useChatContent, useChatListStore } from '../../../stores/chat'
 import { storeToRefs } from 'pinia'
 import { useDebounceFn } from '@vueuse/core'
 import { onMounted, onUnmounted } from 'vue'
+const { conversationId } = storeToRefs(useChatListStore())
 
 const { chatContent } = storeToRefs(useChatContent())
 const chatListStore = storeToRefs(useChatListStore())
@@ -42,16 +43,15 @@ const agentInfo: AssistantInfo = {
   ]
 }
 
-const conversationId = ref<string | null>('123')
 const isUserScroll = ref(false)
-const list = ref<Element | null>(null)
+const listElement = ref<Element | null>(null)
 
 const scrollThreshold = 5 // pixels
 let lastScrollTop = 0
 let touchStartY = 0
 
 const handleScroll = () => {
-  const currentScrollTop = list.value?.scrollTop || 0
+  const currentScrollTop = listElement.value?.scrollTop || 0
   if (Math.abs(currentScrollTop - lastScrollTop) > scrollThreshold) {
     isUserScroll.value = true
     setTimeout(() => {
@@ -59,7 +59,7 @@ const handleScroll = () => {
     }, 10000) // Reset after 1 second of inactivity
   }
   // check if scrollTop is scroll to bottom
-  if (currentScrollTop === list.value?.scrollHeight) {
+  if (currentScrollTop === listElement.value?.scrollHeight) {
     isUserScroll.value = false
   }
   lastScrollTop = currentScrollTop
@@ -83,33 +83,32 @@ const handleTouchEnd = () => {
 }
 
 onMounted(() => {
-  if (list.value) {
-    list.value.addEventListener('scroll', handleScroll)
-    list.value.addEventListener('touchstart', handleTouchStart)
-    list.value.addEventListener('touchmove', handleTouchMove)
-    list.value.addEventListener('touchEnd', handleTouchEnd)
+  if (listElement.value) {
+    listElement.value.addEventListener('scroll', handleScroll)
+    listElement.value.addEventListener('touchstart', handleTouchStart)
+    listElement.value.addEventListener('touchmove', handleTouchMove)
+    listElement.value.addEventListener('touchEnd', handleTouchEnd)
   }
 })
 
 onUnmounted(() => {
-  if (list.value) {
-    list.value.removeEventListener('scroll', handleScroll)
-    list.value.removeEventListener('touchstart', handleTouchStart)
-    list.value.removeEventListener('touchmove', handleTouchMove)
-    list.value.removeEventListener('touchend', handleTouchEnd)
+  if (listElement.value) {
+    listElement.value.removeEventListener('scroll', handleScroll)
+    listElement.value.removeEventListener('touchstart', handleTouchStart)
+    listElement.value.removeEventListener('touchmove', handleTouchMove)
+    listElement.value.removeEventListener('touchend', handleTouchEnd)
   }
 })
-
-setTimeout(() => {
-  chatListStore.conversationId.value = conversationId.value
-}, 10)
 
 const scrollFunction = useDebounceFn(
   () => {
     if (isUserScroll.value && chatContent.value.streaming) {
       return
     }
-    list.value?.scrollTo({ behavior: 'smooth', top: list.value.scrollHeight })
+    listElement.value?.scrollTo({
+      behavior: 'smooth',
+      top: listElement.value.scrollHeight
+    })
   },
   30,
   {
@@ -124,7 +123,7 @@ provide('scrollFunction', scrollFunction)
   <div
     id="chat-root"
     class="grow h-full w-full overflow-y-auto overflow-x-hidden"
-    ref="list"
+    ref="listElement"
   >
     <div id="chat-content" class="w-full h-full flex flex-col items-center">
       <EmptyChatLayout v-if="conversationId == null" :agentInfo="agentInfo" />

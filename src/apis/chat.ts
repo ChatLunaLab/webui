@@ -1,13 +1,6 @@
 import type { ChatLunaMessage } from '@/lib/types'
 import EventSourceStream from '@server-sent-stream/web'
-import axios from 'axios'
-
-// create an axios instance
-const service = axios.create({
-  baseURL: import.meta.env.VITE_OPENAI_BASE_URL, // url = base url + request url
-  // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 5000 // request timeout
-})
+import { apiServer } from './base'
 
 export async function getMessageList(
   conversationId: string
@@ -17,34 +10,18 @@ export async function getMessageList(
 }
 
 export async function* streamChat(
-  /* conversationId: string, */
-  /* message: ChatLunaMessage */
-  messageList: ChatLunaMessage[]
+  conversationId: string,
+  message: ChatLunaMessage
 ): AsyncGenerator<string> {
-  // TODO: use the default axios client
+  const service = apiServer()
 
   const response = await service.post(
-    `chat/completions`,
+    `v1/chat/${conversationId}`,
     {
-      messages: messageList.map((message) => {
-        return {
-          role: message.role,
-          content: message.content
-        }
-      }),
-      max_tokens: 2048,
-      temperature: 1,
-      n: 1,
-      model: 'gpt-4o-mini',
-      stream: true
+      message: message
     },
     {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`
-      },
-      responseType: 'stream',
-      adapter: 'fetch'
+      responseType: 'stream'
     }
   )
 
@@ -58,24 +35,23 @@ export async function* streamChat(
 
   while (true) {
     const { value, done } = await reader.read()
-    if (done || value.data === 'DONE') break
-
-    const chunk = JSON.parse(value.data) as OpenAIDeltaChunk
-    if (chunk.choices[0]?.finish_reason === 'stop') {
+    if (done || value.data === '[DONE]') {
+      reader.releaseLock()
       break
     }
+
+    const chunk = JSON.parse(value.data) as DeltaChunk
     if (chunk.choices[0]?.delta?.content) {
       yield chunk.choices[0].delta.content
     }
   }
 }
 
-interface OpenAIDeltaChunk {
+interface DeltaChunk {
   id: string
   object: string
   created: number
   model: string
-  system_fingerprint: string
   choices: [
     {
       index: number
