@@ -9,8 +9,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const loginInfo = useLoginData()
-  console.log(loginInfo.loginData)
-  if (to.path !== '/auth' && loginInfo.loginData.accessToken == null) {
+  if (to.path !== '/auth' && loginInfo.loginData.accessToken === '') {
     next('/auth')
   } else {
     next()

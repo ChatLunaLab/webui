@@ -17,6 +17,7 @@
   "dependencies": {
     "@radix-icons/vue": "^1.0.0",
     "@server-sent-stream/web": "^1.0.3",
+    "@vee-validate/zod": "^4.15.0",
     "@vueuse/core": "^12.4.0",
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.9",
@@ -31,8 +32,10 @@
     "tailwind-merge": "^2.6.0",
     "tailwindcss": "^3.4.17",
     "tailwindcss-animate": "^1.0.7",
+    "vee-validate": "^4.15.0",
     "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "vue-router": "^4.5.0",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.10.5",

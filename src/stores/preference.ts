@@ -26,12 +26,13 @@ export const usePreferenceStore = defineStore(
 export const useLoginData = defineStore(
   'loginData',
   () => {
-    let loginData = ref<LoginInfo>({
+    let loginData = reactive<LoginInfo>({
       accessToken: '',
       refreshToken: ''
     })
     const set = (newData: LoginInfo) => {
-     loginData.value = newData
+      loginData = Object.assign(loginData, newData)
+      console.log(loginData, newData)
     }
     return {
       loginData,

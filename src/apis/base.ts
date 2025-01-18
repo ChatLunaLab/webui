@@ -69,8 +69,8 @@ async function refreshToken() {
     })
     .then((res) => {
       useLoginData().set({
-        accessToken: res.data.accessToken,
-        refreshToken: res.data.refreshToken
+        accessToken: res.data.data.accessToken,
+        refreshToken: res.data.data.refreshToken
       })
 
       refreshTokenPromise = null

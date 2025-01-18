@@ -14,7 +14,7 @@ export async function signup(info: SignUpInfo) {
     publicKey: rsaPublicKey.data
   })
 
-  updateLoginInfo(response.data)
+  updateLoginInfo(response.data.data)
 }
 
 export async function signin(info: SignInInfo) {
@@ -25,7 +25,7 @@ export async function signin(info: SignInInfo) {
 
   const response = await server.post('/v1/login', info)
 
-  updateLoginInfo(response.data)
+  updateLoginInfo(response.data.data)
 }
 
 function updateLoginInfo(data: { accessToken: string; refreshToken: string }) {
@@ -46,42 +46,43 @@ async function sha1(data: string): Promise<string> {
 }
 
 async function rsaPublicEncrypt(key: string, data: string): Promise<string> {
-  // Convert PEM key to ArrayBuffer
+  // Clean the PEM key by removing headers, footers, and whitespace
   const pemHeader = '-----BEGIN PUBLIC KEY-----'
   const pemFooter = '-----END PUBLIC KEY-----'
   const pemContents = key
-    .substring(pemHeader.length, key.length - pemFooter.length)
-    .replace(/\n/g, '')
+    .replace(pemHeader, '')
+    .replace(pemFooter, '')
+    .replace(/\s+/g, '') // Remove all whitespace, including newlines
 
-  const binaryDer = window.atob(pemContents)
-  const arrayBuffer = new Uint8Array(binaryDer.length)
-  for (let i = 0; i < binaryDer.length; i++) {
-    arrayBuffer[i] = binaryDer.charCodeAt(i)
-  }
+  // Decode the base64-encoded PEM to a binary ArrayBuffer
+  const binaryDer = Uint8Array.from(atob(pemContents), (c) => c.charCodeAt(0))
 
-  // Import the key
+  // Import the public key using the Web Crypto API
   const cryptoKey = await crypto.subtle.importKey(
-    'spki',
-    arrayBuffer,
+    'spki', // Key format (SubjectPublicKeyInfo)
+    binaryDer, // Binary DER-encoded key
     {
-      name: 'RSA-OAEP',
-      hash: 'SHA-256'
+      name: 'RSA-OAEP', // Algorithm name
+      hash: 'SHA-256' // Hash function for OAEP
     },
-    true,
-    ['encrypt']
+    true, // Whether the key is extractable
+    ['encrypt'] // Key usage
   )
 
-  // Encrypt the data
+  // Encode the data to be encrypted
   const encoder = new TextEncoder()
   const encodedData = encoder.encode(data)
+
+  // Encrypt the data using RSA-OAEP
   const encrypted = await crypto.subtle.encrypt(
     {
-      name: 'RSA-OAEP'
+      name: 'RSA-OAEP' // Algorithm name
     },
-    cryptoKey,
-    encodedData
+    cryptoKey, // Imported public key
+    encodedData // Data to encrypt
   )
 
-  // Convert to base64
-  return btoa(String.fromCharCode(...new Uint8Array(encrypted)))
+  // Convert the encrypted data to a base64-encoded string
+  const encryptedArray = new Uint8Array(encrypted)
+  return btoa(String.fromCharCode(...encryptedArray))
 }
