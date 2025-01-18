@@ -21,6 +21,7 @@ import AvatarIcon from '../avatar/AvatarIcon.vue'
 
 const { userInfo } = storeToRefs(useUserInfo())
 const open = ref(false)
+
 </script>
 
 <template>

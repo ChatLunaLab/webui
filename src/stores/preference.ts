@@ -33,8 +33,10 @@ export const useLoginData = defineStore(
       refreshToken: ''
     })
     const set = (newData: LoginInfo) => {
+      const { clear } = useUserInfo()
+
+      clear()
       loginData = Object.assign(loginData, newData)
-      console.log(loginData, newData)
     }
     return {
       loginData,
@@ -76,7 +78,16 @@ export const useUserInfo = defineStore('userInfo', () => {
     }
   )
 
+  const clear = () => {
+    currentUserInfo.value = {
+      username: '',
+      email: '',
+      avatar: ''
+    }
+  }
+
   return {
-    userInfo
+    userInfo,
+    clear
   }
 })

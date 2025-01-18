@@ -52,8 +52,13 @@ export const useConversation = defineStore(
 
       // Group conversations by date
       const groupedMap = new Map<string, ChatLunaConversation[]>()
+      const conversationList = fetchConversationList.value
 
-      conversationList.value.forEach((conv) => {
+      if (!conversationList) {
+        return []
+      }
+
+      conversationList.forEach((conv) => {
         const convDate = new Date(conv.createdTime)
         const label = getDateLabel(convDate)
 

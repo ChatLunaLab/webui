@@ -13,7 +13,6 @@ const { groupedConversationList } = storeToRefs(useConversation())
 const agentData = ['默认', '猫娘', '角色 tag 生成 角色 tag 生成 角色 tag 生成']
 
 const currentConversationId = ref('')
-const conversationData = []
 </script>
 
 <template>
