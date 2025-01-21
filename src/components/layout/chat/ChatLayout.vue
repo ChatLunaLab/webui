@@ -20,6 +20,9 @@ watch(
     scrollFunction?.()
   }
 )
+
+const currentAssistant = computed(() => props.assistant)
+
 </script>
 
 <template>
@@ -33,7 +36,7 @@ watch(
       :key="message.id"
       class="flex w-full first:pt-8 last:pb-12"
     >
-      <ChatMessage :message="message" :avatar="assistant.avatar" />
+      <ChatMessage :message="message" :avatar="currentAssistant.avatar" />
     </div>
   </TransitionGroup>
 </template>

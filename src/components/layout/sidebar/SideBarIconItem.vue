@@ -35,6 +35,9 @@ const props = withDefaults(defineProps<SideBarIconItemProps>(), {
 
 const hovered = ref(props.variant === 'secondary')
 const selected = props.variant === 'secondary'
+
+const emit = defineEmits(['click'])
+
 </script>
 
 <template>
@@ -42,6 +45,7 @@ const selected = props.variant === 'secondary'
     :href="href"
     @mouseover="hovered = true"
     @mouseleave="hovered = false"
+    @click="emit('click')"
     :class="
       cn(
         buttonVariants({
@@ -83,7 +87,7 @@ const selected = props.variant === 'secondary'
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          
+
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

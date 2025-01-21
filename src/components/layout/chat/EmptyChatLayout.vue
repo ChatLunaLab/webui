@@ -11,6 +11,8 @@ const props = defineProps<{
   }
 }>()
 
+const currentAssistant = computed(() => props.assistant)
+
 const hasAssistant = computed(() => {
   return props.assistant.name != null
 })
@@ -21,22 +23,23 @@ const hasAssistant = computed(() => {
     class="flex h-full w-full max-w-xl sm:max-w-2xl flex-col gap-12 justify-center items-center"
   >
     <div class="flex w-full flex-col gap-3 items-center">
-      <img class="size-12 rounded-full" :src="assistant.avatar" alt="" />
+      <img class="size-12 rounded-full" :src="currentAssistant.avatar" alt="" />
       <p v-if="hasAssistant" class="text-2xl font-medium">
-        {{ assistant.name }}
+        {{ currentAssistant.name }}
       </p>
       <p v-if="hasAssistant" class="text-sm text-muted-foreground">
-        创建者: {{ assistant.author }}
+        创建者: {{ currentAssistant.author }}
       </p>
       <p v-if="hasAssistant" class="text-sm text-foreground">
-        {{ assistant.description }}
+        {{ currentAssistant.description }}
       </p>
     </div>
     <div
       class="items-stretch flex max-w-sm md:max-w-2xl gap-x-5 gap-y-5 lg:gap-y-3 md:flex-no-wrap flex-wrap justify-center"
     >
       <div
-        v-for="(example, index) in assistant.examples"
+        v-if="hasAssistant && currentAssistant.examples"
+        v-for="(example, index) in currentAssistant.examples"
         :key="index"
         class="pt-4 pb-6 px-4 hover:bg-muted/50 rounded-xl border bg-card text-muted-foreground shadow hover:cursor-pointer"
       >

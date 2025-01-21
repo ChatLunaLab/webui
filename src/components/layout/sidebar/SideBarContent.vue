@@ -25,6 +25,8 @@ const { preference } = storeToRefs(usePreferenceStore())
 const { fetchAssistantList, assistantList: rawAssistantList } =
   storeToRefs(useAssistant())
 
+const { setAssistant } = useAssistant()
+
 const assistantList = computed(() => {
   if (rawAssistantList.value.length > 1) {
     return rawAssistantList.value
@@ -92,8 +94,8 @@ watch(currentConversationId, (newValue) => {
   })
 })
 
-function sideBarItemClick(id: string) {
-  currentConversationId.value = id
+function conversationItemClick(id: string) {
+
 }
 </script>
 
@@ -106,6 +108,7 @@ function sideBarItemClick(id: string) {
       <SideBarIconItem
         v-for="label in assistantList"
         href="#"
+        @click="setAssistant(label)"
         :key="label.id"
         :label="label.name"
         variant="ghost"
@@ -136,7 +139,7 @@ function sideBarItemClick(id: string) {
         <ol>
           <li v-for="conversation in data.conversations" :key="conversation.id">
             <SideBarTextItem
-              @click="sideBarItemClick(conversation.id)"
+              @click="conversationItemClick(conversation.id)"
               :label="conversation.title ?? '未命名对话'"
               :variant="
                 conversation.id === currentConversationId
