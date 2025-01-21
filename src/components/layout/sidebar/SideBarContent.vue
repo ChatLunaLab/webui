@@ -54,6 +54,28 @@ if (routeConversationId) {
       })
     }
   })()
+} else if (currentConversationId.value !== '') {
+  ;(async () => {
+    try {
+      await getConversationInfo(route.params.conversationId as string)
+    } catch (error) {
+      // if conversation not found, redirect to home
+      router.replace('/')
+      currentConversationId.value = ''
+
+      const { set } = usePreferenceStore()
+
+      set({
+        conversationId: ''
+      })
+
+      toast({
+        title: '对话不存在',
+        description: '对话不存在或已被删除',
+        variant: 'destructive'
+      })
+    }
+  })()
 }
 
 watch(currentConversationId, (newValue) => {

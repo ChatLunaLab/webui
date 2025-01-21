@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { AssistantInfo, ChatLunaMessage } from '@/lib/types'
+import type { AssistantInfo, ChatLunaAssistant, ChatLunaMessage } from '@/lib/types'
 import { computed, effect, inject, provide, ref, watch, watchEffect } from 'vue'
 import ChatMessage from './ChatMessage.vue'
 import { useChatListStore } from '@/stores/chat'
@@ -7,7 +7,7 @@ import { useDebounceFn, type PromisifyFn } from '@vueuse/core'
 
 const props = defineProps<{
   conversationId: string
-  assistantInfo: AssistantInfo
+  assistant: ChatLunaAssistant
 }>()
 
 const chatListStore = useChatListStore()
@@ -33,7 +33,7 @@ watch(
       :key="message.id"
       class="flex w-full first:pt-8 last:pb-12"
     >
-      <ChatMessage :message="message" :avatar="assistantInfo.avatar" />
+      <ChatMessage :message="message" :avatar="assistant.avatar" />
     </div>
   </TransitionGroup>
 </template>

@@ -61,4 +61,6 @@ export interface ChatLunaAssistant {
     triggerKeywords?: string[]
   }[]
   files?: string[]
+  shared?: boolean
+  ownerId?: string
 }
