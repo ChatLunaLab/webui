@@ -3,6 +3,7 @@ import { deleteConversation } from '@/apis/conversation'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { useToast } from '@/components/ui/toast'
 import { useChatListStore } from '@/stores/chat'
+import { useConversation } from '@/stores/conversation'
 import { Pencil2Icon, Share2Icon, TrashIcon } from '@radix-icons/vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
@@ -16,7 +17,11 @@ const props = defineProps<{
 const onDeleteAction = async () => {
   try {
     await deleteConversation(props.conversationId)
-    const currentConversationId = storeToRefs(useChatListStore()).conversationId
+    const { conversationId: currentConversationId } =
+      storeToRefs(useChatListStore())
+
+    const { refreshConversationList } = useConversation()
+
     router.replace('/home')
     toast({
       title: '删除成功！',
@@ -25,6 +30,8 @@ const onDeleteAction = async () => {
     })
 
     currentConversationId.value = ''
+
+    refreshConversationList()
   } catch (error) {
     toast({
       title: '删除时出现错误！',

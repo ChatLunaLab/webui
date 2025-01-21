@@ -46,7 +46,8 @@ export async function createConversation(
 
   const response = await service.post('/v1/conversation/create', {
     conversation: {
-      assistantId
+      assistantId,
+      title
     },
     additional: {
       userId: userInfo?.bindId,
@@ -55,5 +56,11 @@ export async function createConversation(
     }
   })
 
+  return response.data.data as ChatLunaConversation
+}
+
+export async function summaryConversationTitle(id: string) {
+  const service = apiServer()
+  const response = await service.post(`/v1/conversation/summary-title/${id}`)
   return response.data.data as ChatLunaConversation
 }

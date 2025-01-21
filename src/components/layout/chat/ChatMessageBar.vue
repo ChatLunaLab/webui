@@ -5,9 +5,14 @@ import { useScreenInfoStore } from '@/stores/screen'
 import { onMounted, ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import { PlusIcon, ArrowUpIcon } from '@radix-icons/vue'
-import { useChatContent } from '@/stores/chat'
+import { useChatContent, useChatListStore } from '@/stores/chat'
+import { storeToRefs } from 'pinia'
+import { useAssistant } from '@/stores/assistant'
+import { createConversation } from '@/apis/conversation'
 
 const { chat } = useChatContent()
+
+const { chatContent } = storeToRefs(useChatContent())
 
 const chatInput = ref<HTMLTextAreaElement | null>(null)
 
@@ -23,7 +28,7 @@ onMounted(() => {
   })
 })
 
-const sendMessage = () => {
+const sendMessage = async () => {
   const text = chatInput.value?.value
   if (text == null || text?.length === 0) {
     return
@@ -37,9 +42,7 @@ const sendMessage = () => {
   })
 
   chatInput.value!.value = ''
-
 }
-
 </script>
 
 <template>
@@ -67,7 +70,7 @@ const sendMessage = () => {
               size="icon"
               variant="ghost"
               :onClick="sendMessage"
-              :disabled="disabled"
+              :disabled="disabled || chatContent.streaming"
             >
               <ArrowUpIcon class="size-5" />
             </Button>

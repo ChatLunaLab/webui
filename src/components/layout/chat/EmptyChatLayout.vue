@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import type { AssistantInfo, ChatLunaAssistant } from '@/lib/types'
+import { useChatContent } from '@/stores/chat';
 import { computed } from 'vue'
 
 const props = defineProps<{
   assistant: ChatLunaAssistant & {
     examples?: {
       title: string
+      prompt: string
     }[]
     author?: string
   }
@@ -16,6 +18,8 @@ const currentAssistant = computed(() => props.assistant)
 const hasAssistant = computed(() => {
   return props.assistant.name != null
 })
+
+const { chat } = useChatContent()
 </script>
 
 <template>
@@ -41,6 +45,14 @@ const hasAssistant = computed(() => {
         v-if="hasAssistant && currentAssistant.examples"
         v-for="(example, index) in currentAssistant.examples"
         :key="index"
+        @click="
+          chat({
+            role: 'user',
+            content: example.prompt,
+            createdAt: new Date(),
+            id: '0'
+          })
+        "
         class="pt-4 pb-6 px-4 hover:bg-muted/50 rounded-xl border bg-card text-muted-foreground shadow hover:cursor-pointer"
       >
         <p class="text-sm break-words line-clamp-3 max-w-28">

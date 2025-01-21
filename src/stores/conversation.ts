@@ -8,20 +8,21 @@ export const useConversation = defineStore(
   'conversation',
   () => {
     let conversationList = ref<ChatLunaConversation[]>([])
-
-    let fetchConversationList = computedAsync(
-      async () => {
-        const response = await getConversationList()
-        conversationList.value = response
-        return response
-      },
-      [],
+    let groupedConversationList = ref<
       {
-        lazy: true
-      }
-    )
+        time: string
+        conversations: ChatLunaConversation[]
+      }[]
+    >([])
 
-    const groupedConversationList = computed(() => {
+    const refreshConversationList = async () => {
+      const value = await getConversationList()
+      conversationList.value = value
+      groupedConversationList.value = groupedConversationFunction()
+      return value
+    }
+
+    const groupedConversationFunction = () => {
       const now = new Date()
       const currentYear = now.getFullYear()
       const oneDay = 24 * 60 * 60 * 1000
@@ -50,13 +51,12 @@ export const useConversation = defineStore(
 
       // Group conversations by date
       const groupedMap = new Map<string, ChatLunaConversation[]>()
-      const conversationList = fetchConversationList.value
 
-      if (!conversationList) {
+      if (!conversationList.value) {
         return []
       }
 
-      conversationList.forEach((conv) => {
+      conversationList.value.forEach((conv) => {
         const convDate = new Date(conv.createdTime)
         const label = getDateLabel(convDate)
 
@@ -95,12 +95,12 @@ export const useConversation = defineStore(
         })
 
       return result
-    })
+    }
 
     return {
       conversationList,
-      fetchConversationList,
-      groupedConversationList
+      groupedConversationList,
+      refreshConversationList
     }
   },
   {

@@ -2,7 +2,7 @@
 import { HomeIcon, TokensIcon } from '@radix-icons/vue'
 import SideBarTextItem from './SideBarTextItem.vue'
 import SideBarIconItem from './SideBarIconItem.vue'
-import { computed, provide, ref, watchEffect, watch } from 'vue'
+import { computed, provide, ref, watchEffect, watch, onMounted } from 'vue'
 import SideBarUserCard from './SideBarUserCard.vue'
 import { useConversation } from '@/stores/conversation'
 import { storeToRefs } from 'pinia'
@@ -13,27 +13,20 @@ import { useToast } from '@/components/ui/toast'
 import { useChatListStore } from '@/stores/chat'
 import { useAssistant } from '@/stores/assistant'
 import AvatarIcon from '../avatar/AvatarIcon.vue'
+import { computedAsync } from '@vueuse/core'
+
 const { conversationId: currentConversationId } =
   storeToRefs(useChatListStore())
-const { groupedConversationList } = storeToRefs(useConversation())
+const { groupedConversationList, conversationList } =
+  storeToRefs(useConversation())
 
 const route = useRoute()
 const router = useRouter()
 const { toast } = useToast()
 
 const { preference } = storeToRefs(usePreferenceStore())
-const { fetchAssistantList, assistantList: rawAssistantList } =
-  storeToRefs(useAssistant())
-
+const { assistantList } = storeToRefs(useAssistant())
 const { setAssistant } = useAssistant()
-
-const assistantList = computed(() => {
-  if (rawAssistantList.value.length > 1) {
-    return rawAssistantList.value
-  }
-
-  return fetchAssistantList.value ?? []
-})
 
 const routeConversationId = route.params.conversationId as string
 
@@ -59,17 +52,11 @@ if (routeConversationId) {
 } else if (currentConversationId.value !== '') {
   ;(async () => {
     try {
-      await getConversationInfo(route.params.conversationId as string)
+      await getConversationInfo(currentConversationId.value as string)
     } catch (error) {
       // if conversation not found, redirect to home
       router.replace('/')
       currentConversationId.value = ''
-
-      const { set } = usePreferenceStore()
-
-      set({
-        conversationId: ''
-      })
 
       toast({
         title: '对话不存在',
@@ -80,23 +67,14 @@ if (routeConversationId) {
   })()
 }
 
-watch(currentConversationId, (newValue) => {
-  const { set } = usePreferenceStore()
-
-  const conversationId = newValue
-
-  if (!conversationId) {
-    return
-  }
-
-  set({
-    conversationId
-  })
-})
-
 function conversationItemClick(id: string) {
-
+  currentConversationId.value = id
 }
+
+onMounted(() => {
+  const { refreshConversationList } = useConversation()
+  refreshConversationList()
+})
 </script>
 
 <template>

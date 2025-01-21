@@ -15,7 +15,6 @@ import { useAssistant } from '@/stores/assistant'
 const { conversationId } = storeToRefs(useChatListStore())
 
 const { chatContent } = storeToRefs(useChatContent())
-const chatListStore = storeToRefs(useChatListStore())
 const { currentAssistant } = storeToRefs(useAssistant())
 
 const isUserScroll = ref(false)

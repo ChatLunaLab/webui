@@ -5,11 +5,31 @@ import { asyncComputed, useAsyncState } from '@vueuse/core'
 import type { ChatLunaMessage } from '@/lib/types'
 import { TypeWriter } from '@/lib/type_writer'
 import { usePreferenceStore } from './preference'
+import { useConversation } from './conversation'
+import {
+  createConversation,
+  summaryConversationTitle
+} from '@/apis/conversation'
+import { useAssistant } from './assistant'
 
 export const useChatListStore = defineStore('chatList', () => {
   const globalChatListMap = reactive<Record<string, ChatLunaMessage[]>>({})
 
-  const conversationId = ref<string | null>('')
+  const conversationId = ref<string>('')
+
+  watch(conversationId, (newValue) => {
+    const { set } = usePreferenceStore()
+
+    const conversationId = newValue
+
+    if (conversationId == null) {
+      return
+    }
+
+    set({
+      conversationId
+    })
+  })
 
   const getChatList = async (id: string) => {
     const newChatList = await getMessageList(id)
@@ -72,8 +92,11 @@ export const useChatListStore = defineStore('chatList', () => {
 
 export const useChatContent = defineStore('chatContent', () => {
   const chatListStore = useChatListStore()
-  const { putMessage, setMessage } = chatListStore
-  const { currentChatList } = storeToRefs(chatListStore)
+  const { putMessage, setMessage, getChatList } = chatListStore
+  const { refreshConversationList } = useConversation()
+  const { currentChatList, conversationId } = storeToRefs(chatListStore)
+  const { conversationList } = storeToRefs(useConversation())
+  const { currentAssistant } = storeToRefs(useAssistant())
 
   const chatContent = reactive({
     content: '',
@@ -81,15 +104,19 @@ export const useChatContent = defineStore('chatContent', () => {
     streaming: false
   })
 
-  const conversationId = computed(() => {
-    return chatListStore.conversationId
-  })
-
   const typeWriter = new TypeWriter()
 
   const chat = async (message: ChatLunaMessage) => {
-    if (!conversationId.value) {
-      return
+    // create new conversation
+    if (!conversationId.value || conversationId.value === '') {
+      const newConversation = await createConversation(
+        currentAssistant.value?.name,
+        undefined,
+        currentAssistant.value?.id
+      )
+      conversationId.value = newConversation.id
+      await getChatList(conversationId.value)
+      await refreshConversationList()
     }
 
     const baseList = currentChatList.value
@@ -130,6 +157,33 @@ export const useChatContent = defineStore('chatContent', () => {
     }
 
     typeWriter.done()
+
+    // update conversation title
+    const conversationListValue = conversationList.value
+
+    if (conversationListValue == null) {
+      return
+    }
+
+    const currentConversation = conversationListValue.find((c) => {
+      return c.id === conversationId.value
+    })
+
+    if (
+      currentConversation != null &&
+      (currentConversation.title == null || currentConversation.title === '')
+    ) {
+      const newConversation = await summaryConversationTitle(
+        conversationId.value
+      )
+
+      conversationList.value = conversationListValue.map((c) => {
+        if (c.id === conversationId.value) {
+          return newConversation
+        }
+        return c
+      })
+    }
   }
 
   return {

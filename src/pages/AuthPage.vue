@@ -24,8 +24,6 @@ provide('status', status)
       <Transition
         enter-from-class="opacity-0"
         enter-to-class="opacity-100"
-
-
         enter-active-class="transition-opacity duration-200 ease-out"
 
       >

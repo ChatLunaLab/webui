@@ -15,33 +15,22 @@ import { getUserInfo } from '@/apis/auth'
 export const useAssistant = defineStore(
   'assistant',
   () => {
-    let assistantList = ref<ChatLunaAssistant[]>([])
+    const _assistantList = ref<ChatLunaAssistant[]>([])
 
     let currentAssistant = ref<ChatLunaAssistant>()
 
-    let fetchAssistantList = computedAsync(
-      async () => {
-        const response = await getAssistantList()
-        assistantList.value = response
-
-        if (!currentAssistant.value) {
-          currentAssistant.value = response.find((assistant) => {
-            return assistant.name === 'Assistant'
-          })
-        }
-
-        return response
-      },
-      [],
-      {
-        lazy: true
+    const refreshAssistantList = async () => {
+      const response = await getAssistantList()
+      _assistantList.value = response
+      if (!currentAssistant.value) {
+        currentAssistant.value = response.find((assistant) => {
+          return assistant.name === 'Assistant'
+        })
       }
-    )
+      return response
+    }
 
     let computedCurrentAssistant = computedAsync(() => {
-      if (!currentAssistant.value) {
-        assistantList.value = fetchAssistantList.value
-      }
       return {
         ...currentAssistant.value,
         examples:
@@ -77,10 +66,16 @@ export const useAssistant = defineStore(
     }
 
     return {
-      assistantList,
+      assistantList: computedAsync(async () => {
+        if (_assistantList.value.length < 1) {
+          await refreshAssistantList()
+        }
+
+        return _assistantList.value
+      }),
       currentAssistant: computedCurrentAssistant,
       setAssistant,
-      fetchAssistantList
+      refreshAssistantList
     }
   },
   {
