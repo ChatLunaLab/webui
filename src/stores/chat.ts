@@ -54,6 +54,7 @@ export const useChatListStore = defineStore('chatList', () => {
     if (!globalChatListMap[id]) {
       await fetchChatList(id)
     }
+
     return globalChatListMap[id]
   }
 
@@ -149,23 +150,16 @@ export const useChatContent = defineStore('chatContent', () => {
 
     chatContent.streaming = true
 
-    typeWriter.start((text) => {
-      if (text === '[DONE]') {
-        chatContent.streaming = false
-        setMessage(currentConversationId, nextMessageId, {
-          content: chatContent.content
-        })
-        chatContent.content = ''
-        return
-      }
-      chatContent.content += text
-    })
-
     for await (const content of streamChat(conversationId.value, message)) {
-      await typeWriter.write(content)
+      chatContent.content += content
     }
 
-    typeWriter.done()
+    chatContent.streaming = false
+    setMessage(currentConversationId, nextMessageId, {
+      content: chatContent.content
+    })
+    chatContent.content = ''
+    console.log(chatContent)
 
     // update conversation title
     const conversationListValue = conversationList.value

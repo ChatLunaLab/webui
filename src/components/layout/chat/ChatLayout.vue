@@ -18,7 +18,7 @@ const { getChatList } = useChatListStore()
 
 const scrollFunction = inject<PromisifyFn<() => void>>('scrollFunction')
 
-const chatList = computedAsync<ChatLunaMessage[]>(
+const chatList = computedAsync(
   () => getChatList(props.conversationId),
   []
 )
