@@ -5,7 +5,7 @@ export class TypeWriter {
   private _isRunning = false
 
   constructor(
-    private _speed: number = 20,
+    private _speed: number = 1,
     private _maxLength = 200
   ) {}
 
@@ -13,7 +13,7 @@ export class TypeWriter {
     if (this._queue.length >= this._maxLength) {
       // wait for the queue to be empty
       while (this._queue.length < this._maxLength) {
-        await new Promise((resolve) => setTimeout(resolve, 10))
+        await new Promise((resolve) => setTimeout(resolve, 1))
       }
     }
 
@@ -24,15 +24,20 @@ export class TypeWriter {
     this._isRunning = true
     while (this._isRunning || this._queue.length > 0) {
       if (this._queue.length === 0) {
-        await new Promise((resolve) => setTimeout(resolve, 10))
+        await new Promise((resolve) => setTimeout(resolve, 1))
         continue
       }
       const text = this._queue.shift()!
       // Convert the string into an array of valid Unicode scalar values
 
-      // Process each character
-      for (let i = 0; i < text.length; i++) {
-        callback(text[i])
+      // Process each \n
+      const parts = text.split('\n')
+      for (let i = 0; i < parts.length; i++) {
+        let part = parts[i]
+        if (i !== parts.length - 1) {
+          part += '\n'
+        }
+        callback(part)
         await new Promise((resolve) => setTimeout(resolve, this._speed))
       }
     }

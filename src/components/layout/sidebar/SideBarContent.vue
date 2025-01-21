@@ -14,6 +14,7 @@ import { useChatListStore } from '@/stores/chat'
 import { useAssistant } from '@/stores/assistant'
 import AvatarIcon from '../avatar/AvatarIcon.vue'
 import { computedAsync } from '@vueuse/core'
+import type { ChatLunaAssistant } from '@/lib/types'
 
 const { conversationId: currentConversationId } =
   storeToRefs(useChatListStore())
@@ -71,6 +72,11 @@ function conversationItemClick(id: string) {
   currentConversationId.value = id
 }
 
+function assistantItemClick(assistant: ChatLunaAssistant) {
+  setAssistant(assistant)
+  currentConversationId.value = ''
+}
+
 onMounted(() => {
   const { refreshConversationList } = useConversation()
   refreshConversationList()
@@ -86,7 +92,7 @@ onMounted(() => {
       <SideBarIconItem
         v-for="label in assistantList"
         href="#"
-        @click="setAssistant(label)"
+        @click="assistantItemClick(label)"
         :key="label.id"
         :label="label.name"
         variant="ghost"
