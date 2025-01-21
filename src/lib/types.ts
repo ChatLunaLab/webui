@@ -46,3 +46,19 @@ export interface ChatLunaConversation {
   createdTime: string
   title?: string
 }
+
+export interface ChatLunaAssistant {
+  id: number
+  name: string
+  preset: string
+  model: string
+  description?: string
+  avatar?: string
+  tools?: {
+    name: string
+    enabled: boolean
+    alwaysEnabled?: boolean
+    triggerKeywords?: string[]
+  }[]
+  files?: string[]
+}

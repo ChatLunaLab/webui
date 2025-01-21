@@ -36,6 +36,7 @@ export async function getUserInfo() {
     email: string
     avatar: string
     role: string
+    bindId: string
   }
 }
 

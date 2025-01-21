@@ -53,10 +53,12 @@ export const useUserInfo = defineStore('userInfo', () => {
     username: string
     email: string
     avatar: string
+    bindId: string
   }>({
     username: '',
     email: '',
-    avatar: ''
+    avatar: '',
+    bindId: ''
   })
 
   const userInfo = computedAsync(
