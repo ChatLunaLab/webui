@@ -10,7 +10,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue';
 import { useScreenInfoStore } from '@/stores/screen'
 import HomePresetDropMenu from '../menu/SideBarConversationMenu.vue'
 import { Button, buttonVariants } from '@/components/ui/button'
@@ -34,7 +34,7 @@ const props = withDefaults(defineProps<SideBarIconItemProps>(), {
 })
 
 const hovered = ref(props.variant === 'secondary')
-const selected = props.variant === 'secondary'
+const selected = computed(() => props.variant === 'secondary')
 
 const emit = defineEmits(['click'])
 

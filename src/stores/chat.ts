@@ -1,4 +1,4 @@
-import { computed, effect, reactive, ref, watch } from 'vue'
+import { computed, effect, reactive, ref, toRef, toRefs, watch } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 import { getMessageList, streamChat } from '@/apis/index'
 import { asyncComputed, useAsyncState } from '@vueuse/core'
@@ -22,16 +22,12 @@ export const useChatListStore = defineStore('chatList', () => {
 
     const conversationId = newValue
 
-    if (conversationId == null) {
-      return
-    }
-
     set({
       conversationId
     })
   })
 
-  const getChatList = async (id: string) => {
+  const fetchChatList = async (id: string) => {
     const newChatList = await getMessageList(id)
     globalChatListMap[id] = newChatList
     return newChatList
@@ -47,26 +43,33 @@ export const useChatListStore = defineStore('chatList', () => {
       if (cache) {
         return cache
       } else {
-        return await getChatList(id)
+        return await fetchChatList(id)
       }
     },
     [],
     {}
   )
 
-  const putMessage = (message: ChatLunaMessage) => {
-    const id = conversationId.value
-    if (!id) {
-      return
+  const getChatList = async (id: string) => {
+    if (!globalChatListMap[id]) {
+      await fetchChatList(id)
     }
+    return globalChatListMap[id]
+  }
+
+  const putMessage = (id: string, message: ChatLunaMessage) => {
     globalChatListMap[id] = globalChatListMap[id].concat(message)
   }
 
-  const setMessage = (messageId: string, message: Partial<ChatLunaMessage>) => {
-    const id = conversationId.value
-    if (!id) {
-      return
-    }
+  const createMessageList = (id: string, messages: ChatLunaMessage[]) => {
+    globalChatListMap[id] = messages
+  }
+
+  const setMessage = (
+    id: string,
+    messageId: string,
+    message: Partial<ChatLunaMessage>
+  ) => {
     const messageIndex = globalChatListMap[id].findIndex(
       (m) => m.id === messageId
     )
@@ -84,15 +87,17 @@ export const useChatListStore = defineStore('chatList', () => {
   return {
     putMessage,
     getChatList,
+    fetchChatList,
     currentChatList,
     conversationId,
+    createMessageList,
     setMessage
   }
 })
 
 export const useChatContent = defineStore('chatContent', () => {
   const chatListStore = useChatListStore()
-  const { putMessage, setMessage, getChatList } = chatListStore
+  const { putMessage, setMessage, createMessageList } = chatListStore
   const { refreshConversationList } = useConversation()
   const { currentChatList, conversationId } = storeToRefs(chatListStore)
   const { conversationList } = storeToRefs(useConversation())
@@ -107,15 +112,19 @@ export const useChatContent = defineStore('chatContent', () => {
   const typeWriter = new TypeWriter()
 
   const chat = async (message: ChatLunaMessage) => {
+    let currentConversationId = conversationId.value
     // create new conversation
-    if (!conversationId.value || conversationId.value === '') {
+    if (!currentConversationId || currentConversationId === '') {
       const newConversation = await createConversation(
         currentAssistant.value?.name,
         undefined,
         currentAssistant.value?.id
       )
+
+      currentConversationId = newConversation.id
       conversationId.value = newConversation.id
-      await getChatList(conversationId.value)
+
+      createMessageList(currentConversationId, [])
       await refreshConversationList()
     }
 
@@ -130,8 +139,8 @@ export const useChatContent = defineStore('chatContent', () => {
 
     chatContent.id = nextMessageId
 
-    putMessage(message)
-    putMessage({
+    putMessage(currentConversationId, message)
+    putMessage(currentConversationId, {
       role: 'assistant',
       id: nextMessageId,
       createdAt: new Date(),
@@ -143,7 +152,7 @@ export const useChatContent = defineStore('chatContent', () => {
     typeWriter.start((text) => {
       if (text === '[DONE]') {
         chatContent.streaming = false
-        setMessage(nextMessageId, {
+        setMessage(currentConversationId, nextMessageId, {
           content: chatContent.content
         })
         chatContent.content = ''
@@ -169,20 +178,10 @@ export const useChatContent = defineStore('chatContent', () => {
       return c.id === conversationId.value
     })
 
-    if (
-      currentConversation != null &&
-      (currentConversation.title == null || currentConversation.title === '')
-    ) {
-      const newConversation = await summaryConversationTitle(
-        conversationId.value
-      )
+    if (currentConversation != null && currentConversation.title == null) {
+      await summaryConversationTitle(conversationId.value)
 
-      conversationList.value = conversationListValue.map((c) => {
-        if (c.id === conversationId.value) {
-          return newConversation
-        }
-        return c
-      })
+      await refreshConversationList()
     }
   }
 

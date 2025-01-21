@@ -11,6 +11,8 @@ import { TypeWriter } from '@/lib/type_writer'
 import { getConversationList } from '@/apis/conversation'
 import { getAssistantInfo, getAssistantList } from '@/apis/assisant'
 import { getUserInfo } from '@/apis/auth'
+import { useChatListStore } from './chat'
+import { useConversation } from './conversation'
 
 export const useAssistant = defineStore(
   'assistant',
@@ -30,7 +32,7 @@ export const useAssistant = defineStore(
       return response
     }
 
-    let computedCurrentAssistant = computedAsync(() => {
+    let computedCurrentAssistant = computed(() => {
       return {
         ...currentAssistant.value,
         examples:
@@ -64,6 +66,27 @@ export const useAssistant = defineStore(
     const setAssistant = (assistant: ChatLunaAssistant) => {
       currentAssistant.value = assistant
     }
+
+    const { conversationId } = storeToRefs(useChatListStore())
+    const { conversationList } = storeToRefs(useConversation())
+
+    watch(conversationId, (newValue) => {
+      const conversationId = newValue
+
+      if (conversationId == null) {
+        return
+      }
+
+      const currentConversation = conversationList.value.find(
+        (conversation) => conversation.id === conversationId
+      )
+
+      if (currentConversation) {
+        currentAssistant.value = _assistantList.value.find(
+          (assistant) => assistant.id === currentConversation.assistantId
+        )
+      }
+    })
 
     return {
       assistantList: computedAsync(async () => {

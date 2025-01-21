@@ -1,28 +1,36 @@
 <script setup lang="ts">
-import type { AssistantInfo, ChatLunaAssistant, ChatLunaMessage } from '@/lib/types'
+import type {
+  AssistantInfo,
+  ChatLunaAssistant,
+  ChatLunaMessage
+} from '@/lib/types'
 import { computed, effect, inject, provide, ref, watch, watchEffect } from 'vue'
 import ChatMessage from './ChatMessage.vue'
 import { useChatListStore } from '@/stores/chat'
-import { useDebounceFn, type PromisifyFn } from '@vueuse/core'
+import { computedAsync, useDebounceFn, type PromisifyFn } from '@vueuse/core'
 
 const props = defineProps<{
   conversationId: string
   assistant: ChatLunaAssistant
 }>()
 
-const chatListStore = useChatListStore()
+const { getChatList } = useChatListStore()
 
 const scrollFunction = inject<PromisifyFn<() => void>>('scrollFunction')
 
+const chatList = computedAsync<ChatLunaMessage[]>(
+  () => getChatList(props.conversationId),
+  []
+)
+
 watch(
-  () => chatListStore.currentChatList,
+  () => chatList.value,
   () => {
     scrollFunction?.()
   }
 )
 
 const currentAssistant = computed(() => props.assistant)
-
 </script>
 
 <template>
@@ -32,7 +40,7 @@ const currentAssistant = computed(() => props.assistant)
     tag="div"
   >
     <div
-      v-for="message in chatListStore.currentChatList"
+      v-for="message in chatList"
       :key="message.id"
       class="flex w-full first:pt-8 last:pb-12"
     >

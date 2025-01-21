@@ -43,6 +43,8 @@ if (routeConversationId) {
     } catch (error) {
       // if conversation not found, redirect to home
       router.replace('/')
+      currentConversationId.value = ''
+
       toast({
         title: '对话不存在',
         description: '对话不存在或已被删除',
@@ -131,6 +133,7 @@ onMounted(() => {
                   : 'ghost'
               "
               :conversationId="conversation.id"
+              :key="`${conversation.id}-${currentConversationId}`"
             />
           </li>
         </ol>

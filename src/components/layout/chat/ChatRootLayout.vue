@@ -106,6 +106,7 @@ provide('scrollFunction', scrollFunction)
       />
       <ChatLayout
         v-else
+        :key="conversationId"
         :conversationId="conversationId"
         :assistant="currentAssistant as ChatLunaAssistant"
       />

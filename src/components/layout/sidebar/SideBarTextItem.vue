@@ -10,7 +10,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch, watchEffect } from 'vue'
 import { useScreenInfoStore } from '@/stores/screen'
 import SideBarConversationMenu from '../menu/SideBarConversationMenu.vue'
 import { DotsVerticalIcon } from '@radix-icons/vue'
@@ -23,6 +23,7 @@ interface SideBarIconItemProps {
   conversationId?: string
 }
 
+
 const open = ref(false)
 const screenInfoStore = useScreenInfoStore()
 
@@ -34,6 +35,8 @@ const emit = defineEmits(['click'])
 
 const hovered = ref(props.variant === 'secondary')
 const selected = computed(() => props.variant === 'secondary')
+
+
 </script>
 
 <template>

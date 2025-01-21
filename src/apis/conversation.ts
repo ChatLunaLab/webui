@@ -61,6 +61,6 @@ export async function createConversation(
 
 export async function summaryConversationTitle(id: string) {
   const service = apiServer()
-  const response = await service.post(`/v1/conversation/summary-title/${id}`)
+  const response = await service.get(`/v1/conversation/summary-title/${id}`)
   return response.data.data as ChatLunaConversation
 }
