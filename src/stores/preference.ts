@@ -84,7 +84,8 @@ export const useUserInfo = defineStore('userInfo', () => {
     currentUserInfo.value = {
       username: '',
       email: '',
-      avatar: ''
+      avatar: '',
+      bindId: ''
     }
   }
 

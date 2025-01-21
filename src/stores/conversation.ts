@@ -1,9 +1,7 @@
-import { computed, effect, reactive, ref, watch } from 'vue'
-import { defineStore, storeToRefs } from 'pinia'
-import { getMessageList, streamChat } from '@/apis/index'
-import { asyncComputed, computedAsync, useAsyncState } from '@vueuse/core'
-import type { ChatLunaConversation, ChatLunaMessage } from '@/lib/types'
-import { TypeWriter } from '@/lib/type_writer'
+import { computed, ref } from 'vue'
+import { defineStore } from 'pinia'
+import { computedAsync } from '@vueuse/core'
+import type { ChatLunaConversation } from '@/lib/types'
 import { getConversationList } from '@/apis/conversation'
 
 export const useConversation = defineStore(
@@ -17,7 +15,7 @@ export const useConversation = defineStore(
         conversationList.value = response
         return response
       },
-      undefined,
+      [],
       {
         lazy: true
       }

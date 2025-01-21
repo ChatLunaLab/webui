@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { HomeIcon, TokensIcon } from '@radix-icons/vue'
 import SideBarTextItem from './SideBarTextItem.vue'
-import SideBarAgentItem from './SideBarIconItem.vue'
+import SideBarIconItem from './SideBarIconItem.vue'
 import { computed, provide, ref, watchEffect, watch } from 'vue'
 import SideBarUserCard from './SideBarUserCard.vue'
 import { useConversation } from '@/stores/conversation'
@@ -11,6 +11,8 @@ import { usePreferenceStore } from '@/stores'
 import { getConversationInfo } from '@/apis/conversation'
 import { useToast } from '@/components/ui/toast'
 import { useChatListStore } from '@/stores/chat'
+import { useAssistant } from '@/stores/assistant'
+import AvatarIcon from '../avatar/AvatarIcon.vue'
 const { conversationId: currentConversationId } =
   storeToRefs(useChatListStore())
 const { groupedConversationList } = storeToRefs(useConversation())
@@ -18,9 +20,18 @@ const { groupedConversationList } = storeToRefs(useConversation())
 const route = useRoute()
 const router = useRouter()
 const { toast } = useToast()
-const { preference } = storeToRefs(usePreferenceStore())
 
-const agentData = ['默认', '猫娘', '角色 tag 生成 角色 tag 生成 角色 tag 生成']
+const { preference } = storeToRefs(usePreferenceStore())
+const { fetchAssistantList, assistantList: rawAssistantList } =
+  storeToRefs(useAssistant())
+
+const assistantList = computed(() => {
+  if (rawAssistantList.value.length > 1) {
+    return rawAssistantList.value
+  }
+
+  return fetchAssistantList.value ?? []
+})
 
 const routeConversationId = route.params.conversationId as string
 
@@ -60,7 +71,6 @@ watch(currentConversationId, (newValue) => {
 })
 
 function sideBarItemClick(id: string) {
-  console.log('id', id)
   currentConversationId.value = id
 }
 </script>
@@ -71,19 +81,23 @@ function sideBarItemClick(id: string) {
   >
     <!-- header -->
     <div class="flex flex-col w-full">
-      <SideBarAgentItem
-        v-for="label in agentData"
+      <SideBarIconItem
+        v-for="label in assistantList"
         href="#"
-        :key="label"
-        :label="label"
+        :key="label.id"
+        :label="label.name"
         variant="ghost"
       >
-        <HomeIcon class="size-5 opacity-50 flex-shrink-0" />
-      </SideBarAgentItem>
+        <AvatarIcon
+          :src="label.avatar"
+          :first-char="label.name[0]"
+          class="size-4 opacity-50"
+        />
+      </SideBarIconItem>
 
-      <SideBarAgentItem :showDots="false" label="工作台" variant="ghost">
+      <SideBarIconItem :showDots="false" label="工作台" variant="ghost">
         <TokensIcon class="size-5 opacity-50 flex-shrink-0" />
-      </SideBarAgentItem>
+      </SideBarIconItem>
     </div>
 
     <!-- chat contents -->

@@ -7,7 +7,7 @@ import { useDebounceFn, type PromisifyFn } from '@vueuse/core'
 
 const props = defineProps<{
   conversationId: string
-  agentInfo: AssistantInfo
+  assistantInfo: AssistantInfo
 }>()
 
 const chatListStore = useChatListStore()
@@ -33,7 +33,7 @@ watch(
       :key="message.id"
       class="flex w-full first:pt-8 last:pb-12"
     >
-      <ChatMessage :message="message" :avatar="agentInfo.avatar" />
+      <ChatMessage :message="message" :avatar="assistantInfo.avatar" />
     </div>
   </TransitionGroup>
 </template>

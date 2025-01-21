@@ -15,9 +15,9 @@ const { conversationId } = storeToRefs(useChatListStore())
 const { chatContent } = storeToRefs(useChatContent())
 const chatListStore = storeToRefs(useChatListStore())
 const agentInfo: AssistantInfo = {
-  /*  name: '默认',
+  name: '默认',
   description: '与任意模型对话',
-  author: 'chatluna 官方', */
+  author: 'chatluna 官方',
   avatar: 'https://avatars.githubusercontent.com/u/139454032?s=200&v=4',
 
   examples: [
@@ -130,7 +130,7 @@ provide('scrollFunction', scrollFunction)
       <ChatLayout
         v-if="conversationId != null"
         :conversationId="conversationId"
-        :agentInfo="agentInfo"
+        :assistantInfo="agentInfo"
       />
     </div>
   </div>

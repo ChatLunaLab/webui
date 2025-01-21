@@ -35,7 +35,7 @@ export async function createConversation(
   const { userInfo } = useUserInfo()
 
   if (assistant == null) {
-    assistant = 'empty'
+    assistant = 'Assistant'
   }
 
   if (assistantId == null) {
