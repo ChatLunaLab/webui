@@ -10,12 +10,12 @@ import { useChatContent, useChatListStore } from '../../../stores/chat'
 import { storeToRefs } from 'pinia'
 import { useDebounceFn } from '@vueuse/core'
 import { onMounted, onUnmounted } from 'vue'
-import { useAssistant } from '@/stores/assistant'
+import { useAssistantStore } from '@/stores/assistant'
 
 const { conversationId } = storeToRefs(useChatListStore())
 
 const { chatContent } = storeToRefs(useChatContent())
-const { currentAssistant } = storeToRefs(useAssistant())
+const { currentAssistant } = storeToRefs(useAssistantStore())
 
 const isUserScroll = ref(false)
 const listElement = ref<Element | null>(null)

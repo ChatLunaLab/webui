@@ -4,7 +4,7 @@ import { computedAsync } from '@vueuse/core'
 import type { ChatLunaConversation } from '@/lib/types'
 import { getConversationList } from '@/apis/conversation'
 
-export const useConversation = defineStore(
+export const useConversationStore = defineStore(
   'conversation',
   () => {
     let conversationList = ref<ChatLunaConversation[]>([])

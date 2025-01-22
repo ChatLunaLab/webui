@@ -3,7 +3,7 @@ import { deleteConversation } from '@/apis/conversation'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { useToast } from '@/components/ui/toast'
 import { useChatListStore } from '@/stores/chat'
-import { useConversation } from '@/stores/conversation'
+import { useConversationStore } from '@/stores/conversation'
 import { Pencil2Icon, Share2Icon, TrashIcon } from '@radix-icons/vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
@@ -20,7 +20,7 @@ const onDeleteAction = async () => {
     const { conversationId: currentConversationId } =
       storeToRefs(useChatListStore())
 
-    const { refreshConversationList } = useConversation()
+    const { refreshConversationList } = useConversationStore()
 
     router.replace('/home')
     toast({

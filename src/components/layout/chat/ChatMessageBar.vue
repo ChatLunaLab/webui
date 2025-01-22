@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { PlusIcon, ArrowUpIcon } from '@radix-icons/vue'
 import { useChatContent, useChatListStore } from '@/stores/chat'
 import { storeToRefs } from 'pinia'
-import { useAssistant } from '@/stores/assistant'
+import { useAssistantStore } from '@/stores/assistant'
 import { createConversation } from '@/apis/conversation'
 
 const { chat } = useChatContent()

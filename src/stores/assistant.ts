@@ -12,9 +12,9 @@ import { getConversationList } from '@/apis/conversation'
 import { getAssistantInfo, getAssistantList } from '@/apis/assisant'
 import { getUserInfo } from '@/apis/auth'
 import { useChatListStore } from './chat'
-import { useConversation } from './conversation'
+import { useConversationStore } from './conversation'
 
-export const useAssistant = defineStore(
+export const useAssistantStore = defineStore(
   'assistant',
   () => {
     const _assistantList = ref<ChatLunaAssistant[]>([])
@@ -68,7 +68,7 @@ export const useAssistant = defineStore(
     }
 
     const { conversationId } = storeToRefs(useChatListStore())
-    const { conversationList } = storeToRefs(useConversation())
+    const { conversationList } = storeToRefs(useConversationStore())
 
     watch(conversationId, (newValue) => {
       const conversationId = newValue

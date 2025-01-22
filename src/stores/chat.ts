@@ -5,12 +5,12 @@ import { asyncComputed, useAsyncState } from '@vueuse/core'
 import type { ChatLunaMessage } from '@/lib/types'
 import { TypeWriter } from '@/lib/type_writer'
 import { usePreferenceStore } from './preference'
-import { useConversation } from './conversation'
+import { useConversationStore } from './conversation'
 import {
   createConversation,
   summaryConversationTitle
 } from '@/apis/conversation'
-import { useAssistant } from './assistant'
+import { useAssistantStore } from './assistant'
 
 export const useChatListStore = defineStore('chatList', () => {
   const globalChatListMap = reactive<Record<string, ChatLunaMessage[]>>({})
@@ -99,10 +99,10 @@ export const useChatListStore = defineStore('chatList', () => {
 export const useChatContent = defineStore('chatContent', () => {
   const chatListStore = useChatListStore()
   const { putMessage, setMessage, createMessageList } = chatListStore
-  const { refreshConversationList } = useConversation()
+  const { refreshConversationList } = useConversationStore()
   const { currentChatList, conversationId } = storeToRefs(chatListStore)
-  const { conversationList } = storeToRefs(useConversation())
-  const { currentAssistant } = storeToRefs(useAssistant())
+  const { conversationList } = storeToRefs(useConversationStore())
+  const { currentAssistant } = storeToRefs(useAssistantStore())
 
   const chatContent = reactive({
     content: '',

@@ -4,30 +4,31 @@ import SideBarTextItem from './SideBarTextItem.vue'
 import SideBarIconItem from './SideBarIconItem.vue'
 import { computed, provide, ref, watchEffect, watch, onMounted } from 'vue'
 import SideBarUserCard from './SideBarUserCard.vue'
-import { useConversation } from '@/stores/conversation'
+import { useConversationStore } from '@/stores/conversation'
 import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
 import { usePreferenceStore } from '@/stores'
 import { getConversationInfo } from '@/apis/conversation'
 import { useToast } from '@/components/ui/toast'
 import { useChatListStore } from '@/stores/chat'
-import { useAssistant } from '@/stores/assistant'
+import { useAssistantStore } from '@/stores/assistant'
 import AvatarIcon from '../avatar/AvatarIcon.vue'
 import { computedAsync } from '@vueuse/core'
 import type { ChatLunaAssistant } from '@/lib/types'
 
 const { conversationId: currentConversationId } =
   storeToRefs(useChatListStore())
-const { groupedConversationList, conversationList } =
-  storeToRefs(useConversation())
+const { groupedConversationList, conversationList } = storeToRefs(
+  useConversationStore()
+)
 
 const route = useRoute()
 const router = useRouter()
 const { toast } = useToast()
 
 const { preference } = storeToRefs(usePreferenceStore())
-const { assistantList } = storeToRefs(useAssistant())
-const { setAssistant } = useAssistant()
+const { assistantList } = storeToRefs(useAssistantStore())
+const { setAssistant } = useAssistantStore()
 
 const routeConversationId = route.params.conversationId as string
 
@@ -80,7 +81,7 @@ function assistantItemClick(assistant: ChatLunaAssistant) {
 }
 
 onMounted(() => {
-  const { refreshConversationList } = useConversation()
+  const { refreshConversationList } = useConversationStore()
   refreshConversationList()
 })
 </script>
