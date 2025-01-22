@@ -1,4 +1,13 @@
-import { computed, effect, reactive, ref, toRef, toRefs, watch } from 'vue'
+import {
+  computed,
+  effect,
+  reactive,
+  ref,
+  toRef,
+  toRefs,
+  watch,
+  watchEffect
+} from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 import { getMessageList, streamChat } from '@/apis/index'
 import { asyncComputed, useAsyncState } from '@vueuse/core'
@@ -15,12 +24,11 @@ import { useAssistantStore } from './assistant'
 export const useChatListStore = defineStore('chatList', () => {
   const globalChatListMap = reactive<Record<string, ChatLunaMessage[]>>({})
 
-  const conversationId = ref<string>('')
+  const currentConversationId = ref<string>('')
 
-  watch(conversationId, (newValue) => {
+  watchEffect(() => {
     const { set } = usePreferenceStore()
-
-    const conversationId = newValue
+    const conversationId = currentConversationId.value
 
     set({
       conversationId
@@ -35,7 +43,7 @@ export const useChatListStore = defineStore('chatList', () => {
 
   const currentChatList = asyncComputed(
     async () => {
-      const id = conversationId.value
+      const id = currentConversationId.value
       if (!id) {
         return []
       }
@@ -90,7 +98,7 @@ export const useChatListStore = defineStore('chatList', () => {
     getChatList,
     fetchChatList,
     currentChatList,
-    conversationId,
+    currentConversationId,
     createMessageList,
     setMessage
   }
@@ -100,7 +108,8 @@ export const useChatContent = defineStore('chatContent', () => {
   const chatListStore = useChatListStore()
   const { putMessage, setMessage, createMessageList } = chatListStore
   const { refreshConversationList } = useConversationStore()
-  const { currentChatList, conversationId } = storeToRefs(chatListStore)
+  const { currentChatList, currentConversationId: conversationId } =
+    storeToRefs(chatListStore)
   const { conversationList } = storeToRefs(useConversationStore())
   const { currentAssistant } = storeToRefs(useAssistantStore())
 
@@ -112,21 +121,22 @@ export const useChatContent = defineStore('chatContent', () => {
 
   const typeWriter = new TypeWriter()
 
+  const newConversation = async () => {
+    const newConversation = await createConversation(
+      currentAssistant.value?.name,
+      undefined,
+      currentAssistant.value?.id
+    )
+    conversationId.value = newConversation.id
+    createMessageList(newConversation.id, [])
+    await refreshConversationList()
+  }
+
   const chat = async (message: ChatLunaMessage) => {
     let currentConversationId = conversationId.value
     // create new conversation
     if (!currentConversationId || currentConversationId === '') {
-      const newConversation = await createConversation(
-        currentAssistant.value?.name,
-        undefined,
-        currentAssistant.value?.id
-      )
-
-      currentConversationId = newConversation.id
-      conversationId.value = newConversation.id
-
-      createMessageList(currentConversationId, [])
-      await refreshConversationList()
+      await newConversation()
     }
 
     const baseList = currentChatList.value
@@ -181,6 +191,7 @@ export const useChatContent = defineStore('chatContent', () => {
 
   return {
     chatContent,
+    newConversation,
     chat
   }
 })

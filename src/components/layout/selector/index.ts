@@ -1,1 +1,1 @@
-export { default as HomeModelSelector } from './HomeModelSelector.vue'
+export { default as ModelSelector } from './ModelSelector.vue'

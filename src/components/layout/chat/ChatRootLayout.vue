@@ -12,7 +12,8 @@ import { useDebounceFn } from '@vueuse/core'
 import { onMounted, onUnmounted } from 'vue'
 import { useAssistantStore } from '@/stores/assistant'
 
-const { conversationId } = storeToRefs(useChatListStore())
+const { currentConversationId: conversationId } =
+  storeToRefs(useChatListStore())
 
 const { chatContent } = storeToRefs(useChatContent())
 const { currentAssistant } = storeToRefs(useAssistantStore())

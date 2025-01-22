@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import NewChatIcon from '@/components/icons/NewChatIcon.vue'
 import { useSidebarStore } from '@/stores/ui'
-import { HomeModelSelector } from '@/components/layout/selector'
+import { ModelSelector } from '@/components/layout/selector'
 import { TopBar, TopBarIcon } from '@/components/layout/topbar'
 import { useScreenInfoStore } from '@/stores/screen'
 
@@ -14,31 +14,40 @@ import { UserInfoMenu } from '@/components/layout/menu'
 import { ChatRootLayout, ChatMessageBar } from '@/components/layout/chat'
 import { storeToRefs } from 'pinia'
 import AvatarIcon from '@/components/layout/avatar/AvatarIcon.vue'
+import { useChatListStore } from '@/stores/chat'
 
 const sidebarStore = useSidebarStore()
-
+const { currentConversationId: conversationId } =
+  storeToRefs(useChatListStore())
 const screenInfoStore = useScreenInfoStore()
 
 const { isMobile } = storeToRefs(screenInfoStore)
 const { isOpen } = storeToRefs(sidebarStore)
-
 </script>
 
 <template>
   <!-- body -->
   <div class="flex-1 h-full w-full">
     <div class="flex flex-col h-[100vh] w-full">
-      <TopBar class="justify-between ">
+      <TopBar class="justify-between">
         <template v-slot:navigation v-if="!isMobile">
-          <TopBarIcon v-if="!isOpen" tooltipText="新聊天">
+          <TopBarIcon
+            @click="conversationId = ''"
+            v-if="!isOpen"
+            tooltipText="新聊天"
+          >
             <NewChatIcon class="size-5 opacity-60" />
           </TopBarIcon>
-          <HomeModelSelector key="model" />
+          <ModelSelector class="ml-4" key="model" />
         </template>
 
-        <HomeModelSelector key="model" v-if="isMobile" />
+        <ModelSelector class="ml-4" key="model" v-if="isMobile" />
 
-        <TopBarIcon v-if="isMobile" tooltipText="新聊天">
+        <TopBarIcon
+          @click="conversationId = ''"
+          v-if="isMobile"
+          tooltipText="新聊天"
+        >
           <NewChatIcon class="size-5 opacity-60" />
         </TopBarIcon>
 

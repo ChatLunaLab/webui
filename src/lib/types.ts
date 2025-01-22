@@ -64,3 +64,22 @@ export interface ChatLunaAssistant {
   shared?: boolean
   ownerId?: string
 }
+
+export interface ChatLunaModelInfo {
+  name: string
+  type: 'embeddings' | 'llm'
+  maxTokens?: number
+  capabilities: (keyof typeof ModelCapability)[]
+  costPerTokenInput?: number
+  costPerTokenOutput?: number
+}
+
+export enum ModelCapability {
+  INPUT_TEXT = 0,
+  INPUT_VOICE = 1,
+  INPUT_IMAGE = 2,
+  OUTPUT_TEXT = 3,
+  OUTPUT_IMAGE = 4,
+  OUTPUT_VOICE = 5,
+  FUNCTION_CALL = 6
+}

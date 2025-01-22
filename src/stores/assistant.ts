@@ -1,4 +1,4 @@
-import { computed, effect, reactive, ref, watch } from 'vue'
+import { computed, effect, reactive, ref, watch, watchEffect } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 import { getMessageList, streamChat } from '@/apis/index'
 import { asyncComputed, computedAsync, useAsyncState } from '@vueuse/core'
@@ -67,18 +67,13 @@ export const useAssistantStore = defineStore(
       currentAssistant.value = assistant
     }
 
-    const { conversationId } = storeToRefs(useChatListStore())
+    const { currentConversationId: conversationId } =
+      storeToRefs(useChatListStore())
     const { conversationList } = storeToRefs(useConversationStore())
 
-    watch(conversationId, (newValue) => {
-      const conversationId = newValue
-
-      if (conversationId == null) {
-        return
-      }
-
+    watchEffect(() => {
       const currentConversation = conversationList.value.find(
-        (conversation) => conversation.id === conversationId
+        (conversation) => conversation.id === conversationId.value
       )
 
       if (currentConversation) {

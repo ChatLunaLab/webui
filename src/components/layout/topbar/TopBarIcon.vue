@@ -17,28 +17,29 @@ const screenInfoStore = useScreenInfoStore()
 
 interface Props {
   tooltipText?: string
-  click?: () => void
   tooltip?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   tooltipText: 'tooltip',
-  click: () => {},
   tooltip: true,
 })
+
+const emit = defineEmits(['click'])
+
 </script>
 
 <template>
   <Tooltip v-if="tooltip">
     <TooltipTrigger as-child>
-      <Button @click="props.click" class="m-2" variant="ghost" size="icon">
+      <Button @click="emit('click')" class="m-2" variant="ghost" size="icon">
         <slot />
         <span class="sr-only">{{ props.tooltipText }}</span>
       </Button>
     </TooltipTrigger>
     <TooltipContent>{{ props.tooltipText }}</TooltipContent>
   </Tooltip>
-  <Button v-else @click="props.click" class="m-2" variant="ghost" size="icon">
+  <Button v-else @click="emit('click')" class="m-2" variant="ghost" size="icon">
     <slot />
     <span class="sr-only">{{ props.tooltipText }}</span>
   </Button>

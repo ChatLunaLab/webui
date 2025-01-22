@@ -16,7 +16,7 @@ import AvatarIcon from '../avatar/AvatarIcon.vue'
 import { computedAsync } from '@vueuse/core'
 import type { ChatLunaAssistant } from '@/lib/types'
 
-const { conversationId: currentConversationId } =
+const { currentConversationId: currentConversationId } =
   storeToRefs(useChatListStore())
 const { groupedConversationList, conversationList } = storeToRefs(
   useConversationStore()

@@ -39,7 +39,7 @@ const props = defineProps<Props>()
   >
     <div class="flex items-center overflow-hidden">
       <TopBarIcon
-        :click="sidebarStore.toggle"
+        @click="sidebarStore.toggle()"
         v-if="!isOpen || isMobile"
         tooltipText="展开边栏"
         :tooltip="false"

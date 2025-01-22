@@ -17,7 +17,7 @@ const props = defineProps<{
 const onDeleteAction = async () => {
   try {
     await deleteConversation(props.conversationId)
-    const { conversationId: currentConversationId } =
+    const { currentConversationId: currentConversationId } =
       storeToRefs(useChatListStore())
 
     const { refreshConversationList } = useConversationStore()
