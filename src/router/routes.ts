@@ -22,5 +22,10 @@ export const routes: RouteRecordRaw[] = [
     path: '/c/:conversationId',
     name: 'c',
     component: () => import('../pages/HomePage.vue')
+  },
+  {
+    path: '/:workspaceId',
+    name: 'workspace',
+    component: () => import('../pages/Workspace.vue')
   }
 ]

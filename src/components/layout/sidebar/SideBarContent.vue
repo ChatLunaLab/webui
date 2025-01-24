@@ -30,6 +30,10 @@ const { preference } = storeToRefs(usePreferenceStore())
 const { assistantList } = storeToRefs(useAssistantStore())
 const { setAssistant } = useAssistantStore()
 
+const isWorkspace = computed(() => {
+  return route.path.startsWith('/workspace')
+})
+
 const routeConversationId = route.params.conversationId as string
 
 provide('currentConversationId', currentConversationId)
@@ -107,7 +111,12 @@ onMounted(() => {
         />
       </SideBarIconItem>
 
-      <SideBarIconItem :showDots="false" label="工作台" variant="ghost">
+      <SideBarIconItem
+        :showDots="false"
+        label="工作台"
+        href="/workspace"
+        :variant="isWorkspace ? 'secondary' : 'ghost'"
+      >
         <TokensIcon class="size-5 opacity-50 flex-shrink-0" />
       </SideBarIconItem>
     </div>
@@ -126,7 +135,7 @@ onMounted(() => {
         <ol>
           <li v-for="conversation in data.conversations" :key="conversation.id">
             <SideBarTextItem
-             :href="`/c/`+conversation.id"
+              :href="`/c/` + conversation.id"
               @click="conversationItemClick(conversation.id)"
               :label="conversation.title ?? '未命名对话'"
               :variant="

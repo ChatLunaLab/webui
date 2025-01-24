@@ -12,15 +12,16 @@ import { watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import NewChatIcon from '@/components/icons/NewChatIcon.vue'
 import { useChatListStore } from '@/stores/chat'
+import { useRoute } from 'vue-router'
 
 const sidebarStore = useSidebarStore()
-
 const screenInfoStore = useScreenInfoStore()
 
 const { isMobile } = storeToRefs(screenInfoStore)
 const { currentConversationId: conversationId } =
   storeToRefs(useChatListStore())
 const { isOpen, delayStatus } = storeToRefs(sidebarStore)
+
 
 watch(
   () => isMobile,

@@ -10,13 +10,12 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed } from 'vue'
 import { useScreenInfoStore } from '@/stores/screen'
 import HomePresetDropMenu from '../menu/SideBarConversationMenu.vue'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { DotsVerticalIcon } from '@radix-icons/vue'
-import { mergeConfig } from 'vitest/config'
-import SideBarConversationMenu from '../menu/SideBarConversationMenu.vue'
+import { useRouter } from 'vue-router'
 
 interface SideBarIconItemProps {
   href?: string
@@ -36,8 +35,17 @@ const props = withDefaults(defineProps<SideBarIconItemProps>(), {
 const hovered = ref(props.variant === 'secondary')
 const selected = computed(() => props.variant === 'secondary')
 
-const emit = defineEmits(['click'])
+const router = useRouter()
 
+const emit = defineEmits<{
+  (e: 'click', event: MouseEvent): void
+}>()
+
+const handleClick = (event: MouseEvent) => {
+  event.preventDefault() // 阻止默认的链接行为
+  emit('click', event)
+  router.push(props.href)
+}
 </script>
 
 <template>
@@ -45,7 +53,7 @@ const emit = defineEmits(['click'])
     :href="href"
     @mouseover="hovered = true"
     @mouseleave="hovered = false"
-    @click="emit('click')"
+    @click="handleClick"
     :class="
       cn(
         buttonVariants({
@@ -86,9 +94,7 @@ const emit = defineEmits(['click'])
             <DotsVerticalIcon class="size-4 opacity-50" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
-
-        </DropdownMenuContent>
+        <DropdownMenuContent></DropdownMenuContent>
       </DropdownMenu>
     </div>
   </a>

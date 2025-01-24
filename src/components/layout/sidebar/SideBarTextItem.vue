@@ -15,6 +15,7 @@ import { useScreenInfoStore } from '@/stores/screen'
 import SideBarConversationMenu from '../menu/SideBarConversationMenu.vue'
 import { DotsVerticalIcon } from '@radix-icons/vue'
 import { Button, buttonVariants } from '@/components/ui/button'
+import { useRouter } from 'vue-router'
 
 interface SideBarIconItemProps {
   href?: string
@@ -23,19 +24,26 @@ interface SideBarIconItemProps {
   conversationId?: string
 }
 
-
 const open = ref(false)
 const screenInfoStore = useScreenInfoStore()
+const router = useRouter()
 
 const props = withDefaults(defineProps<SideBarIconItemProps>(), {
   href: '#'
 })
 
-const emit = defineEmits(['click'])
+const emit = defineEmits<{
+  (e: 'click', event: MouseEvent): void
+}>()
+
+const handleClick = (event: MouseEvent) => {
+  event.preventDefault() // 阻止默认的链接行为
+  emit('click', event)
+  router.push(props.href)
+}
 
 const hovered = ref(props.variant === 'secondary')
 const selected = computed(() => props.variant === 'secondary')
-
 </script>
 
 <template>
@@ -43,7 +51,7 @@ const selected = computed(() => props.variant === 'secondary')
     href="#"
     @mouseover="hovered = true"
     @mouseleave="hovered = false"
-    @click="emit('click')"
+    @click="handleClick"
     :class="
       cn(
         buttonVariants({
