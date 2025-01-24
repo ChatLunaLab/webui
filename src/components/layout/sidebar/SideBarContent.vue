@@ -115,6 +115,7 @@ onMounted(() => {
         :showDots="false"
         label="工作台"
         href="/workspace"
+        @click="conversationItemClick('')"
         :variant="isWorkspace ? 'secondary' : 'ghost'"
       >
         <TokensIcon class="size-5 opacity-50 shrink-0" />
