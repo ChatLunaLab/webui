@@ -37,7 +37,7 @@ watch(
     v-if="!isMobile"
     :class="
       cn(
-        'h-full flex flex-shrink-0',
+        'h-full flex shrink-0',
         'relative ease-out duration-300 transition-all overflow-hidden',
         isOpen === true ? 'w-[260px] visible' : 'w-[0px]',
         !delayStatus && !isOpen ? 'hidden' : 'visible'

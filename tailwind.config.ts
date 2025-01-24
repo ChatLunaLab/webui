@@ -2,8 +2,8 @@ import plugin, { Config } from 'tailwindcss'
 import animate from 'tailwindcss-animate'
 
 export default {
-  darkMode: ['class'],
-  safelist: ['dark'],
+  darkMode: 'class',
+  // safelist: 'dark',
   prefix: '',
 
   content: [

@@ -117,7 +117,7 @@ onMounted(() => {
         href="/workspace"
         :variant="isWorkspace ? 'secondary' : 'ghost'"
       >
-        <TokensIcon class="size-5 opacity-50 flex-shrink-0" />
+        <TokensIcon class="size-5 opacity-50 shrink-0" />
       </SideBarIconItem>
     </div>
 

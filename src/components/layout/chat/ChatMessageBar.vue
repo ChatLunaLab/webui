@@ -2,21 +2,24 @@
 <script setup lang="ts">
 import { useSidebarStore } from '@/stores/ui'
 import { useScreenInfoStore } from '@/stores/screen'
-import { onMounted, ref } from 'vue'
+import { inject, onMounted, ref, watchEffect, type ComputedRef } from 'vue'
 import { Button } from '@/components/ui/button'
 import { PlusIcon, ArrowUpIcon } from '@radix-icons/vue'
 import { useChatContent, useChatListStore } from '@/stores/chat'
 import { storeToRefs } from 'pinia'
 import { useAssistantStore } from '@/stores/assistant'
 import { createConversation } from '@/apis/conversation'
+import { ArrowDownIcon } from '@radix-icons/vue'
+import type { PromisifyFn } from '@vueuse/core'
 
 const { chat } = useChatContent()
 
 const { chatContent } = storeToRefs(useChatContent())
 
 const chatInput = ref<HTMLTextAreaElement | null>(null)
-
 const disabled = ref(true)
+const scrollFunction = inject<PromisifyFn<() => void>>('scrollFunction')
+const canScroll = inject<ComputedRef<boolean>>('canScroll')
 
 onMounted(() => {
   chatInput.value?.addEventListener('input', function () {
@@ -48,8 +51,28 @@ const sendMessage = async () => {
 <template>
   <div
     id="chat-message-bar"
-    class="flex w-full flex-col shrink-0 justify-center items-center"
+    class="flex w-full flex-col shrink-0 justify-center items-center relative"
   >
+    <transition
+      enter-active-class="transition-transform duration-300 ease-in-out"
+      enter-from-class="transform scale-0"
+      enter-to-class="transform scale-100"
+      leave-active-class="transition-transform duration-300 ease-in-out"
+      leave-from-class="transform scale-100"
+      leave-to-class="transform scale-0"
+    >
+    <div v-if="canScroll" class="relative -mt-10 bottom-6 z-50">
+      <Button
+        variant="outline"
+        size="icon"
+        class="shadow-lg hover:shadow-xl transition-shadow rounded-full cursor-pointer"
+        @click="scrollFunction"
+      >
+        <ArrowDownIcon class="w-4 h-4" />
+      </Button>
+    </div>
+    </transition>
+
     <div class="flex w-full flex-col">
       <div class="w-full px-2.5 md:px-5">
         <div
@@ -61,7 +84,7 @@ const sendMessage = async () => {
             </Button>
             <textarea
               ref="chatInput"
-              class="w-full focus:ring-0 focus-visible:ring-0 max-h-[200px] border-none outline-none placeholder:text-muted-foreground bg-inherit resize-none min-h-[30px]"
+              class="w-full focus:ring-0 focus-visible:ring-0 max-h-[200px] border-none outline-hidden placeholder:text-muted-foreground bg-inherit resize-none min-h-[30px]"
               rows="1"
               placeholder="发送一条消息......"
             />

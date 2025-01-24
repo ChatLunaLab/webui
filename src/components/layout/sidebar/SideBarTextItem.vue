@@ -69,7 +69,7 @@ const selected = computed(() => props.variant === 'secondary')
       <div
         :class="
           cn(
-            'absolute bg-gradient-to-r from-0% from-transparent to-background h-[25px] w-8 bottom-0 right-0',
+            'absolute bg-linear-to-r from-0% from-transparent to-background h-[25px] w-8 bottom-0 right-0',
             (hovered || selected) && 'from-10% w-10 to-secondary/80',
             open && 'from-20% w-10 to-secondary'
           )

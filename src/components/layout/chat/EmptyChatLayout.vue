@@ -53,7 +53,7 @@ const { chat } = useChatContent()
             id: '0'
           })
         "
-        class="pt-4 pb-6 px-4 hover:bg-muted/50 rounded-xl border bg-card text-muted-foreground shadow hover:cursor-pointer"
+        class="pt-4 pb-6 px-4 hover:bg-muted/50 rounded-xl border bg-card text-muted-foreground shadow-sm hover:cursor-pointer"
       >
         <p class="text-sm break-words line-clamp-3 max-w-28">
           {{ example.title }}

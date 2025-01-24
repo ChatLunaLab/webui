@@ -43,7 +43,7 @@ provide('status', status)
     </div>
 
     <div
-      class="text-center text-sm text-muted-foreground flex-grow absolute bottom-[10px] w-full px-4"
+      class="text-center text-sm text-muted-foreground grow absolute bottom-[10px] w-full px-4"
     >
       <div class="flex justify-between px-20">
         <span>copyright © 2025</span>

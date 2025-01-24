@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import tailwind from 'tailwindcss'
+import tailwindcss from '@tailwindcss/vite'
 import autoprefixer from 'autoprefixer'
 import path from 'node:path'
 import { builtinModules } from 'module'
@@ -15,10 +15,10 @@ const allExternal = [
 export default defineConfig({
   css: {
     postcss: {
-      plugins: [tailwind(), autoprefixer()]
+      plugins: [autoprefixer()]
     }
   },
-  plugins: [vue(), vueJsx()],
+  plugins: [vue(), vueJsx(), tailwindcss()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')

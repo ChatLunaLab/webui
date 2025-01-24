@@ -8,6 +8,7 @@ import { computed, effect, inject, provide, ref, watch, watchEffect } from 'vue'
 import ChatMessage from './ChatMessage.vue'
 import { useChatListStore } from '@/stores/chat'
 import { computedAsync, useDebounceFn, type PromisifyFn } from '@vueuse/core'
+import { ChevronRightIcon } from '@radix-icons/vue'
 
 const props = defineProps<{
   conversationId: string
@@ -18,10 +19,7 @@ const { getChatList } = useChatListStore()
 
 const scrollFunction = inject<PromisifyFn<() => void>>('scrollFunction')
 
-const chatList = computedAsync(
-  () => getChatList(props.conversationId),
-  []
-)
+const chatList = computedAsync(() => getChatList(props.conversationId), [])
 
 watch(
   () => chatList.value,

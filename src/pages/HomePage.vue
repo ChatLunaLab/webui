@@ -4,14 +4,13 @@ import { useSidebarStore } from '@/stores/ui'
 import { ModelSelector } from '@/components/layout/selector'
 import { TopBar, TopBarIcon } from '@/components/layout/topbar'
 import { useScreenInfoStore } from '@/stores/screen'
-
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { UserInfoMenu } from '@/components/layout/menu'
-import { ChatRootLayout, ChatMessageBar } from '@/components/layout/chat'
+import { ChatRootLayout } from '@/components/layout/chat'
 import { storeToRefs } from 'pinia'
 import AvatarIcon from '@/components/layout/avatar/AvatarIcon.vue'
 import { useChatListStore } from '@/stores/chat'
@@ -62,8 +61,6 @@ const { isOpen } = storeToRefs(sidebarStore)
       </TopBar>
 
       <ChatRootLayout />
-
-      <ChatMessageBar />
     </div>
   </div>
 </template>

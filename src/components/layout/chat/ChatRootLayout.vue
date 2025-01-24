@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { useSidebarStore } from '@/stores/ui'
 import { useScreenInfoStore } from '@/stores/screen'
-import { provide, ref } from 'vue'
+import { computed, provide, ref } from 'vue'
 import EmptyChatLayout from './EmptyChatLayout.vue'
 import type { AssistantInfo, ChatLunaAssistant } from '@/lib/types'
 import ChatLayout from './ChatLayout.vue'
@@ -11,6 +11,7 @@ import { storeToRefs } from 'pinia'
 import { useDebounceFn } from '@vueuse/core'
 import { onMounted, onUnmounted } from 'vue'
 import { useAssistantStore } from '@/stores/assistant'
+import ChatMessageBar from './ChatMessageBar.vue'
 
 const { currentConversationId: conversationId } =
   storeToRefs(useChatListStore())
@@ -20,13 +21,21 @@ const { currentAssistant } = storeToRefs(useAssistantStore())
 
 const isUserScroll = ref(false)
 const listElement = ref<Element | null>(null)
+const canScroll = ref(false)
+let resizeObserver: ResizeObserver | null = null
 
 const scrollThreshold = 5 // pixels
 let lastScrollTop = 0
 let touchStartY = 0
 
 const handleScroll = () => {
-  const currentScrollTop = listElement.value?.scrollTop || 0
+  const element = listElement.value
+
+  if (!element) {
+    return
+  }
+
+  const currentScrollTop = element?.scrollTop || 0
   if (Math.abs(currentScrollTop - lastScrollTop) > scrollThreshold) {
     isUserScroll.value = true
     setTimeout(() => {
@@ -34,9 +43,13 @@ const handleScroll = () => {
     }, 10000) // Reset after 1 second of inactivity
   }
   // check if scrollTop is scroll to bottom
-  if (currentScrollTop === listElement.value?.scrollHeight) {
+  if (element.scrollHeight - element.scrollTop === element.clientHeight) {
     isUserScroll.value = false
+    canScroll.value = false
+  } else {
+    canScroll.value = true
   }
+
   lastScrollTop = currentScrollTop
 }
 
@@ -58,12 +71,24 @@ const handleTouchEnd = () => {
 }
 
 onMounted(() => {
-  if (listElement.value) {
-    listElement.value.addEventListener('scroll', handleScroll)
-    listElement.value.addEventListener('touchstart', handleTouchStart)
-    listElement.value.addEventListener('touchmove', handleTouchMove)
-    listElement.value.addEventListener('touchEnd', handleTouchEnd)
+  const element = listElement.value
+  if (!element) {
+    return
   }
+  element.addEventListener('scroll', handleScroll)
+  element.addEventListener('touchstart', handleTouchStart)
+  element.addEventListener('touchmove', handleTouchMove)
+  element.addEventListener('touchEnd', handleTouchEnd)
+
+  resizeObserver = new ResizeObserver(() => {
+    requestAnimationFrame(() => {
+      canScroll.value =
+        Math.abs(
+          element.scrollHeight - element.scrollTop - element.clientHeight
+        ) > 10
+    })
+  })
+  resizeObserver.observe(element)
 })
 
 onUnmounted(() => {
@@ -72,6 +97,7 @@ onUnmounted(() => {
     listElement.value.removeEventListener('touchstart', handleTouchStart)
     listElement.value.removeEventListener('touchmove', handleTouchMove)
     listElement.value.removeEventListener('touchend', handleTouchEnd)
+    resizeObserver?.observe(listElement.value)
   }
 })
 
@@ -92,6 +118,7 @@ const scrollFunction = useDebounceFn(
 )
 
 provide('scrollFunction', scrollFunction)
+provide('canScroll', canScroll)
 </script>
 
 <template>
@@ -113,4 +140,5 @@ provide('scrollFunction', scrollFunction)
       />
     </div>
   </div>
+  <ChatMessageBar />
 </template>
