@@ -29,7 +29,8 @@ export async function deleteConversation(id: string) {
 export async function createConversation(
   assistant?: string,
   title?: string,
-  assistantId?: number
+  assistantId?: number,
+  model?: string
 ) {
   const service = apiServer()
   const { userInfo } = useUserInfo()
@@ -47,7 +48,8 @@ export async function createConversation(
   const response = await service.post('/v1/conversation/create', {
     conversation: {
       assistantId,
-      title
+      title,
+      model
     },
     additional: {
       userId: userInfo?.bindId,

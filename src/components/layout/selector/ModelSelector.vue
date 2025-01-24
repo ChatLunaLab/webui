@@ -28,8 +28,7 @@ const { currentAssistant } = storeToRefs(useAssistantStore())
 
 const open = ref(false)
 
-const currentModel = ref('openai/gpt-3.5-turbo')
-const { modelList } = storeToRefs(useModelStore())
+const { modelList, currentModel } = storeToRefs(useModelStore())
 
 const props = defineProps<{
   class?: string

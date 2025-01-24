@@ -36,12 +36,11 @@ const emit = defineEmits(['click'])
 const hovered = ref(props.variant === 'secondary')
 const selected = computed(() => props.variant === 'secondary')
 
-
 </script>
 
 <template>
   <a
-    :href="href"
+    href="#"
     @mouseover="hovered = true"
     @mouseleave="hovered = false"
     @click="emit('click')"

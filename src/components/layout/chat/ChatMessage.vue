@@ -45,7 +45,7 @@ watch(contentRef, (newValue) => {
 </script>
 
 <template>
-  <div class="flex relative w-full flex-col px-8 xl:px-0">
+  <div class="flex relative w-full flex-col px-4 xl:px-8 md:px-6">
     <div
       :class="
         cn(
@@ -62,7 +62,7 @@ watch(contentRef, (newValue) => {
           cn(
             ' px-6 pb-3 pt-1 text-sm md:text-base max-w-xs ',
             message.role === 'user' &&
-              'lg:max-w-[34rem] md:max-w-[24rem] bg-accent/80 rounded-[1.5rem] pt-3',
+              'lg:max-w-[34rem] md:max-w-[28rem] bg-accent/80 rounded-[1.5rem] pt-3',
             message.role === 'assistant' && 'grow max-w-full'
           )
         "

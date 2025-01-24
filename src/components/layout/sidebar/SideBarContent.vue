@@ -94,7 +94,7 @@ onMounted(() => {
     <div class="flex flex-col w-full">
       <SideBarIconItem
         v-for="label in assistantList"
-        href="#"
+        href="/home"
         @click="assistantItemClick(label)"
         :key="label.id"
         :label="label.name"
@@ -126,6 +126,7 @@ onMounted(() => {
         <ol>
           <li v-for="conversation in data.conversations" :key="conversation.id">
             <SideBarTextItem
+             :href="`/c/`+conversation.id"
               @click="conversationItemClick(conversation.id)"
               :label="conversation.title ?? '未命名对话'"
               :variant="

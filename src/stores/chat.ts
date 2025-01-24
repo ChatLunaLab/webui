@@ -20,6 +20,7 @@ import {
   summaryConversationTitle
 } from '@/apis/conversation'
 import { useAssistantStore } from './assistant'
+import { useModelStore } from './model'
 
 export const useChatListStore = defineStore('chatList', () => {
   const globalChatListMap = reactive<Record<string, ChatLunaMessage[]>>({})
@@ -71,6 +72,7 @@ export const useChatListStore = defineStore('chatList', () => {
   }
 
   const createMessageList = (id: string, messages: ChatLunaMessage[]) => {
+    console.log(id, messages)
     globalChatListMap[id] = messages
   }
 
@@ -122,21 +124,25 @@ export const useChatContent = defineStore('chatContent', () => {
   const typeWriter = new TypeWriter()
 
   const newConversation = async () => {
+    const { currentModel } = useModelStore()
     const newConversation = await createConversation(
       currentAssistant.value?.name,
       undefined,
-      currentAssistant.value?.id
+      currentAssistant.value?.id,
+      currentModel
     )
     conversationId.value = newConversation.id
     createMessageList(newConversation.id, [])
+
     await refreshConversationList()
+    return newConversation.id
   }
 
   const chat = async (message: ChatLunaMessage) => {
     let currentConversationId = conversationId.value
     // create new conversation
     if (!currentConversationId || currentConversationId === '') {
-      await newConversation()
+      currentConversationId = await newConversation()
     }
 
     const baseList = currentChatList.value
