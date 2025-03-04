@@ -170,12 +170,11 @@ export const useChatContent = defineStore('chatContent', () => {
       chatContent.content += content
     }
 
-    chatContent.streaming = false
     setMessage(currentConversationId, nextMessageId, {
       content: chatContent.content
     })
+    chatContent.streaming = false
     chatContent.content = ''
-    console.log(chatContent)
 
     // update conversation title
     const conversationListValue = conversationList.value

@@ -8,6 +8,7 @@ import {
   ref,
   toRef,
   watch,
+  watchEffect,
   nextTick
 } from 'vue'
 import { cn } from '@/lib/utils'
@@ -39,8 +40,13 @@ watch(contentRef, (newValue) => {
   if (!isStreaming.value) {
     return
   }
+
   messageContent.value = newValue
   scrollFunction?.()
+})
+
+watchEffect(() => {
+  console.log(isStreaming, messageContent.value)
 })
 </script>
 
@@ -49,8 +55,8 @@ watch(contentRef, (newValue) => {
     <div
       :class="
         cn(
-          'flex  max-w-full min-w-0 justify-start',
-          props.message.role === 'user' ? 'flex-col items-end' : 'items-start '
+          'flex max-w-full min-w-0 justify-start',
+          props.message.role === 'user' ? 'flex-col items-end' : 'items-start'
         )
       "
     >
@@ -60,17 +66,32 @@ watch(contentRef, (newValue) => {
       <div
         :class="
           cn(
-            ' px-6 pb-3 pt-1 text-sm md:text-base max-w-xs ',
+            'px-6 pb-3 pt-1 text-sm md:text-base max-w-xs transition-all duration-150 ease-in-out',
             message.role === 'user' &&
               'lg:max-w-[34rem] md:max-w-[28rem] bg-accent/80 rounded-[1.5rem] pt-3',
             message.role === 'assistant' && 'grow max-w-full'
           )
         "
       >
+        <div
+          v-if="isStreaming && !messageContent"
+          class="flex gap-1 items-center h-6"
+        >
+          <span
+            class="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-[bounce_0.5s_infinite_0s]"
+          />
+          <span
+            class="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-[bounce_0.5s_infinite_0.15s]"
+          />
+          <span
+            class="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-[bounce_0.5s_infinite_0.3s]"
+          />
+        </div>
         <Markdown
+          v-else
           ref="markdownContainer"
           :source="messageContent"
-          class="transition-all duration-150 ease-in-out"
+          class="transition-all duration-150 ease-in-out animate-[messageIn_0.5s_ease-out_forwards]"
         ></Markdown>
       </div>
     </div>
@@ -98,6 +119,16 @@ watch(contentRef, (newValue) => {
   animation:
     messageIn 0.5s ease-out forwards,
     revealGradient 0.5s ease-out forwards;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-16px);
+  }
 }
 
 @keyframes messageIn {

@@ -9,16 +9,7 @@ export async function getMessageList(
 
   const response = await service.get(`v1/chat/${conversationId}/messages`)
 
-  const roleTable = {
-    ai: 'assistant',
-    human: 'user'
-  } as const
-  return (response.data.data as ChatLunaMessage[]).map((message) => {
-    return {
-      ...message,
-      role: roleTable[message.role as keyof typeof roleTable] ?? message.role
-    }
-  })
+  return response.data.data as ChatLunaMessage[]
 }
 
 export async function* streamChat(
@@ -54,6 +45,7 @@ export async function* streamChat(
 
     const chunk = JSON.parse(value.data) as DeltaChunk
     if (chunk.choices[0]?.delta?.content) {
+      console.log(chunk.choices[0].delta.content)
       yield chunk.choices[0].delta.content
     }
   }

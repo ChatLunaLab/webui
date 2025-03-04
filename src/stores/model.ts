@@ -9,7 +9,7 @@ import { useAssistantStore } from './assistant'
 export const useModelStore = defineStore('model', () => {
   const modelList = ref<ChatLunaModelInfo[]>([])
   const currentConversationModel = reactive<Record<string, ChatLunaModelInfo>>({})
-  const currentModel = ref('openai/gpt-3.5-turbo')
+  const currentModel = ref('openai:gpt-3.5-turbo')
 
   const refreshModelList = async () => {
     const response = await getModelList()

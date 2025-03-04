@@ -11,6 +11,7 @@ export interface AssistantInfo {
 
 export interface ChatLunaMessage {
   role: 'user' | 'assistant' | 'system'
+  // TODO: Support message part
   content: string
   name?: string
   id: string
@@ -67,19 +68,8 @@ export interface ChatLunaAssistant {
 
 export interface ChatLunaModelInfo {
   name: string
-  type: 'embeddings' | 'llm'
-  maxTokens?: number
-  capabilities: (keyof typeof ModelCapability)[]
+  type: 'textEmbeddingModel' | 'languageModel'
+  contextToken?: number
   costPerTokenInput?: number
   costPerTokenOutput?: number
-}
-
-export enum ModelCapability {
-  INPUT_TEXT = 0,
-  INPUT_VOICE = 1,
-  INPUT_IMAGE = 2,
-  OUTPUT_TEXT = 3,
-  OUTPUT_IMAGE = 4,
-  OUTPUT_VOICE = 5,
-  FUNCTION_CALL = 6
 }

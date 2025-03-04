@@ -28,5 +28,8 @@ export default defineConfig({
     rollupOptions: {
       external: ['fsevents', ...allExternal]
     }
+  },
+  server: {
+    allowedHosts: ['local.dingyi222666.top']
   }
 })

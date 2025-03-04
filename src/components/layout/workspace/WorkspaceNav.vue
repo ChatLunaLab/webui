@@ -16,12 +16,18 @@ const props = defineProps<{
     >
       助手
     </a>
-   
+
     <a
       href="/examples/dashboard"
       class="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
     >
       知识库
+    </a>
+    <a
+      href="/examples/dashboard"
+      class="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+    >
+      工作流
     </a>
     <a
       href="/examples/dashboard"
