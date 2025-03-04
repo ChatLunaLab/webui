@@ -46,6 +46,30 @@ const sendMessage = async () => {
 
   chatInput.value!.value = ''
 }
+
+const handleKeyDown = (event: KeyboardEvent) => {
+  if (event.key === 'Enter') {
+    if (event.ctrlKey) {
+      // Ctrl+Enter: add a new line
+      const textarea = event.target as HTMLTextAreaElement
+      const start = textarea.selectionStart
+      const end = textarea.selectionEnd
+      const value = textarea.value
+
+      textarea.value = value.substring(0, start) + '\n' + value.substring(end)
+
+      // Set cursor position after the inserted newline
+      textarea.selectionStart = textarea.selectionEnd = start + 1
+
+      // Trigger the input event to adjust height
+      textarea.dispatchEvent(new Event('input'))
+    } else {
+      // Enter without Ctrl: send message
+      event.preventDefault()
+      sendMessage()
+    }
+  }
+}
 </script>
 
 <template>
@@ -61,16 +85,16 @@ const sendMessage = async () => {
       leave-from-class="transform scale-100"
       leave-to-class="transform scale-0"
     >
-    <div v-if="canScroll" class="relative -mt-10 bottom-6 z-50">
-      <Button
-        variant="outline"
-        size="icon"
-        class="shadow-lg hover:shadow-xl transition-shadow rounded-full cursor-pointer"
-        @click="scrollFunction"
-      >
-        <ArrowDownIcon class="w-4 h-4" />
-      </Button>
-    </div>
+      <div v-if="canScroll" class="relative -mt-10 bottom-6 z-50">
+        <Button
+          variant="outline"
+          size="icon"
+          class="shadow-lg hover:shadow-xl transition-shadow rounded-full cursor-pointer"
+          @click="scrollFunction"
+        >
+          <ArrowDownIcon class="w-4 h-4" />
+        </Button>
+      </div>
     </transition>
 
     <div class="flex w-full flex-col">
@@ -87,6 +111,7 @@ const sendMessage = async () => {
               class="w-full focus:ring-0 focus-visible:ring-0 max-h-[200px] border-none outline-hidden placeholder:text-muted-foreground bg-inherit resize-none min-h-[30px]"
               rows="1"
               placeholder="发送一条消息......"
+              @keydown="handleKeyDown"
             />
             <Button
               class="rounded-full shrink-0"

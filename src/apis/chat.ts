@@ -45,7 +45,6 @@ export async function* streamChat(
 
     const chunk = JSON.parse(value.data) as DeltaChunk
     if (chunk.choices[0]?.delta?.content) {
-      console.log(chunk.choices[0].delta.content)
       yield chunk.choices[0].delta.content
     }
   }

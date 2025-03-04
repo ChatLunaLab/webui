@@ -51,7 +51,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class="flex relative w-full flex-col px-4 xl:px-8 md:px-6">
+  <div class="flex relative w-full flex-col px-4 xl:px-8 md:px-6 transition-all duration-150 ease-in-out animate-[messageIn_0.5s_ease-out_forwards]">
     <div
       :class="
         cn(
@@ -91,7 +91,7 @@ watchEffect(() => {
           v-else
           ref="markdownContainer"
           :source="messageContent"
-          class="transition-all duration-150 ease-in-out animate-[messageIn_0.5s_ease-out_forwards]"
+          class=""
         ></Markdown>
       </div>
     </div>

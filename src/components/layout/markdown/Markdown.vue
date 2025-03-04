@@ -12,6 +12,7 @@ const props = defineProps<{
 }>()
 
 const renderMarkdown = async () => {
+  console.log(111, props.source)
   markdown.value = await md(props.source)
 }
 
