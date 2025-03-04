@@ -9,7 +9,8 @@ import {
   toRef,
   watch,
   watchEffect,
-  nextTick
+  nextTick,
+  onUnmounted
 } from 'vue'
 import { cn } from '@/lib/utils'
 import { useChatContent } from '@/stores/chat'
@@ -46,12 +47,14 @@ watch(contentRef, (newValue) => {
 })
 
 watchEffect(() => {
-  console.log(isStreaming, messageContent.value)
+  console.log(messageContent.value.length, Date.now())
 })
 </script>
 
 <template>
-  <div class="flex relative w-full flex-col px-4 xl:px-8 md:px-6 transition-all duration-150 ease-in-out animate-[messageIn_0.5s_ease-out_forwards]">
+  <div
+    class="flex relative w-full flex-col px-4 xl:px-8 md:px-6 transition-all duration-150 ease-in-out animate-[messageIn_0.5s_ease-out_forwards]"
+  >
     <div
       :class="
         cn(
@@ -74,7 +77,7 @@ watchEffect(() => {
         "
       >
         <div
-          v-if="isStreaming && !messageContent"
+          v-if="isStreaming && messageContent.length < 1"
           class="flex gap-1 items-center h-6"
         >
           <span

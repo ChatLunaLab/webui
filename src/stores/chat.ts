@@ -165,10 +165,38 @@ export const useChatContent = defineStore('chatContent', () => {
     })
 
     chatContent.streaming = true
+    chatContent.content = ''
 
-    for await (const content of streamChat(conversationId.value, message)) {
-      chatContent.content += content
-    }
+    // Create a transform stream that uses smoothStreamText
+    const smoothingTransformer = createSmoothingTransformer()
+
+    // Create a writable stream that updates chatContent
+    const chatContentWriter = new WritableStream<string>({
+      write(chunk) {
+        chatContent.content += chunk
+      }
+    })
+
+    // Create a readable stream from the streamChat generator
+    const streamReader = (async function* () {
+      for await (const content of streamChat(conversationId.value, message)) {
+        yield content
+      }
+    })()
+
+    const readableStream = new ReadableStream<string>({
+      async start(controller) {
+        for await (const chunk of streamReader) {
+          controller.enqueue(chunk)
+        }
+        controller.close()
+      }
+    })
+
+    // Pipe the streams together
+    await readableStream
+      .pipeThrough(smoothingTransformer)
+      .pipeTo(chatContentWriter)
 
     setMessage(currentConversationId, nextMessageId, {
       content: chatContent.content
@@ -200,3 +228,63 @@ export const useChatContent = defineStore('chatContent', () => {
     chat
   }
 })
+
+// Function to create a properly typed TransformStream for text smoothing
+function createSmoothingTransformer() {
+  // Define the transformer with proper typing
+
+  return new TransformStream<string, string>({
+    async transform(chunk, controller) {
+      for await (const text of smoothStreamText(chunk)) {
+        controller.enqueue(text)
+      }
+    }
+  })
+}
+
+async function* smoothStreamText(text: string) {
+  // Check if the text is empty
+  if (!text) return
+
+  // Determine if the text is primarily English or non-English
+  const isEnglishText = /^[\x00-\x7F]+$/.test(text)
+
+  // Variables to control the streaming speed
+  let displayedLength = 0
+  const totalLength = text.length
+  let buffer = ''
+
+  // Process the text character by character
+  for (let i = 0; i < text.length; i++) {
+    buffer += text[i]
+
+    // For English text, output by words (on space or punctuation)
+    if (
+      isEnglishText &&
+      (text[i] === ' ' || /[,.!?;:]/.test(text[i]) || i === text.length - 1)
+    ) {
+      yield buffer
+      displayedLength += buffer.length
+      buffer = ''
+    }
+    // For non-English text, output every few characters
+    else if (!isEnglishText && (buffer.length >= 2 || i === text.length - 1)) {
+      yield buffer
+      displayedLength += buffer.length
+      buffer = ''
+    }
+  }
+
+  // Dynamically adjust the delay based on the ratio of displayed text to total text
+  // As more text is displayed, the speed increases
+  const progressRatio = displayedLength / totalLength
+  const delay = Math.max(2, progressRatio * 2) // Decrease delay as progress increases
+
+  // Small delay to create a smooth typing effect
+  await new Promise((resolve) => setTimeout(resolve, delay))
+
+  // Ensure any remaining buffer is yielded
+  if (buffer) {
+    yield buffer
+  }
+}
