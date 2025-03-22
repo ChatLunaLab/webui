@@ -13,6 +13,7 @@ import WorkspaceNav from '@/components/layout/workspace/WorkspaceNav.vue';
           <WorkspaceNav class="ml-6" />
         </template>
       </TopBar>
+      <router-view />
     </div>
   </div>
 </template>

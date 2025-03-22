@@ -40,16 +40,20 @@ const handleScroll = () => {
     isUserScroll.value = true
     setTimeout(() => {
       isUserScroll.value = false
-    }, 10000) // Reset after 1 second of inactivity
+    }, 1000) // Reset after 1 second of inactivity
   }
-  // check if scrollTop is scroll to bottom
-  if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+
+  // check if scrollTop is scroll to bottom with a small tolerance for browser rounding errors
+  const scrollTolerance = 2 // pixels tolerance for rounding errors
+  if (
+    Math.abs(element.scrollHeight - element.scrollTop - element.clientHeight) <=
+    scrollTolerance
+  ) {
     isUserScroll.value = false
     canScroll.value = false
   } else {
     canScroll.value = true
   }
-
   lastScrollTop = currentScrollTop
 }
 
@@ -97,7 +101,7 @@ onUnmounted(() => {
     listElement.value.removeEventListener('touchstart', handleTouchStart)
     listElement.value.removeEventListener('touchmove', handleTouchMove)
     listElement.value.removeEventListener('touchend', handleTouchEnd)
-    resizeObserver?.observe(listElement.value)
+    resizeObserver?.disconnect()
   }
 })
 

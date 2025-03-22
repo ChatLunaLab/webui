@@ -24,8 +24,19 @@ export const routes: RouteRecordRaw[] = [
     component: () => import('../pages/HomePage.vue')
   },
   {
-    path: '/:workspaceId',
+    path: '/workspace',
     name: 'workspace',
-    component: () => import('../pages/Workspace.vue')
+    component: () => import('../pages/Workspace.vue'),
+    children: [
+      {
+        path: 'assistant',
+        name: 'assistant',
+        component: () => import('../pages/workspace/AssistantPage.vue')
+      },
+      {
+        path: "*",
+        redirect: "/"
+      }
+    ]
   }
 ]

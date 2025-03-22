@@ -10,10 +10,13 @@ const props = defineProps<{
 <template>
   <Tabs default-value="assistant" :class="cn('', props.class ?? '')">
     <TabsList>
-      <TabsTrigger value="assistant">助手</TabsTrigger>
-      <TabsTrigger value="knowledge">知识库</TabsTrigger>
-      <TabsTrigger value="workflow">工作流</TabsTrigger>
-      <TabsTrigger value="tools">工具</TabsTrigger>
+      <TabsTrigger asChild value="assistant">
+        <a href="/workspace/assistant">助手</a>
+      </TabsTrigger>
+      <TabsTrigger asChild value="knowledge"><a href="/workspace/knowledge">知识库</a></TabsTrigger>
+      <TabsTrigger asChild value="workflow"><a href="/workspace/workflow">工作流</a></TabsTrigger>
+      <TabsTrigger asChild value="tools"><a href="/workspace/tools">工具</a></TabsTrigger>
+
     </TabsList>
   </Tabs>
 </template>

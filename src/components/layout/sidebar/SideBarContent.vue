@@ -114,7 +114,7 @@ onMounted(() => {
       <SideBarIconItem
         :showDots="false"
         label="工作台"
-        href="/workspace"
+        href="/workspace/assistant"
         @click="conversationItemClick('')"
         :variant="isWorkspace ? 'secondary' : 'ghost'"
       >
