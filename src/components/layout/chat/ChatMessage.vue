@@ -81,7 +81,7 @@ watchEffect(() => {
           v-if="isStreaming && messageContent.length < 1"
           class="flex items-center h-6"
         >
-          <LoadingDots :duration="0.8" :size="1.5" />
+          <LoadingDots :duration="0.8" :size="8" />
         </div>
         <Markdown
           v-else

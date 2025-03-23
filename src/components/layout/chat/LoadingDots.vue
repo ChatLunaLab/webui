@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-
 interface LoadingDotsProps {
   /**
    * The size of each dot in pixels
@@ -34,66 +32,42 @@ interface LoadingDotsProps {
 }
 
 const props = withDefaults(defineProps<LoadingDotsProps>(), {
-  size: 1.5,
+  size: 8,
   color: 'bg-muted-foreground',
   duration: 0.4,
-  height: 4,
-  gap: 1
+  height: 8,
+  gap: 0.35
 })
 
-// Track which dot is currently visible (1-indexed to match v-for)
-const activeDotIndex = ref(1)
-
-// Timer reference for cleanup
-let timer: number | null = null
-
-// Function to cycle through dots
-const cycleDots = () => {
-  activeDotIndex.value =
-    activeDotIndex.value >= 3 ? 1 : activeDotIndex.value + 1
+// Calculate animation delay for each dot
+const getAnimationDelay = (index: number) => {
+  return `${(index * 0.15).toFixed(2)}s`
 }
-
-onMounted(() => {
-  // Start the animation cycle when component is mounted
-  // Divide the total duration by 3 to maintain the same overall animation speed
-  const intervalTime = (props.duration * 1000) / 3
-  timer = window.setInterval(cycleDots, intervalTime)
-})
-
-onBeforeUnmount(() => {
-  // Clean up the timer when component is unmounted
-  if (timer !== null) {
-    clearInterval(timer)
-    timer = null
-  }
-})
 </script>
 
 <template>
   <div
     class="flex items-center"
-    :class="`gap-${props.gap}`"
     :style="{
-      height: `${props.height}px`
+      height: `${props.height}px`,
+      gap: `${props.gap}rem`
     }"
   >
     <span
       v-for="index in 3"
       :key="index"
       :class="[
-        `w-${props.size} h-${props.size} rounded-full ${props.color}`,
-        {
-          'opacity-100': index === activeDotIndex,
-          'opacity-0': index !== activeDotIndex
-        }
+        props.color,
+        'animate-pulse opacity-0 rounded-full transition-opacity duration-300 ease-in-out'
       ]"
+      :style="{
+        width: `${props.size}px`,
+        height: `${props.size}px`,
+        animationDuration: `${props.duration * 2}s`,
+        animationDelay: getAnimationDelay(index - 1),
+        animationFillMode: 'both',
+        animationIterationCount: 'infinite'
+      }"
     />
   </div>
 </template>
-
-<style scoped>
-/* Transition for smooth opacity changes */
-span {
-  transition: opacity 0.15s ease-in-out;
-}
-</style>
