@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 
 interface LoadingDotsProps {
   /**
@@ -36,67 +36,35 @@ interface LoadingDotsProps {
 const props = withDefaults(defineProps<LoadingDotsProps>(), {
   size: 1.5,
   color: 'bg-muted-foreground',
-  duration: 0.8,
+  duration: 0.4,
   height: 4,
   gap: 1
 })
 
-// References to dot elements
-const dotRefs = ref<HTMLElement[]>([])
-const animationFrameId = ref<number | null>(null)
-const isAnimating = ref(true)
+// Track which dot is currently visible (1-indexed to match v-for)
+const activeDotIndex = ref(1)
 
-// Calculate the bounce height based on dot size
-const bounceHeight = computed(() => props.size * 3)
+// Timer reference for cleanup
+let timer: number | null = null
 
-// Animation timing parameters for wave-like effect
-const getDelay = (index: number) => (props.duration / 4) * index
-
-// Animation function using requestAnimationFrame
-const animate = () => {
-  const startTime = Date.now()
-
-  const updateDots = () => {
-    const currentTime = Date.now()
-    const elapsed = (currentTime - startTime) / 1000 // Convert to seconds
-
-    dotRefs.value.forEach((dot, index) => {
-      if (!dot) return
-
-      // Calculate phase with delay for each dot
-      const delay = getDelay(index)
-      const phase = ((elapsed + delay) % props.duration) / props.duration
-
-      // Simple sine wave for smooth bounce effect
-      const yPos = Math.sin(phase * Math.PI) * bounceHeight.value * -1
-
-      // Apply transform
-      dot.style.transform = `translateY(${yPos}px)`
-    })
-
-    if (isAnimating.value) {
-      animationFrameId.value = requestAnimationFrame(updateDots)
-    }
-  }
-
-  updateDots()
-}
-
-// Store dot references
-const setDotRef = (el: Element | unknown, index: number) => {
-  if (el && el instanceof HTMLElement) {
-    dotRefs.value[index] = el
-  }
+// Function to cycle through dots
+const cycleDots = () => {
+  activeDotIndex.value =
+    activeDotIndex.value >= 3 ? 1 : activeDotIndex.value + 1
 }
 
 onMounted(() => {
-  animate()
+  // Start the animation cycle when component is mounted
+  // Divide the total duration by 3 to maintain the same overall animation speed
+  const intervalTime = (props.duration * 1000) / 3
+  timer = window.setInterval(cycleDots, intervalTime)
 })
 
-onUnmounted(() => {
-  isAnimating.value = false
-  if (animationFrameId.value !== null) {
-    cancelAnimationFrame(animationFrameId.value)
+onBeforeUnmount(() => {
+  // Clean up the timer when component is unmounted
+  if (timer !== null) {
+    clearInterval(timer)
+    timer = null
   }
 })
 </script>
@@ -105,20 +73,27 @@ onUnmounted(() => {
   <div
     class="flex items-center"
     :class="`gap-${props.gap}`"
-    :style="{ height: `${props.height}px` }"
+    :style="{
+      height: `${props.height}px`
+    }"
   >
     <span
-      v-for="index in 4"
+      v-for="index in 3"
       :key="index"
-      :ref="(el) => setDotRef(el, index - 1)"
-      :class="[`w-${props.size} h-${props.size} rounded-full ${props.color}`]"
-      :style="{
-        transformOrigin: 'center bottom'
-      }"
+      :class="[
+        `w-${props.size} h-${props.size} rounded-full ${props.color}`,
+        {
+          'opacity-100': index === activeDotIndex,
+          'opacity-0': index !== activeDotIndex
+        }
+      ]"
     />
   </div>
 </template>
 
 <style scoped>
-/* Animation is now controlled by TypeScript */
+/* Transition for smooth opacity changes */
+span {
+  transition: opacity 0.15s ease-in-out;
+}
 </style>
