@@ -17,6 +17,7 @@ import { useChatContent } from '@/stores/chat'
 import { storeToRefs } from 'pinia'
 import type { PromisifyFn } from '@vueuse/core'
 import { Markdown } from '@/components/layout/markdown'
+import LoadingDots from './LoadingDots.vue'
 
 const props = defineProps<{
   message: ChatLunaMessage
@@ -78,17 +79,9 @@ watchEffect(() => {
       >
         <div
           v-if="isStreaming && messageContent.length < 1"
-          class="flex gap-1 items-center h-6"
+          class="flex items-center h-6"
         >
-          <span
-            class="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-[bounce_0.5s_infinite_0s]"
-          />
-          <span
-            class="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-[bounce_0.5s_infinite_0.15s]"
-          />
-          <span
-            class="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-[bounce_0.5s_infinite_0.3s]"
-          />
+          <LoadingDots :duration="0.8" :size="1.5" />
         </div>
         <Markdown
           v-else
@@ -122,16 +115,6 @@ watchEffect(() => {
   animation:
     messageIn 0.5s ease-out forwards,
     revealGradient 0.5s ease-out forwards;
-}
-
-@keyframes bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-16px);
-  }
 }
 
 @keyframes messageIn {
