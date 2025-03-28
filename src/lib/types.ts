@@ -73,3 +73,13 @@ export interface ChatLunaModelInfo {
   costPerTokenInput?: number
   costPerTokenOutput?: number
 }
+
+export interface ChatLunaKnowledgeBase {
+  id: number
+  name: string
+  description?: string
+  icon?: string
+  documentCount?: number
+  shared?: boolean
+  ownerId?: string
+}

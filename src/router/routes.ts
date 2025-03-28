@@ -1,6 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
 
-
 export const routes: RouteRecordRaw[] = [
   {
     path: '/',
@@ -34,8 +33,13 @@ export const routes: RouteRecordRaw[] = [
         component: () => import('../pages/workspace/AssistantPage.vue')
       },
       {
-        path: "*",
-        redirect: "/"
+        path: 'knowledge',
+        name: 'knowledge',
+        component: () => import('../pages/workspace/KnowledgePage.vue')
+      },
+      {
+        path: '*',
+        redirect: '/'
       }
     ]
   }
