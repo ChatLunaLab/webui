@@ -146,7 +146,7 @@ const handleCreate = () => {
 </script>
 
 <template>
-  <div class="container mx-auto p-6">
+  <div class="mx-auto p-6">
     <AssistantFilter
       class="mb-6"
       @search="handleSearch"

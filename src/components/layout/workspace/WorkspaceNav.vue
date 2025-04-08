@@ -1,15 +1,24 @@
+-
 <script setup lang="ts">
 import { cn } from '@/lib/utils'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useRouter } from 'vue-router'
+import { defineProps, computed } from 'vue'
 
 const props = defineProps<{
   class?: string
 }>()
+
+const router = useRouter()
+
+const tabsValue = computed(() => {
+  return router.currentRoute.value.path.split('/')[2]
+})
 </script>
 
 <template>
   <div :class="cn('flex flex-col gap-4', props.class ?? '')">
-    <Tabs default-value="assistant">
+    <Tabs :default-value="tabsValue">
       <TabsList>
         <TabsTrigger asChild value="assistant">
           <a href="/workspace/assistant">助手</a>
