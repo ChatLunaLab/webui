@@ -38,6 +38,16 @@ export const routes: RouteRecordRaw[] = [
         component: () => import('../pages/workspace/KnowledgePage.vue')
       },
       {
+        path: 'workflow',
+        name: 'workflow',
+        component: () => import('../pages/workspace/WorkflowPage.vue')
+      },
+      {
+        path: 'tools',
+        name: 'tools',
+        component: () => import('../pages/workspace/ToolsPage.vue')
+      },
+      {
         path: '*',
         redirect: '/'
       }
