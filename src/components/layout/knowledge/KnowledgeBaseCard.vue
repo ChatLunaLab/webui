@@ -17,61 +17,87 @@ import {
   DropdownMenuItem
 } from '@/components/ui/dropdown-menu'
 import MoreHorizontalIcon from '@/components/icons/MoreHorizontalIcon.vue'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const props = defineProps<{
   knowledgeBase: ChatLunaKnowledgeBase
   showActions?: boolean
 }>()
 
+const emit = defineEmits(['click', 'edit', 'delete', 'export'])
+
 const router = useRouter()
 const dropdownOpen = ref(false)
+
+// 根据知识库类型获取标签
+const typeLabel = computed(() => {
+  const typeMap = {
+    general: '通用',
+    technical: '技术',
+    business: '商业',
+    scientific: '科学',
+    custom: '自定义'
+  }
+  return typeMap[props.knowledgeBase.type as keyof typeof typeMap] || '未知'
+})
+
+// 根据知识库类型获取标签颜色
+const typeColor = computed(() => {
+  const colorMap = {
+    general: 'bg-blue-100 text-blue-800',
+    technical: 'bg-purple-100 text-purple-800',
+    business: 'bg-green-100 text-green-800',
+    scientific: 'bg-amber-100 text-amber-800',
+    custom: 'bg-gray-100 text-gray-800'
+  }
+  return colorMap[props.knowledgeBase.type as keyof typeof colorMap] || 'bg-gray-100 text-gray-800'
+})
 
 const viewKnowledgeBase = () => {
   // 查看知识库的逻辑
   console.log('View knowledge base:', props.knowledgeBase.id)
-  // 这里可以跳转到知识库详情页面
+  emit('click')
 }
 
 const editKnowledgeBase = () => {
   // 编辑知识库的逻辑
   console.log('Edit knowledge base:', props.knowledgeBase.id)
+  router.push(`/workspace/knowledge/edit/${props.knowledgeBase.id}`)
+  emit('edit')
 }
 
 const exportKnowledgeBase = () => {
   // 导出知识库的逻辑
   console.log('Export knowledge base:', props.knowledgeBase.id)
+  emit('export')
 }
 
 const deleteKnowledgeBase = () => {
   // 删除知识库的逻辑
   console.log('Delete knowledge base:', props.knowledgeBase.id)
+  emit('delete')
 }
 </script>
 
 <template>
-  <Card
-    class="flex flex-col overflow-hidden hover:shadow-md transition-all duration-200 group relative"
-  >
+  <Card class="flex flex-col overflow-hidden hover:shadow-md transition-all duration-200 group relative">
     <CardHeader class="pb-3 pt-5 px-4 sm:px-6">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <img
-            :src="
-              knowledgeBase.icon ||
-              'https://api.dicebear.com/7.x/bottts/svg?seed=' +
-                knowledgeBase.name
-            "
-            alt="Knowledge base icon"
-            class="w-8 h-8 rounded-full object-cover"
-          />
+          <img :src="knowledgeBase.icon ||
+            'https://api.dicebear.com/7.x/bottts/svg?seed=' +
+            knowledgeBase.name
+            " alt="Knowledge base icon" class="w-8 h-8 rounded-full object-cover" />
           <div>
-            <CardTitle class="text-sm sm:text-base">
-              {{ knowledgeBase.name }}
-            </CardTitle>
-            <CardDescription
-              class="text-xs truncate max-w-[150px] sm:max-w-[200px] mt-1"
-            >
+            <div class="flex items-center gap-2">
+              <CardTitle class="text-sm sm:text-base">
+                {{ knowledgeBase.name }}
+              </CardTitle>
+              <span :class="['text-xs px-2 py-0.5 rounded-full', typeColor]" v-if="knowledgeBase.type">
+                {{ typeLabel }}
+              </span>
+            </div>
+            <CardDescription class="text-xs truncate max-w-[150px] sm:max-w-[200px] mt-1">
               {{ knowledgeBase.documentCount || 0 }} 文档
             </CardDescription>
           </div>
@@ -79,9 +105,7 @@ const deleteKnowledgeBase = () => {
 
         <!-- 三点菜单 -->
         <DropdownMenu v-model:open="dropdownOpen">
-          <DropdownMenuTrigger
-            class="opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-          >
+          <DropdownMenuTrigger class="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
             <Button variant="ghost" size="icon" class="h-8 w-8">
               <MoreHorizontalIcon class="h-4 w-4" />
             </Button>
@@ -91,10 +115,7 @@ const deleteKnowledgeBase = () => {
             <DropdownMenuItem @click="exportKnowledgeBase">
               导出
             </DropdownMenuItem>
-            <DropdownMenuItem
-              @click="deleteKnowledgeBase"
-              class="text-destructive focus:text-destructive"
-            >
+            <DropdownMenuItem @click="deleteKnowledgeBase" class="text-destructive focus:text-destructive">
               删除
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -109,25 +130,11 @@ const deleteKnowledgeBase = () => {
     </CardContent>
 
     <!-- 底部按钮 -->
-    <div
-      class="absolute bottom-0 left-0 right-0 p-3 sm:p-4 bg-gradient-to-t from-background to-transparent"
-      v-if="showActions !== false"
-    >
-      <div class="flex justify-between w-full">
-        <Button
-          variant="outline"
-          size="sm"
-          class="flex-1 mr-2 text-xs sm:text-sm"
-          @click="editKnowledgeBase"
-        >
-          编辑
-        </Button>
-        <Button
-          size="sm"
-          class="flex-1 text-xs sm:text-sm"
-          @click="viewKnowledgeBase"
-        >
-          查看
+    <div class="absolute bottom-0 left-0 right-0 p-3 sm:p-4 bg-gradient-to-t from-background to-transparent"
+      v-if="showActions !== false">
+      <div class="flex w-full">
+        <Button variant="outline" size="sm" class="w-full text-xs sm:text-sm" @click="editKnowledgeBase">
+          编辑知识库
         </Button>
       </div>
     </div>

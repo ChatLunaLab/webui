@@ -35,7 +35,12 @@ export const routes: RouteRecordRaw[] = [
       {
         path: 'knowledge',
         name: 'knowledge',
-        component: () => import('../pages/workspace/KnowledgePage.vue')
+        component: () => import('../pages/workspace/knowledge/index.vue')
+      },
+      {
+        path: 'knowledge/edit/:id',
+        name: 'knowledge-edit',
+        component: () => import('../pages/workspace/knowledge/edit/id.vue')
       },
       {
         path: 'workflow',

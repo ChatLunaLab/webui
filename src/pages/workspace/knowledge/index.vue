@@ -84,33 +84,27 @@ const handleImportKnowledgeBase = () => {
 const handleSearch = (query: string) => {
   searchQuery.value = query
 }
+
+// 处理编辑知识库
+const handleEditKnowledgeBase = (knowledgeBaseId: number) => {
+  router.push(`/workspace/knowledge/edit/${knowledgeBaseId}`)
+}
 </script>
 
 <template>
   <div class="flex flex-col p-6 gap-6 h-full overflow-auto">
     <!-- 顶部过滤和操作栏 -->
-    <KnowledgeBaseFilter
-      @search="handleSearch"
-      @create="handleCreateKnowledgeBase"
-      @import="handleImportKnowledgeBase"
-    />
+    <KnowledgeBaseFilter @search="handleSearch" @create="handleCreateKnowledgeBase"
+      @import="handleImportKnowledgeBase" />
 
     <!-- 知识库列表 -->
-    <div
-      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-6"
-    >
-      <KnowledgeBaseCard
-        v-for="kb in filteredKnowledgeBases"
-        :key="kb.id"
-        :knowledge-base="kb"
-      />
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-6">
+      <KnowledgeBaseCard v-for="kb in filteredKnowledgeBases" :key="kb.id" :knowledge-base="kb"
+        @click="handleEditKnowledgeBase(kb.id)" class="cursor-pointer hover:shadow-md transition-shadow" />
     </div>
 
     <!-- 空状态 -->
-    <div
-      v-if="filteredKnowledgeBases.length === 0"
-      class="flex flex-col items-center justify-center py-12 text-center"
-    >
+    <div v-if="filteredKnowledgeBases.length === 0" class="flex flex-col items-center justify-center py-12 text-center">
       <div class="text-4xl mb-4">📚</div>
       <h3 class="text-xl font-medium mb-2">没有找到知识库</h3>
       <p class="text-muted-foreground mb-6">
@@ -118,10 +112,7 @@ const handleSearch = (query: string) => {
           searchQuery ? '尝试使用其他关键词搜索' : '创建一个新的知识库开始使用'
         }}
       </p>
-      <Button
-        @click="handleCreateKnowledgeBase"
-        class="flex items-center gap-2"
-      >
+      <Button @click="handleCreateKnowledgeBase" class="flex items-center gap-2">
         <PlusIcon class="h-4 w-4" />
         <span>创建知识库</span>
       </Button>

@@ -19,7 +19,7 @@
     "@server-sent-stream/web": "^1.0.3",
     "@tailwindcss/vite": "^4.0.9",
     "@vee-validate/zod": "^4.15.0",
-    "@vueuse/core": "^12.7.0",
+    "@vueuse/core": "^13.1.0",
     "autoprefixer": "^10.4.20",
     "axios": "^1.8.1",
     "class-variance-authority": "^0.7.1",

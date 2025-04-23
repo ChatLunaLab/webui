@@ -18,7 +18,6 @@ let instance: ReturnType<typeof useAxios>
 let refreshTokenPromise: Promise<any> | null = null
 
 export const apiServer = () => {
-
   if (instance != null) {
     return instance
   }

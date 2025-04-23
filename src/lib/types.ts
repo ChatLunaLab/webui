@@ -82,4 +82,5 @@ export interface ChatLunaKnowledgeBase {
   documentCount?: number
   shared?: boolean
   ownerId?: string
+  type?: string
 }
